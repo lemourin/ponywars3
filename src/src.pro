@@ -2,12 +2,11 @@ TEMPLATE = lib
 
 QT += quick network
 CONFIG += c++11
-QMAKE_CXXFLAGS += -fno-strict-aliasing
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
-LIBS += -L$$OUT_PWD/../build -lBox2D
+LIBS += -L$$OUT_PWD/../build -lBox2D -lSceneGraph
 
 INCLUDEPATH += $$PWD/../deps/
 

@@ -51,56 +51,56 @@ void BodyEdit::setBody(QBody* body) {
     if (m_body == body)
         return;
     m_body = body;
-    emit bodyChanged();
+    //emit bodyChanged();
 }
 
 void BodyEdit::setDensity(qreal d) {
     if (qIsNull(m_density-d))
         return;
     m_density = d;
-    emit densityChanged();
+    //emit densityChanged();
 }
 
 void BodyEdit::setFriction(qreal f) {
     if (qIsNull(m_friction-f))
         return;
     m_friction = f;
-    emit frictionChanged();
+    //emit frictionChanged();
 }
 
 void BodyEdit::setRestitution(qreal r) {
     if (qIsNull(m_restitution-r))
         return;
     m_restitution = r;
-    emit restitutionChanged();
+    //emit restitutionChanged();
 }
 
 void BodyEdit::setGravityScale(qreal g) {
     if (qIsNull(m_gravityScale-g))
         return;
     m_gravityScale = g;
-    emit gravityScaleChanged();
+    //emit gravityScaleChanged();
 }
 
 void BodyEdit::setLinearDamping(qreal l) {
     if (qIsNull(m_linearDamping-l))
         return;
     m_linearDamping = l;
-    emit linearDampingChanged();
+    //emit linearDampingChanged();
 }
 
 void BodyEdit::setAngularDamping(qreal a) {
     if (qIsNull(m_angularDamping-a))
         return;
     m_angularDamping = a;
-    emit angularDampingChanged();
+    //emit angularDampingChanged();
 }
 
 void BodyEdit::setDynamic(bool d) {
     if (m_dynamic == d)
         return;
     m_dynamic = d;
-    emit dynamicChanged();
+    //emit dynamicChanged();
 }
 
 void BodyEdit::applyChanges() const {

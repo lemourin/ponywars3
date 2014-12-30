@@ -67,14 +67,14 @@ class BodyEdit: public MapEditorAction {
         Q_INVOKABLE void applyChanges() const;
 
     //signals:
-        void bodyChanged();
-        void densityChanged();
-        void frictionChanged();
-        void restitutionChanged();
-        void gravityScaleChanged();
-        void linearDampingChanged();
-        void angularDampingChanged();
-        void dynamicChanged();
+//        void bodyChanged();
+//        void densityChanged();
+//        void frictionChanged();
+//        void restitutionChanged();
+//        void gravityScaleChanged();
+//        void linearDampingChanged();
+//        void angularDampingChanged();
+//        void dynamicChanged();
 
 };
 

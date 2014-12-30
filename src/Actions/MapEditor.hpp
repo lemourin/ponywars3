@@ -53,7 +53,7 @@ class MapEditor: public Action {
         inline QString currentAction() const { return m_currentAction; }
 
     //signals:
-        void currentActionChanged();
+    //    void currentActionChanged();
 };
 
 #endif // MAPEDITOR_HPP

@@ -27,7 +27,7 @@ void MapEditor::setCurrentAction(QString str) {
     if (m_currentAction == str)
         return;
     m_currentAction = str;
-    emit currentActionChanged();
+    //emit currentActionChanged();
 }
 
 void MapEditor::onInit() {
