@@ -16,11 +16,11 @@ MapEditor::MapEditor(World* item):
 }
 
 void MapEditor::actionFocusChanged(MapEditorAction* action) {
-    QString name = action->metaObject()->className();
-    if (action->hasFocus())
-        setCurrentAction(name);
-    else if (currentAction() == name)
-        setCurrentAction("");
+//    QString name = action->metaObject()->className();
+//    if (action->hasFocus())
+//        setCurrentAction(name);
+//    else if (currentAction() == name)
+//        setCurrentAction("");
 }
 
 void MapEditor::setCurrentAction(QString str) {

@@ -2,8 +2,8 @@
 #include <QTimerEvent>
 #include <cassert>
 
-SpriteSequence::SpriteSequence(QQuickItem *parent):
-    QQuickItem(parent),
+SpriteSequence::SpriteSequence(Item* parent):
+    SceneGraph::Item(parent),
     m_texture(this),
     m_currentSprite(),
     m_currentFrame(),
@@ -19,17 +19,17 @@ void SpriteSequence::reset() {
 }
 
 void SpriteSequence::visibleChanged() {
-    killTimer(m_timerId);
+    //killTimer(m_timerId);
     m_timerId = 0;
 
     if (m_currentSprite == nullptr)
         return;
 
-    if (isVisible()) {
-        m_texture.setWidth(width());
-        m_texture.setHeight(height());
+    if (visible()) {
+        //m_texture.setWidth(width());
+        //m_texture.setHeight(height());
 
-        m_timerId = startTimer(1000.0/m_currentSprite->m_frameRate);
+        //m_timerId = startTimer(1000.0/m_currentSprite->m_frameRate);
     }
 }
 
@@ -47,16 +47,16 @@ void SpriteSequence::timerEvent(QTimerEvent* t) {
 
 void SpriteSequence::geometryChanged(const QRectF& newGeometry,
                                      const QRectF& oldGeometry) {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
-    m_texture.setSize(newGeometry.size());
+    //m_texture.setSize(newGeometry.size());
 }
 
-void SpriteSequence::itemChange(ItemChange change, const ItemChangeData& data) {
+/*void SpriteSequence::itemChange(ItemChange change, const ItemChangeData& data) {
     QQuickItem::itemChange(change, data);
     if (change == ItemVisibleHasChanged)
         visibleChanged();
-}
+}*/
 
 void SpriteSequence::currentSpriteChanged() {
 }

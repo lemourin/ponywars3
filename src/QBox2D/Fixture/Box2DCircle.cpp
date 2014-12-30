@@ -24,7 +24,7 @@ std::vector<QPointF> Box2DCircle::vertices() const {
 b2Shape* Box2DCircle::createShape() const {
     b2CircleShape *shape = new b2CircleShape;
     shape->m_radius = m_radius;
-    shape->m_p.Set(x(), y());
+    shape->m_p.Set(position().x(), position().y());
 
     return shape;
 }

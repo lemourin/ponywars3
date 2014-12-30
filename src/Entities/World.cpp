@@ -113,7 +113,7 @@ void World::setPlayer(Player* player) {
     }
 
 
-    emit playerChanged();
+    //emit playerChanged();
 }
 
 LightSystem* World::lightSystem() const {
@@ -124,7 +124,7 @@ void World::setFps(qreal f) {
     if (qIsNull(m_fps-f))
         return;
     m_fps = f;
-    emit fpsChanged();
+    //emit fpsChanged();
 }
 
 void World::setPaused(bool p) {
@@ -132,7 +132,7 @@ void World::setPaused(bool p) {
         return;
     setRunning(!p);
     setFocus(!p);
-    emit pausedChanged();
+    //emit pausedChanged();
 }
 
 void World::read(const QJsonObject& obj) {
@@ -142,7 +142,7 @@ void World::read(const QJsonObject& obj) {
     Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());
     assert(player);
 
-    player->setParent(this);
+    //player->setParent(this);
     //player->setParentItem(this);
     player->read(p);
     player->initialize();

@@ -128,28 +128,28 @@ void Client::parseMessage(QString message, QString ip, quint16 port) {
 void Client::onWorldChanged() {
     if (world()) {
         onPlayerChanged();
-        connect(world(), &World::playerChanged, this, &Client::onPlayerChanged);
+        //connect(world(), &World::playerChanged, this, &Client::onPlayerChanged);
     }
 }
 
 void Client::onPlayerChanged() {
-    if (world()->player()) {
+    /*if (world()->player()) {
         connect(world()->player(), &Player::xChanged,
                 this, &Client::onPlayerPositionChanged);
         connect(world()->player(), &Player::yChanged,
                 this, &Client::onPlayerPositionChanged);
-    }
+    }*/
 }
 
 void Client::onPlayerPositionChanged() {
     std::stringstream message;
-    message << "POSITION " << world()->player()->x() << " " << world()->player()->y();
+    //message << "POSITION " << world()->player()->x() << " " << world()->player()->y();
 
     emit sendToAll(message.str().c_str());
 }
 
 Player* Client::loadPlayer(QString data) {
-    QQmlComponent* component = new QQmlComponent(qmlEngine(this), this);
+    /*QQmlComponent* component = new QQmlComponent(qmlEngine(this), this);
     component->setData(data.toLocal8Bit(), QUrl("qrc:/qml/Entities/"));
 
     QObject* object = component->beginCreate(QQmlEngine::contextForObject(this));
@@ -160,7 +160,7 @@ Player* Client::loadPlayer(QString data) {
     player->setParentItem(world());
     player->setBodyType(QBody::Static);
 
-    return player;
+    return player;*/
 }
 
 void Client::sendNewPlayerInfo(Address address,

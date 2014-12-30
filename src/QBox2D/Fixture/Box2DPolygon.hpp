@@ -5,8 +5,6 @@
 
 class Box2DPolygon: public Fixture {
     private:
-        Q_OBJECT
-
         friend class Box2DChain;
 
         std::vector<QPointF> m_vertices;
@@ -19,7 +17,7 @@ class Box2DPolygon: public Fixture {
         QSGNode* createNode() const;
 
     public:
-        explicit Box2DPolygon(QQuickItem* = nullptr);
+        explicit Box2DPolygon(Item* = nullptr);
 
         inline std::vector<QPointF> vertices() const { return m_vertices; }
         void setVertices(const std::vector<QPointF>& pts);

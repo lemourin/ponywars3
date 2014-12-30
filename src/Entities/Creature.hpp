@@ -5,10 +5,8 @@
 
 class Creature: public QBody {
     private:
-        Q_OBJECT
-
-        Q_PROPERTY(int health READ health
-                   WRITE setHealth NOTIFY healthChanged)
+//        Q_PROPERTY(int health READ health
+//                   WRITE setHealth NOTIFY healthChanged)
 
         struct RayCastCallback: public b2RayCastCallback {
             QBody* m_hit;
@@ -70,8 +68,8 @@ class Creature: public QBody {
         Q_INVOKABLE virtual void jumpRequested();
         Q_INVOKABLE virtual void punchRequested();
 
-    signals:
-        void healthChanged();
+    //signals:
+    //    void healthChanged();
 };
 
 #endif // CREATURE_HPP

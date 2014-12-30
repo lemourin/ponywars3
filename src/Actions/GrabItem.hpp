@@ -26,8 +26,6 @@ class ArrowNode: public QSGGeometryNode {
 
 class GrabItem: public MapEditorAction {
     private:
-        Q_OBJECT
-
         QMouseJoint* m_mouseJoint;
         QBody* m_grabbedBody;
 

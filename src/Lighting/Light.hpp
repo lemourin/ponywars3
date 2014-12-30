@@ -10,8 +10,6 @@ class QSGTexture;
 
 class Light: public QBody {
     private:
-        Q_OBJECT
-
         QVector3D m_attenuation;
         qreal m_radius;
         qreal m_renderFraction;

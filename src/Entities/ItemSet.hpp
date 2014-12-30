@@ -4,7 +4,6 @@
 
 class ItemSet: public SceneGraph::Item {
     private:
-        Q_OBJECT
 
     public:
         ItemSet(SceneGraph::Item* = nullptr);

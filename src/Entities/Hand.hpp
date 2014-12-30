@@ -7,13 +7,11 @@ class Player;
 
 class Hand: public SceneGraph::Item {
     private:
-        Q_OBJECT
-
         friend class Weapon;
         friend class Player;
 
-        Q_PROPERTY(Weapon* grabbedWeapon READ grabbedWeapon
-                   NOTIFY grabbedWeaponChanged)
+//        Q_PROPERTY(Weapon* grabbedWeapon READ grabbedWeapon
+//                   NOTIFY grabbedWeaponChanged)
 
         Player* m_owner;
         Weapon* m_grabbedWeapon;
@@ -39,8 +37,8 @@ class Hand: public SceneGraph::Item {
         void grabWeapon(Weapon* item);
         Q_INVOKABLE void dropWeapon();
 
-    signals:
-        void grabbedWeaponChanged();
+    //signals:
+    //    void grabbedWeaponChanged();
 
 };
 #endif // HAND_HPP

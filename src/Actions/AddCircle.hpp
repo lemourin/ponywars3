@@ -7,8 +7,6 @@ class AddBody;
 
 class AddCircle: public AddFixture {
     private:
-        Q_OBJECT
-
         enum StateChange {
             PositionSet = 1 << 0,
             RadiusSet = 1 << 1,

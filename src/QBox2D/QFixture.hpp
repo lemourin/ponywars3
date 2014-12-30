@@ -31,7 +31,7 @@ class QFixture: public SceneGraph::Item {
 
         virtual void initialize();
         virtual b2Shape* createShape() const = 0;
-        virtual QSGNode* createNode() const = 0;
+        //virtual QSGNode* createNode() const = 0;
 
         virtual inline void bodyPositionChanged() { }
         virtual inline void bodyRotationChanged() { }
@@ -65,11 +65,8 @@ class QFixture: public SceneGraph::Item {
 
         virtual std::vector<QPointF> vertices() const = 0;
 
-        inline qreal x() const { return m_position.x(); }
-        inline void setX(qreal t) { m_position.rx() = t; }
-
-        inline qreal y() const { return m_position.y(); }
-        inline void setY(qreal t) { m_position.ry() = t; }
+        inline QPointF position() const { return m_position; }
+        inline void setPosition(QPointF p) { m_position = p; }
 
         inline const b2Fixture* fixture() const { return m_fixture; }
         inline QBody* body() const { return m_body; }

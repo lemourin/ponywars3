@@ -27,8 +27,6 @@ class ShadowNode: public QSGGeometryNode {
 
 class DynamicLight: public Light {
     private:
-        Q_OBJECT
-
         StaticLight* m_boundLight;
 
         class DynamicNode: public Light::Node {

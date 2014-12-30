@@ -2,7 +2,7 @@
 #include "DisplayItem.hpp"
 
 BaseItem::BaseItem(Item* parent):
-    QQuickItem(parent),
+    SceneGraph::Item(parent),
     m_displayItem() {
 }
 
@@ -13,7 +13,7 @@ BaseItem::~BaseItem() {
 
 void BaseItem::geometryChanged(const QRectF& newGeometry,
                                const QRectF& oldGeometry) {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
     if (newGeometry.topLeft() != oldGeometry.topLeft() && displayItem())
         displayItem()->focusedObjectPositionChanged();

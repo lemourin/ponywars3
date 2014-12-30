@@ -6,14 +6,12 @@
 
 class Box2DBox: public Fixture {
     private:
-        Q_OBJECT
-
         TexturedRectangle m_texturedRectangle;
         TexturedRectangle m_normalMapRectangle;
 
     protected:
         b2Shape* createShape() const;
-        QSGNode* createNode() const;
+        //QSGNode* createNode() const;
 
     public:
         explicit Box2DBox(SceneGraph::Item* = nullptr);
@@ -23,6 +21,7 @@ class Box2DBox: public Fixture {
 
         std::vector<QPointF> vertices() const;
 
+        inline QSizeF size() const { return QSizeF(); }
         void setSize(QSizeF);
 
         bool read(const QJsonObject &);

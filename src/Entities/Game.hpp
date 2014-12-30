@@ -7,8 +7,6 @@
 
 class Game: public DisplayItemFrame {
     private:
-        Q_OBJECT
-
         ViewWorld m_viewWorld;
         LightSystem m_lightSystem;
 

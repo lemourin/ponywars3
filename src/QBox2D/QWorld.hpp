@@ -28,8 +28,6 @@ class QDestructionListener: public b2DestructionListener {
 
 class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
     private:
-        Q_OBJECT
-
         friend class QBody;
         friend class QFixture;
 

@@ -7,9 +7,7 @@ class QMouseEvent;
 
 class BodyEdit: public MapEditorAction {
     private:
-        Q_OBJECT
-
-        Q_PROPERTY(QBody* body READ body NOTIFY bodyChanged)
+        /*Q_PROPERTY(QBody* body READ body NOTIFY bodyChanged)
         Q_PROPERTY(qreal density READ density
                    WRITE setDensity NOTIFY densityChanged)
         Q_PROPERTY(qreal friction READ friction
@@ -23,7 +21,7 @@ class BodyEdit: public MapEditorAction {
         Q_PROPERTY(qreal angularDamping READ angularDamping
                    WRITE setAngularDamping NOTIFY angularDampingChanged)
         Q_PROPERTY(bool dynamic READ dynamic
-                   WRITE setDynamic NOTIFY dynamicChanged)
+                   WRITE setDynamic NOTIFY dynamicChanged)*/
 
         QBody* m_body;
         qreal m_density;
@@ -68,7 +66,7 @@ class BodyEdit: public MapEditorAction {
 
         Q_INVOKABLE void applyChanges() const;
 
-    signals:
+    //signals:
         void bodyChanged();
         void densityChanged();
         void frictionChanged();

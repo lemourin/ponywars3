@@ -1,8 +1,8 @@
 #ifndef SPRITESEQUENCE_HPP
 #define SPRITESEQUENCE_HPP
 
-#include <QQuickItem>
 #include <unordered_map>
+#include "SceneGraph/Item.hpp"
 #include "Graphics/TexturedRectangle.hpp"
 
 struct SpriteData {
@@ -17,7 +17,7 @@ struct SpriteData {
     qreal m_frameHeight;
 };
 
-class SpriteSequence: public QQuickItem {
+class SpriteSequence: public SceneGraph::Item {
     private:
         TexturedRectangle m_texture;
         std::unordered_map< std::string, SpriteData > m_data;
@@ -32,11 +32,11 @@ class SpriteSequence: public QQuickItem {
         void timerEvent(QTimerEvent *);
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
-        void itemChange(ItemChange, const ItemChangeData &);
+        //void itemChange(ItemChange, const ItemChangeData &);
 
 
     public:
-        explicit SpriteSequence(QQuickItem* = nullptr);
+        explicit SpriteSequence(SceneGraph::Item* = nullptr);
         void reset();
 
         void addSprite(const SpriteData& data);

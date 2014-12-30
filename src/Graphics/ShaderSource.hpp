@@ -3,6 +3,7 @@
 
 #include "SceneGraph/Item.hpp"
 #include <QQmlComponent>
+#include <QColor>
 
 class QSGDynamicTexture;
 
@@ -19,8 +20,8 @@ class ShaderSource: public SceneGraph::Item {
                 inline QQmlComponent* component() { return &m_component; }
         };
 
-        QQuickItem* m_item;
-        QQuickItem* m_sourceItem;
+        //QQuickItem* m_item;
+        //QQuickItem* m_sourceItem;
         QRectF m_sourceRect;
         QSize m_textureSize;
         QColor m_background;
@@ -36,8 +37,8 @@ class ShaderSource: public SceneGraph::Item {
     public:
         explicit ShaderSource(SceneGraph::Item *parent = nullptr);
 
-        inline QQuickItem* shaderSourceItem() const { return m_item; }
-        inline QQuickItem* sourceItem() const { return m_sourceItem; }
+        //inline QQuickItem* shaderSourceItem() const { return m_item; }
+        //inline QQuickItem* sourceItem() const { return m_sourceItem; }
 
         inline QRectF sourceRect() const { return m_sourceRect; }
         void setSourceRect(QRectF);

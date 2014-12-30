@@ -113,7 +113,7 @@ void Window::registerTypes() {
                                             1, 0,
                                             "Environment",
                                             "Uncreatable type!");
-    qmlRegisterType<MapEditor>();
+    /*qmlRegisterType<MapEditor>();
     qmlRegisterType<BodyEdit>();
     qmlRegisterType<AddBody>();
     qmlRegisterType<AddPolygon>();
@@ -129,7 +129,7 @@ void Window::registerTypes() {
     qmlRegisterType<Player>();
     qmlRegisterType<Hand>();
     qmlRegisterType<QBody>();
-    qmlRegisterType<Weapon>();
+    qmlRegisterType<Weapon>();*/
 
     Utility::registerType<Box2DBox>("Box2DBox");
     Utility::registerType<Box2DChain>("Box2DChain");

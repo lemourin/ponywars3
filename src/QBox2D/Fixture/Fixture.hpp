@@ -24,7 +24,7 @@ class Fixture: public QFixture {
         void bodyRotationChanged();
 
     public:
-        explicit Fixture(QQuickItem* = nullptr);
+        explicit Fixture(Item* = nullptr);
         ~Fixture();
 
         QString textureSource() const;

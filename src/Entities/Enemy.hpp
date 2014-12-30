@@ -6,8 +6,6 @@
 
 class Enemy: public Pony {
     private:
-        Q_OBJECT
-
         QBody* m_target;
 
     protected:

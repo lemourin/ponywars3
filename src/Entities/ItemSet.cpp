@@ -8,7 +8,7 @@
 #include <QJsonDocument>
 
 ItemSet::ItemSet(Item* parent):
-    QQuickItem(parent) {
+    SceneGraph::Item(parent) {
 }
 
 void ItemSet::dump(QString /*fileName*/) {
@@ -36,13 +36,13 @@ void ItemSet::load(QString fileName) {
 
 void ItemSet::write(QJsonObject& obj) const {
     QJsonArray array;
-    for (QQuickItem* item: childItems()) {
+    /*for (QQuickItem* item: childItems()) {
         if (QBody* body = qobject_cast<QBody*>(item)) {
             QJsonObject object;
             if (body->write(object))
                 array.append(object);
         }
-    }
+    }*/
 
     obj["bodies"] = array;
 }
@@ -57,7 +57,6 @@ void ItemSet::read(const QJsonObject& obj) {
         assert(body != nullptr);
 
         body->setParent(this);
-        body->setParentItem(this);
         body->read(obj);
         body->initialize();
     }

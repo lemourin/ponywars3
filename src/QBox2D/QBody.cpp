@@ -235,7 +235,7 @@ bool QBody::read(const QJsonObject& obj) {
 }
 
 bool QBody::write(QJsonObject& obj) const {
-    obj["class"] = QString(metaObject()->className());
+    //obj["class"] = QString(metaObject()->className());
 
     obj["x"] = position().x();
     obj["y"] = position().y();

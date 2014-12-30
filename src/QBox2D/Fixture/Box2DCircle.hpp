@@ -5,8 +5,6 @@
 
 class Box2DCircle: public QFixture {
     private:
-        Q_OBJECT
-
         float m_radius;
 
     protected:

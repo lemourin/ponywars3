@@ -2,12 +2,12 @@
 #include "Utility/Window.hpp"
 #include "Geometry/Primitives.hpp"
 
-TexturedPolygon::TexturedPolygon(QQuickItem *parent):
+TexturedPolygon::TexturedPolygon(SceneGraph::Item *parent):
     TexturedItem(parent),
     m_textureScale(1, 1) {
 }
 
-QSGNode* TexturedPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
+/*QSGNode* TexturedPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     Node* node = static_cast<Node*>(old);
 
     if (!node)
@@ -17,7 +17,7 @@ QSGNode* TexturedPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     node->setTexture(texture());
 
     return node;
-}
+}*/
 
 
 TexturedPolygon::Node::Node(const std::vector<QPointF>& pts,

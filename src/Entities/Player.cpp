@@ -97,7 +97,7 @@ World* Player::world() const {
 
 void Player::onHealthChanged() {
     if (health() <= 0) {
-        emit world()->gameOver();
+        //emit world()->gameOver();
 
         enqueueFunction([this]() {
             world()->world()->ClearForces();

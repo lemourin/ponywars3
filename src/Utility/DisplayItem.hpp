@@ -5,6 +5,8 @@
 
 class BaseItem;
 class DisplayItem;
+class QWheelEvent;
+class QHoverEvent;
 
 class DisplayItemFrame: public SceneGraph::Item {
     private:
@@ -38,6 +40,8 @@ class DisplayItem: public SceneGraph::Item {
         QPointF m_startPoint;
         qreal m_distance;
 
+        qreal m_scale;
+
         void focusedObjectPositionChanged();
 
         void returnLookAtToBounds();
@@ -64,6 +68,7 @@ class DisplayItem: public SceneGraph::Item {
         explicit DisplayItem(DisplayItemFrame *parent = nullptr);
         ~DisplayItem();
 
+        inline qreal scale() const { return m_scale; }
         void setScale(qreal);
 
         inline QRectF visibleArea() const { return m_visibleArea; }

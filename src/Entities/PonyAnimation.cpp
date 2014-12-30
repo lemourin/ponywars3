@@ -70,7 +70,7 @@ void PonyAnimation::updateState(unsigned added, unsigned /*removed*/) {
     if (added & Creature::TurnedLeft) {
         QMatrix4x4 matrix;
         matrix.scale(-1, 1);
-        matrix.translate(-width(), 0);
+        //matrix.translate(-width(), 0);
         setMatrix(matrix);
     }
     else if (added & Creature::TurnedRight) {

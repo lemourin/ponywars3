@@ -6,8 +6,6 @@
 
 class AddChain: public MapEditorAction {
     private:
-        Q_OBJECT
-
         class Node: public QSGGeometryNode {
             public:
                 Node();

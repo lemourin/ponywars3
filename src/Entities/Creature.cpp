@@ -59,7 +59,7 @@ void Creature::setHealth(int hp) {
     if (m_health == hp)
         return;
     m_health = hp;
-    emit healthChanged();
+    //emit healthChanged();
 
     onHealthChanged();
 }

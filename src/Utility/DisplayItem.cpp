@@ -3,17 +3,18 @@
 #include <QQuickWindow>
 
 DisplayItem::DisplayItem(DisplayItemFrame* parent):
-    QQuickItem(parent),
+    SceneGraph::Item(parent),
     m_frame(parent),
     m_focusedObject(),
     m_flickable(),
-    m_distance() {
+    m_distance(),
+    m_scale(1) {
 
-    setFlag(ItemIsFocusScope);
-    setTransformOrigin(TopLeft);
+    //setFlag(ItemIsFocusScope);
+    //setTransformOrigin(TopLeft);
 
-    setAcceptedMouseButtons(Qt::LeftButton);
-    setAcceptHoverEvents(true);
+    //setAcceptedMouseButtons(Qt::LeftButton);
+    //setAcceptHoverEvents(true);
 
     m_frame->m_displayItem = this;
 }
@@ -26,10 +27,10 @@ DisplayItem::~DisplayItem() {
 }
 
 void DisplayItem::setScale(qreal f) {
-    if (f != scale()) {
+    /*if (f != scale()) {
         QQuickItem::setScale(f);
         updateVisibleArea();
-    }
+    }*/
 }
 
 void DisplayItem::setVisibleArea(QRectF rect) {
@@ -80,39 +81,39 @@ void DisplayItem::updateVisibleArea() {
     returnScaleToBounds();
     returnLookAtToBounds();
 
-    QPointF size(m_frame->width(), m_frame->height());
-    setPosition(-scale()*effectiveLookAt()+0.5*size);
+    //QPointF size(m_frame->width(), m_frame->height());
+    //setPosition(-scale()*effectiveLookAt()+0.5*size);
 
-    setVisibleArea(mapRectFromItem(m_frame, QRectF(QPointF(), size)));
+    //setVisibleArea(mapRectFromItem(m_frame, QRectF(QPointF(), size)));
 }
 
 void DisplayItem::focusedObjectPositionChanged() {
-    setLookAt(focusedObject()->position());
+    //setLookAt(focusedObject()->position());
 }
 
 void DisplayItem::returnLookAtToBounds() {
-    QPointF p = lookAt();
+    /*QPointF p = lookAt();
     p.rx() = std::max(p.x(), m_frame->width()/(2*scale()));
     p.rx() = std::min(p.x(), width()-m_frame->width()/(2*scale()));
     p.ry() = std::max(p.y(), m_frame->height()/(2*scale()));
     p.ry() = std::min(p.y(), height()-m_frame->height()/(2*scale()));
 
-    setEffectiveLookAt(p);
+    setEffectiveLookAt(p);*/
 }
 
 void DisplayItem::returnScaleToBounds() {
-    if (!qIsNull(width()) && !qIsNull(height())) {
+    /*if (!qIsNull(width()) && !qIsNull(height())) {
         qreal aspect = std::max(m_frame->width()/width(),
                                 m_frame->height()/height());
         setScale(std::max(scale(), aspect));
-    }
+    }*/
 }
 
 void DisplayItem::wheelEvent(QWheelEvent* event) {
-    if (event->angleDelta().y() > 0)
+    /*if (event->angleDelta().y() > 0)
         setScale(scale()*1.1);
     else
-        setScale(scale()/1.1);
+        setScale(scale()/1.1);*/
 }
 
 void DisplayItem::mousePressEvent(QMouseEvent* event) {
@@ -185,7 +186,7 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
 void DisplayItem::geometryChanged(const QRectF& newGeometry,
                                   const QRectF& oldGeometry) {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
     updateVisibleArea();
 }
@@ -212,7 +213,7 @@ DisplayItemFrame::~DisplayItemFrame() {
 
 void DisplayItemFrame::geometryChanged(const QRectF& newGeometry,
                                        const QRectF& oldGeometry) {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
     if (m_displayItem)
         m_displayItem->updateVisibleArea();

@@ -12,11 +12,11 @@ TexturedRectangle::TexturedRectangle(SceneGraph::Item* parent):
 void TexturedRectangle::setTextureRect(QRectF rect) {
     m_textureRect = rect;
 
-    if (flags() & ItemHasContents)
-        update();
+    //if (flags() & ItemHasContents)
+    //    update();
 }
 
-QSGNode* TexturedRectangle::updatePaintNode(QSGNode* old,
+/*QSGNode* TexturedRectangle::updatePaintNode(QSGNode* old,
                                             UpdatePaintNodeData*) {
     Node* node = static_cast<Node*>(old);
 
@@ -26,7 +26,7 @@ QSGNode* TexturedRectangle::updatePaintNode(QSGNode* old,
     node->synchronize(this);
 
     return node;
-}
+}*/
 
 TexturedRectangle::Node::Node():
     m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4) {
@@ -56,9 +56,9 @@ void TexturedRectangle::Node::updateMaterial(const TexturedRectangle* item) {
 }
 
 void TexturedRectangle::Node::updateGeometry(const TexturedRectangle* item) {
-    QSGGeometry::updateTexturedRectGeometry(&m_geometry,
+    /*QSGGeometry::updateTexturedRectGeometry(&m_geometry,
                                             item->boundingRect(),
-                                            item->textureRect());
+                                            item->textureRect());*/
     m_geometry.markVertexDataDirty();
     markDirty(DirtyGeometry);
 }

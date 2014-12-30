@@ -12,16 +12,14 @@ class MapEditorAction;
 
 class MapEditor: public Action {
     private:
-        Q_OBJECT
-
         friend class MapEditorAction;
 
-        Q_PROPERTY(AddChain* addChain READ addChain CONSTANT)
+        /*Q_PROPERTY(AddChain* addChain READ addChain CONSTANT)
         Q_PROPERTY(AddBody* addBody READ addBody CONSTANT)
         Q_PROPERTY(GrabItem* grabItem READ grabItem CONSTANT)
         Q_PROPERTY(DeleteItem* deleteItem READ deleteItem CONSTANT)
         Q_PROPERTY(BodyEdit* bodyEdit READ bodyEdit CONSTANT)
-        Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)
+        Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)*/
 
         AddChain m_addChain;
         AddBody m_addBody;
@@ -54,7 +52,7 @@ class MapEditor: public Action {
 
         inline QString currentAction() const { return m_currentAction; }
 
-    signals:
+    //signals:
         void currentActionChanged();
 };
 

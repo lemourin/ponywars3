@@ -26,7 +26,7 @@ void Weapon::setBulletCount(int count) {
     if (m_bulletCount == count)
         return;
     m_bulletCount = count;
-    emit bulletCountChanged();
+    //emit bulletCountChanged();
 }
 
 void Weapon::setFlip(int f) {

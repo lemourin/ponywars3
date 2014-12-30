@@ -8,10 +8,8 @@ class Hand;
 
 class Weapon: public QBody {
     private:
-        Q_OBJECT
-
-        Q_PROPERTY(int bulletCount READ bulletCount
-                   WRITE setBulletCount NOTIFY bulletCountChanged)
+//        Q_PROPERTY(int bulletCount READ bulletCount
+//                   WRITE setBulletCount NOTIFY bulletCountChanged)
 
         QPointF m_shootPoint;
         int m_bulletCount;
@@ -56,8 +54,8 @@ class Weapon: public QBody {
         bool write(QJsonObject &) const;
 
 
-    signals:
-        void bulletCountChanged();
+//    signals:
+//        void bulletCountChanged();
 };
 
 

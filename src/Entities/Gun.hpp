@@ -7,9 +7,6 @@
 class Box2DBox;
 
 class Gun: public Weapon {
-    private:
-        Q_OBJECT
-
     public:
         Gun(Item* = nullptr);
 
@@ -18,9 +15,6 @@ class Gun: public Weapon {
 };
 
 class Bullet: public QBody {
-    private:
-        Q_OBJECT
-
     protected:
         void beginContact(QFixture* other, b2Contact *);
 

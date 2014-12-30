@@ -16,10 +16,10 @@ LightBlender::LightBlender():
 }
 
 void LightBlender::updateGeometry(LightSystem* item) {
-    QSGGeometry::updateTexturedRectGeometry(&m_geometry,
+    /*QSGGeometry::updateTexturedRectGeometry(&m_geometry,
                                             item->boundingRect(),
                                             QRectF(0, 0, 1, 1));
-    markDirty(DirtyGeometry);
+    markDirty(DirtyGeometry);*/
 }
 
 void LightBlender::preprocess() {

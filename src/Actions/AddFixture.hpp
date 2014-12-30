@@ -7,8 +7,6 @@ class AddBody;
 
 class AddFixture: public Action {
     private:
-        Q_OBJECT
-
         AddBody* m_addBody;
 
     protected:

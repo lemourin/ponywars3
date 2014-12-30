@@ -12,7 +12,7 @@ Game::Game(Item* parent):
     m_lightSystem.initialize();
 
     load(":/json/map00.json");
-    setClip(true);
+    //setClip(true);
 }
 
 bool Game::read(const QJsonObject& obj) {
@@ -38,7 +38,7 @@ void Game::geometryChanged(const QRectF& newGeometry,
                            const QRectF& oldGeometry) {
     DisplayItemFrame::geometryChanged(newGeometry, oldGeometry);
 
-    m_lightSystem.setSize(newGeometry.size());
+    //m_lightSystem.setSize(newGeometry.size());
 
 #ifdef Q_OS_ANDROID
     const QSize maxSize(800, 600);
@@ -46,9 +46,9 @@ void Game::geometryChanged(const QRectF& newGeometry,
     const QSize maxSize(1920, 1080);
 #endif
 
-    QSize size(std::min(int(width()), maxSize.width()),
+    /*QSize size(std::min(int(width()), maxSize.width()),
                std::min(int(height()), maxSize.height()));
-    m_lightSystem.setResolution(size);
+    m_lightSystem.setResolution(size);*/
 
 }
 

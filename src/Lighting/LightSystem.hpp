@@ -16,15 +16,13 @@ class Game;
 
 class LightSystem: public SceneGraph::Item {
     private:
-        Q_OBJECT
-
         friend class StaticLight;
         friend class DynamicLight;
         friend class World;
         friend class ViewWorld;
 
-        Q_PROPERTY(World* world READ world CONSTANT)
-        Q_PROPERTY(QQuickItem* normalMap READ normalMapItem CONSTANT)
+//        Q_PROPERTY(World* world READ world CONSTANT)
+//        Q_PROPERTY(QQuickItem* normalMap READ normalMapItem CONSTANT)
 
         Game* m_game;
         QSize m_resolution;
@@ -67,7 +65,7 @@ class LightSystem: public SceneGraph::Item {
         inline QSize resolution() const { return m_resolution; }
         void setResolution(QSize s);
 
-        inline QQuickItem* normalMapItem() const { return m_normalMap.shaderSourceItem(); }
+        //inline QQuickItem* normalMapItem() const { return m_normalMap.shaderSourceItem(); }
 
         inline ShaderSource* normalMap() { return &m_normalMap; }
         inline ShaderSource* lightTexture() { return &m_lightTexture; }

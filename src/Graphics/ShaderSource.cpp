@@ -6,12 +6,12 @@
 #define QML(code) #code
 
 ShaderSource::ShaderSource(Item* parent):
-    QQuickItem(parent),
-    m_item(static_cast<QQuickItem*>(StaticData::instance()->component()->create())),
-    m_sourceItem(m_item->property("sourceItem").value<QQuickItem*>()),
+    SceneGraph::Item(parent),
+    /*m_item(static_cast<QQuickItem*>(StaticData::instance()->component()->create())),
+    m_sourceItem(m_item->property("sourceItem").value<QQuickItem*>()),*/
     m_background(Qt::white) {
 
-    shaderSourceItem()->setParent(this);
+    /*shaderSourceItem()->setParent(this);
     shaderSourceItem()->setParentItem(this);
 
     int srcRect = m_item->metaObject()->indexOfProperty("sourceRect");
@@ -24,36 +24,36 @@ ShaderSource::ShaderSource(Item* parent):
     m_backgroundProperty = sourceItem()->metaObject()->property(bgColor);
 
     shaderSourceItem()->setProperty("hideSource", true);
-    shaderSourceItem()->setVisible(false);
+    shaderSourceItem()->setVisible(false);*/
 
     setBackground(Qt::transparent);
 }
 
 void ShaderSource::setSourceRect(QRectF rect) {
     m_sourceRect = rect;
-    m_sourceRectProperty.write(shaderSourceItem(), m_sourceRect);
+    //m_sourceRectProperty.write(shaderSourceItem(), m_sourceRect);
 }
 
 void ShaderSource::setTextureSize(QSize size) {
     m_textureSize = size;
-    m_textureSizeProperty.write(shaderSourceItem(), m_textureSize);
+    //m_textureSizeProperty.write(shaderSourceItem(), m_textureSize);
 }
 
 void ShaderSource::setBackground(QColor color) {
     m_background = color;
-    m_backgroundProperty.write(sourceItem(), m_background);
+    //m_backgroundProperty.write(sourceItem(), m_background);
 }
 
 QSGDynamicTexture* ShaderSource::texture() const {
-    QSGTexture* t = shaderSourceItem()->textureProvider()->texture();
-    return static_cast<QSGDynamicTexture*>(t);
+    //QSGTexture* t = shaderSourceItem()->textureProvider()->texture();
+    //return static_cast<QSGDynamicTexture*>(t);
 }
 
 void ShaderSource::geometryChanged(const QRectF& newGeometry,
                                    const QRectF& oldGeometry) {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
-    shaderSourceItem()->setPosition(newGeometry.topLeft());
-    shaderSourceItem()->setSize(newGeometry.size());
+    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    //shaderSourceItem()->setPosition(newGeometry.topLeft());
+    //shaderSourceItem()->setSize(newGeometry.size());
 }
 
 ShaderSource::StaticData::StaticData():

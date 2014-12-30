@@ -6,8 +6,6 @@ class AddBody;
 
 class AddRectangle: public AddFixture {
     private:
-        Q_OBJECT
-
         enum State {
             SetFirst = 1 << 0,
             SetSecond = 1 << 1,

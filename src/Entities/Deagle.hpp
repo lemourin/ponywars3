@@ -6,7 +6,6 @@
 
 class Deagle: public Weapon {
     private:
-        Q_OBJECT
     public:
         Deagle(SceneGraph::Item* = nullptr);
 

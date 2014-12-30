@@ -1,11 +1,11 @@
 #ifndef ENLIGHTEDITEMS_HPP
 #define ENLIGHTEDITEMS_HPP
 
-#include <QQuickItem>
 #include <QSGNode>
 #include <unordered_map>
 #include "LightMaterial.hpp"
 #include "Utility/Utility.hpp"
+#include "SceneGraph/Item.hpp"
 
 class LightSystem;
 class QFixture;
@@ -28,7 +28,7 @@ class EnlightedNode: public QSGTransformNode {
         void update(QFixture*, Light*);
 };
 
-class EnlightedItems: public QQuickItem {
+class EnlightedItems: public SceneGraph::Item {
     private:        
         LightSystem* m_lightSystem;
         World* m_world;
@@ -45,10 +45,10 @@ class EnlightedItems: public QQuickItem {
                 QSGNode* getEnlightedNode(QFixture* fixture, Light* light);
         };
 
-        QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
+        //QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
 
     public:
-        explicit EnlightedItems(QQuickItem* = nullptr);
+        explicit EnlightedItems(SceneGraph::Item* = nullptr);
 
         inline LightSystem* lightSystem() const { return m_lightSystem; }
         inline void setLightSystem(LightSystem* l) { m_lightSystem = l; }

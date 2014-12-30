@@ -10,7 +10,6 @@ class QSGTexture;
 class TexturedItem: public SceneGraph::Item {
     private:
         QString m_source;
-        QMatrix4x4 m_matrix;
 
         QSize m_textureSize;
 
@@ -18,14 +17,10 @@ class TexturedItem: public SceneGraph::Item {
         QSGTexture* texture() const;
 
     public:
-        explicit TexturedItem(QQuickItem* = nullptr);
+        explicit TexturedItem(SceneGraph::Item* = nullptr);
 
         inline const QString& source() const { return m_source; }
         void setSource(const QString&);
-
-        inline const QMatrix4x4& matrix() const { return m_matrix; }
-        void setMatrix(const QMatrix4x4&);
-
 };
 
 #endif // TEXTUREDITEM_HPP

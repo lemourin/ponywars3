@@ -8,11 +8,9 @@ class World;
 
 class Player: public Pony {
     private:
-        Q_OBJECT
-
         friend class ViewWorld;
 
-        Q_PROPERTY(Hand* hand READ hand CONSTANT)
+        //Q_PROPERTY(Hand* hand READ hand CONSTANT)
 
         Hand m_hand;
         StaticLight m_light;

@@ -1,11 +1,11 @@
 #include "TexturedConvexPolygon.hpp"
 #include "Utility/Window.hpp"
 
-TexturedConvexPolygon::TexturedConvexPolygon(QQuickItem *parent):
+TexturedConvexPolygon::TexturedConvexPolygon(SceneGraph::Item *parent):
     TexturedPolygon(parent) {
 }
 
-QSGNode* TexturedConvexPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
+/*QSGNode* TexturedConvexPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     Node* node = static_cast<Node*>(old);
 
     if (!node) {
@@ -17,7 +17,7 @@ QSGNode* TexturedConvexPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeDat
     node->setTexture(texture());
 
     return node;
-}
+}*/
 
 TexturedConvexPolygon::Node::Node(const std::vector<QPointF>& pts,
                                   QVector2D scale):

@@ -1,7 +1,7 @@
 #include "Box2DChain.hpp"
 #include "Geometry/Primitives.hpp"
 
-Box2DChain::Box2DChain(QQuickItem* parent): Box2DPolygon(parent) {
+Box2DChain::Box2DChain(SceneGraph::Item* parent): Box2DPolygon(parent) {
 }
 
 b2Shape* Box2DChain::createShape() const {

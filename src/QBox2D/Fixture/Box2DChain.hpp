@@ -10,7 +10,7 @@ class Box2DChain: public Box2DPolygon {
         QSGNode* createNode() const;
 
     public:
-        explicit Box2DChain(QQuickItem* = nullptr);
+        explicit Box2DChain(Item* = nullptr);
 
 };
 

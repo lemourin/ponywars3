@@ -7,14 +7,12 @@
 
 class AddBody: public MapEditorAction {
     private:
-        Q_OBJECT
-
         friend class AddFixture;
 
-        Q_PROPERTY(AddPolygon* addPolygon READ addPolygon CONSTANT)
+        /*Q_PROPERTY(AddPolygon* addPolygon READ addPolygon CONSTANT)
         Q_PROPERTY(AddCircle* addCircle READ addCircle CONSTANT)
         Q_PROPERTY(AddRectangle* addRectangle READ addRectangle CONSTANT)
-        Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)
+        Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)*/
 
         AddPolygon m_addPolygon;
         AddCircle m_addCircle;
@@ -43,8 +41,8 @@ class AddBody: public MapEditorAction {
         inline QString currentAction() const { return m_currentAction; }
 
 
-    signals:
-        void currentActionChanged();
+    //signals:
+    //    void currentActionChanged();
 };
 
 #endif // ADDBODY_HPP

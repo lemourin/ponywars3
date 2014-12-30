@@ -3,7 +3,7 @@
 #include "Lighting/LightSystem.hpp"
 #include <QJsonObject>
 
-Fixture::Fixture(QQuickItem *parent):
+Fixture::Fixture(SceneGraph::Item *parent):
     QFixture(parent),
     m_texture(),
     m_normalMap() {
@@ -15,25 +15,27 @@ Fixture::~Fixture() {
 }
 
 void Fixture::updatePosition() {
-    if (normalMap() && body())
-        normalMap()->setPosition(body()->position()+position());
+    if (normalMap() && body()) {
+        QPointF p = body()->position()+position();
+        normalMap()->matrix().translate(p.x(), p.y());
+    }
 }
 
 void Fixture::updateRotation() {
-    if (normalMap() && body())
-        normalMap()->setRotation(body()->rotation());
+    //if (normalMap() && body())
+    //    normalMap()->setRotation(body()->rotation());
 }
 
 void Fixture::updateSize() {
-    if (texture())
-        texture()->setSize(QSizeF(width(), height()));
-    if (normalMap())
-        normalMap()->setSize(QSizeF(width(), height()));
+//    if (texture())
+//        texture()->setSize(QSizeF(width(), height()));
+//    if (normalMap())
+//        normalMap()->setSize(QSizeF(width(), height()));
 }
 
 void Fixture::updateVisibility() {
     if (normalMap())
-        normalMap()->setVisible(isVisible());
+        normalMap()->setVisible(visible());
 }
 
 void Fixture::initialize() {
@@ -43,8 +45,7 @@ void Fixture::initialize() {
         World* w = static_cast<World*>(body()->world());
 
         assert(w->lightSystem());
-        normalMap()->setParentItem(w->lightSystem()->normalMap()->sourceItem());
-        normalMap()->setTransformOrigin(QQuickItem::TopLeft);
+        //normalMap()->setParent(w->lightSystem()->normalMap()->sourceItem());
     }
 
     updatePosition();
@@ -55,18 +56,18 @@ void Fixture::initialize() {
 
 void Fixture::geometryChanged(const QRectF& newGeometry,
                               const QRectF& oldGeometry) {
-    QFixture::geometryChanged(newGeometry, oldGeometry);
+    //QFixture::geometryChanged(newGeometry, oldGeometry);
 
     updatePosition();
     updateSize();
 }
 
-void Fixture::itemChange(ItemChange change, const ItemChangeData& data) {
+/*void Fixture::itemChange(ItemChange change, const ItemChangeData& data) {
     QFixture::itemChange(change, data);
 
     if (change == ItemVisibleHasChanged)
         updateVisibility();
-}
+}*/
 
 void Fixture::bodyPositionChanged() {
     updatePosition();

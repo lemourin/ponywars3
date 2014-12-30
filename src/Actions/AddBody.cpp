@@ -40,7 +40,7 @@ void AddBody::finishedSubaction(AddFixture* action) {
 }
 
 void AddBody::actionFocusChanged(AddFixture* action) {
-    QString name = action->metaObject()->className();
+    //QString name = action->metaObject()->className();
     /*if (action->hasFocus())
         setCurrentAction(name);
     else if (currentAction() == name)
@@ -51,7 +51,7 @@ void AddBody::setCurrentAction(QString name) {
     if (m_currentAction == name)
         return;
     m_currentAction = name;
-    emit currentActionChanged();
+    //emit currentActionChanged();
 }
 
 void AddBody::geometryChanged(const QRectF& newGeometry,

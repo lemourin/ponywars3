@@ -18,7 +18,7 @@ void Hand::setGrabbedWeapon(Weapon* weapon) {
     if (m_grabbedWeapon == weapon)
         return;
     m_grabbedWeapon = weapon;
-    emit grabbedWeaponChanged();
+    //emit grabbedWeaponChanged();
 }
 
 void Hand::setHandPosition(QPointF pos) {

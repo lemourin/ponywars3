@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-Box2DPolygon::Box2DPolygon(QQuickItem* parent):
+Box2DPolygon::Box2DPolygon(SceneGraph::Item* parent):
     Fixture(parent),
     m_texture(this),
     m_normalMap(this) {

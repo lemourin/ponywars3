@@ -20,7 +20,7 @@ class TexturedConvexPolygon: public TexturedPolygon {
         //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:
-        explicit TexturedConvexPolygon(QQuickItem* = nullptr);
+        explicit TexturedConvexPolygon(Item* = nullptr);
 
 };
 

@@ -7,8 +7,6 @@
 
 class TexturedPolygon: public TexturedItem {
     private:
-        Q_OBJECT
-
         QVector2D m_textureScale;
         std::vector<QPointF> m_vertices;
 
@@ -29,7 +27,7 @@ class TexturedPolygon: public TexturedItem {
         //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:
-        explicit TexturedPolygon(QQuickItem *parent = nullptr);
+        explicit TexturedPolygon(Item* parent = nullptr);
 
         inline const std::vector<QPointF>& vertices() const { return m_vertices; }
         inline void setVertices(const std::vector<QPointF>& v) { m_vertices = v; }

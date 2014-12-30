@@ -21,8 +21,8 @@ void ViewWorld::initialize() {
 bool ViewWorld::read(const QJsonObject& obj) {
     m_world.read(obj["world"].toObject());
 
-    setWidth(obj["width"].toDouble());
-    setHeight(obj["height"].toDouble());
+    //setWidth(obj["width"].toDouble());
+    //setHeight(obj["height"].toDouble());
     setScale(obj["scale"].toDouble());
 
     return true;
@@ -33,15 +33,16 @@ bool ViewWorld::write(QJsonObject& obj) const {
     m_world.write(world);
     obj["world"] = world;
 
-    obj["width"] = width();
-    obj["height"] = height();
+    //obj["width"] = width();
+    //obj["height"] = height();
     obj["scale"] = scale();
 
     return true;
 }
 
 bool ViewWorld::sendEvent() const {
-    return world() && world()->player() && world()->player()->hasActiveFocus();
+    return false;
+    //return world() && world()->player() && world()->player()->hasActiveFocus();
 }
 
 void ViewWorld::mouseMoved(QPointF p) {
@@ -63,7 +64,7 @@ void ViewWorld::geometryChanged(const QRectF& newGeometry,
                                 const QRectF& oldGeometry) {
     DisplayItem::geometryChanged(newGeometry, oldGeometry);
 
-    m_world.setSize(newGeometry.size());
+    //m_world.setSize(newGeometry.size());
 }
 
 void ViewWorld::visibleAreaChanged() {

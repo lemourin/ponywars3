@@ -85,8 +85,8 @@ void QFixture::setShadowCaster(bool value) {
 }
 
 bool QFixture::write(QJsonObject& obj) const {
-    obj["x"] = x();
-    obj["y"] = y();
+    obj["x"] = position().x();
+    obj["y"] = position().y();
     obj["density"] = density();
     obj["friction"] = friction();
     obj["restitution"] = restitution();
@@ -99,8 +99,7 @@ QFixture* QFixture::next() const {
 }
 
 bool QFixture::read(const QJsonObject& obj) {
-    setX(obj["x"].toDouble());
-    setY(obj["y"].toDouble());
+    setPosition(QPointF(obj["x"].toDouble(), obj["y"].toDouble()));
     setDensity(obj["density"].toDouble());
     setFriction(obj["friction"].toDouble());
     setRestitution(obj["resititution"].toDouble());

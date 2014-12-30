@@ -11,14 +11,14 @@
 #include <QSGFlatColorMaterial>
 #include <QSGDynamicTexture>
 
-EnlightedItems::EnlightedItems(QQuickItem *parent):
-    QQuickItem(parent),
+EnlightedItems::EnlightedItems(Item* parent):
+    SceneGraph::Item(parent),
     m_lightSystem(),
     m_world() {
-    setFlag(ItemHasContents);
+    //setFlag(ItemHasContents);
 }
 
-QSGNode* EnlightedItems::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
+/*QSGNode* EnlightedItems::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     QRectF visibleArea = world()->view()->visibleArea();
 
     Node* node = static_cast<Node*>(old);
@@ -27,7 +27,7 @@ QSGNode* EnlightedItems::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     node->removeAllChildNodes();
 
     for (StaticLight* light: lightSystem()->visibleLights()) {
-        if (!light->isEnabled() || !light->dynamicLight())
+        if (!light->enabled() || !light->dynamicLight())
             continue;
         QRectF lightRect = light->mapRectToScene(light->boundingRect());
         QRectF rect = visibleArea.intersected(lightRect);
@@ -42,7 +42,7 @@ QSGNode* EnlightedItems::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
     update();
 
     return node;
-}
+}*/
 
 EnlightedNode::EnlightedNode(QFixture* fixture):
     m_geometry(QSGGeometry::defaultAttributes_Point2D(),
@@ -68,7 +68,7 @@ void EnlightedNode::update(QFixture* fixture, Light* light) {
 
 void EnlightedNode::updateMaterial(Light* light) {
     m_material.setNormalMap(light->lightSystem()->normalMap()->texture());
-    QVector3D p(light->x(), light->y(), light->z());
+    QVector3D p(light->position().x(), light->position().y(), 0/*light->z()*/);
     m_material.setLightPosition(matrix().inverted()*p);
     m_material.setColor(light->color());
     m_material.setAttenuation(light->attenuation());
@@ -78,8 +78,10 @@ void EnlightedNode::updateMaterial(Light* light) {
 
 void EnlightedNode::updateMatrix(QFixture* fixture) {
     QMatrix4x4 matrix;
-    matrix.translate(fixture->body()->x(), fixture->body()->y());
-    matrix.translate(fixture->x(), fixture->y());
+    matrix.translate(fixture->body()->position().x(),
+                     fixture->body()->position().y());
+    matrix.translate(fixture->position().x(),
+                     fixture->position().y());
     matrix.rotate(fixture->body()->rotation(), 0, 0, 1);
     setMatrix(matrix);
 

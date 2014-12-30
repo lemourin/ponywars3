@@ -28,10 +28,8 @@ StaticLight::~StaticLight() {
 }
 
 void StaticLight::initialize() {
-    m_fixture.setX(-radius());
-    m_fixture.setY(-radius());
-    m_fixture.setWidth(2*radius());
-    m_fixture.setHeight(2*radius());
+    m_fixture.setPosition(QPointF(-radius(), -radius()));
+    m_fixture.setSize(QSizeF(2*radius(), 2*radius()));
 
     lightSystem()->addLight(this);
 
@@ -65,10 +63,10 @@ void StaticLight::geometryChanged(const QRectF& newGeometry,
     }
 }
 
-void StaticLight::itemChange(ItemChange change, const ItemChangeData& data) {
+/*void StaticLight::itemChange(ItemChange change, const ItemChangeData& data) {
     Light::itemChange(change, data);
 
     if (change == ItemVisibleHasChanged && lightSystem())
         lightSystem()->lightVisibilityChanged(this);
-}
+}*/
 

@@ -32,14 +32,12 @@ class ViewWorld;
 
 class World: public QWorld {
     private:
-        Q_OBJECT
-
         friend class ViewWorld;
 
-        Q_PROPERTY(Player* player READ player WRITE setPlayer NOTIFY playerChanged)
-        Q_PROPERTY(qreal fps READ fps WRITE setFps NOTIFY fpsChanged)
-        Q_PROPERTY(MapEditor* mapEditor READ mapEditor CONSTANT)
-        Q_PROPERTY(bool paused READ paused WRITE setPaused NOTIFY pausedChanged)
+//        Q_PROPERTY(Player* player READ player WRITE setPlayer NOTIFY playerChanged)
+//        Q_PROPERTY(qreal fps READ fps WRITE setFps NOTIFY fpsChanged)
+//        Q_PROPERTY(MapEditor* mapEditor READ mapEditor CONSTANT)
+//        Q_PROPERTY(bool paused READ paused WRITE setPaused NOTIFY pausedChanged)
 
         ViewWorld* m_viewWorld;
 
@@ -82,12 +80,12 @@ class World: public QWorld {
         void read(const QJsonObject&);
         void write(QJsonObject&) const;
 
-    signals:
-        void playerChanged();
-        void fpsChanged();
-        void pausedChanged();
-        void gameOver();
-        void explosion(QPointF pos);
+//    signals:
+//        void playerChanged();
+//        void fpsChanged();
+//        void pausedChanged();
+//        void gameOver();
+//        void explosion(QPointF pos);
 };
 
 #endif // WORLD_HPP

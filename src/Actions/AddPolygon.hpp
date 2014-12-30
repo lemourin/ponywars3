@@ -7,8 +7,6 @@ class AddBody;
 
 class AddPolygon: public AddFixture {
     private:
-        Q_OBJECT
-
         std::vector<QPointF> m_pts;
 
     protected:
