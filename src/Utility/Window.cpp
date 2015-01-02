@@ -55,6 +55,7 @@ void Environment::setFullscreen(bool enable) {
 
 Window::Window(QWindow* parent):
     SceneGraph::Window(parent),
+    m_game(rootItem()),
     m_environment(this) {
 
     rootContext()->setContextProperty("app", &m_environment);
@@ -65,8 +66,6 @@ Window::Window(QWindow* parent):
 
     connect(engine(), &QQmlEngine::quit,
             this, &QQuickView::close);
-
-    m_game.setParent(rootItem());
     //m_game.setZ(-1);
 }
 
@@ -75,7 +74,7 @@ void Window::resizeEvent(QResizeEvent* event) {
 
     QMatrix4x4 matrix;
     //matrix.perspective(45.0, (float)size().width()/size().height(), 0.1, 100);
-    matrix.ortho(0, width(), 0, height(), -1, 1);
+    matrix.ortho(QRectF(QPointF(0, 0), size()));
 
     setProjection(matrix);
 

@@ -10,9 +10,10 @@
 #include <QJsonObject>
 
 Player::Player(Item* parent):
-    Pony(parent),
-    m_hand(this),
-    m_light(this) {
+    Pony(parent)
+    //m_hand(this),
+    //m_light(this)
+{
 }
 
 void Player::mouseMoved(QPointF pos) {
@@ -23,8 +24,8 @@ void Player::mousePressed(QPointF) {
 }
 
 void Player::mouseReleased(QPointF) {
-    if (hand()->grabbedWeapon())
-        return hand()->grabbedWeapon()->shoot();
+    //if (hand()->grabbedWeapon())
+    //    return hand()->grabbedWeapon()->shoot();
 
     /*QPointF pos = mapToItem(world(), hand()->position());
     QBody* body = world()->bodyUnderPoint(pos, [](QBody* body) {
@@ -58,7 +59,7 @@ void Player::keyPressEvent(QKeyEvent* event) {
 }
 
 void Player::keyReleaseEvent(QKeyEvent* event) {
-    if (event->isAutoRepeat()) {
+    /*if (event->isAutoRepeat()) {
         event->ignore();
         return;
     }
@@ -70,7 +71,7 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
     else if (event->key() == Qt::Key_F)
         hand()->dropWeapon();
     else
-        event->ignore();
+        event->ignore(); */
 }
 
 void Player::beginContact(QFixture* other, b2Contact*) {
@@ -85,10 +86,10 @@ void Player::initialize(QWorld* w) {
 
     for (QFixture* f = firstFixture(); f; f = f->next())
         f->setGroupIndex(-1);
-    hand()->setRange(10);
+    //hand()->setRange(10);
 
-    m_light.setLightSystem(world()->lightSystem());
-    m_light.initialize(world());
+    //m_light.setLightSystem(world()->lightSystem());
+    //m_light.initialize(world());
 }
 
 World* Player::world() const {
@@ -103,7 +104,7 @@ void Player::onHealthChanged() {
             world()->world()->ClearForces();
             setHealth(20);
             setTransform({ 450, 600 }, 0);
-            hand()->dropWeapon();
+            //hand()->dropWeapon();
         });
     }
 }
@@ -116,16 +117,16 @@ void Player::geometryChanged(const QRectF& newGeometry,
                              const QRectF& oldGeometry) {
     Pony::geometryChanged(newGeometry, oldGeometry);
 
-    if (newGeometry.topLeft() != oldGeometry.topLeft())
-        m_light.setPosition(position());
-        m_hand.updateGrabbedWeapon();
-
+    if (newGeometry.topLeft() != oldGeometry.topLeft()) {
+        //m_light.setPosition(position());
+        //m_hand.updateGrabbedWeapon();
+    }
 }
 
 bool Player::read(const QJsonObject& obj) {
     Pony::read(obj);
 
-    m_light.read(obj["light"].toObject());
+   // m_light.read(obj["light"].toObject());
 
     return true;
 }
@@ -134,7 +135,7 @@ bool Player::write(QJsonObject& obj) const {
     Pony::write(obj);
 
     QJsonObject light;
-    m_light.write(light);
+    //m_light.write(light);
     obj["light"] = light;
 
     return true;

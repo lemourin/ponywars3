@@ -20,7 +20,9 @@ SceneGraph::Node* TexturedRectangle::synchronize(SceneGraph::Node* old) {
     if (!node)
         node = new Node;
     node->synchronize(this);
-    //qDebug() << "shake" << this;
+    //qDebug() << "shake" << old << node->parent() << this;
+    //qDebug() << "wa" << effectiveMatrix() * QPointF(0, 0);
+    //update();
     return node;
 }
 
@@ -50,14 +52,13 @@ void TexturedRectangle::Node::updateMaterial(const TexturedRectangle* item) {
 }
 
 void TexturedRectangle::Node::updateGeometry(const TexturedRectangle* item) {
-    QRectF prect = item->boundingRect(), trect = item->textureRect();
+    QRectF trect = item->textureRect();
     Vertex* array = m_geometry.vertexData<Vertex>();
 
-    array[0].set(prect.left(), prect.top(), trect.left(), trect.top());
-    array[1].set(prect.right(), prect.top(), trect.right(), trect.top());
-    array[2].set(prect.left(), prect.bottom(), trect.left(), trect.bottom());
-    array[3].set(prect.right(), prect.bottom(), trect.right(), trect.bottom());
-
+    array[0].set(0, 0, trect.left(), trect.top());
+    array[1].set(1, 0, trect.right(), trect.top());
+    array[2].set(0, 1, trect.left(), trect.bottom());
+    array[3].set(1, 1, trect.right(), trect.bottom());
     m_geometry.updateVertexData();
 
     //m_geometry.markVertexDataDirty();

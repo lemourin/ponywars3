@@ -33,6 +33,12 @@ const char* ColorMaterial::ColorShader::fragmentShader() const {
     );
 }
 
+std::vector<std::string> ColorMaterial::ColorShader::attribute() const {
+    return {
+        "position"
+    };
+}
+
 void ColorMaterial::ColorShader::updateState(const Material* m,
                                              const RenderState& state) {
     const ColorMaterial* data = static_cast<const ColorMaterial*>(m);
@@ -52,14 +58,14 @@ void TextureMaterial::TextureShader::initialize() {
 
 const char* TextureMaterial::TextureShader::vertexShader() const {
     return GLSL(
-        attribute vec3 position;
+        attribute vec4 position;
         attribute vec2 tcoord;
         uniform mat4 matrix;
         varying vec2 texcoord;
 
         void main() {
-            texcoord = tcoord;
-            gl_Position = matrix*vec4(position, 1.0);
+            texcoord = tcoord.xy;
+            gl_Position = matrix*position;
         }
     );
 }
@@ -72,7 +78,14 @@ const char* TextureMaterial::TextureShader::fragmentShader() const {
         void main() {
             gl_FragColor = texture2D(texture, texcoord);
         }
-    );
+        );
+}
+
+std::vector<std::string> TextureMaterial::TextureShader::attribute() const {
+    return {
+        "position",
+        "tcoord"
+    };
 }
 
 void TextureMaterial::TextureShader::updateState(const Material* material,
@@ -81,10 +94,9 @@ void TextureMaterial::TextureShader::updateState(const Material* material,
 
     program()->setUniformValue(m_matrix, state.matrix());
 
-    assert(m->m_texture);
-    m->m_texture->bind(0);
+    assert(m->texture());
+    m->texture()->bind(0);
     program()->setUniformValue(m_texture, 0);
-
 }
 
 void VertexColorMaterial::VertexColorShader::initialize() {
@@ -115,6 +127,13 @@ const char* VertexColorMaterial::VertexColorShader::fragmentShader() const {
             gl_FragColor = fcolor;
         }
     );
+}
+
+std::vector<std::string> VertexColorMaterial::VertexColorShader::attribute() const {
+    return {
+        "position",
+        "color"
+    };
 }
 
 void VertexColorMaterial::VertexColorShader::updateState(const Material*,

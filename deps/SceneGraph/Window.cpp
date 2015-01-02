@@ -34,6 +34,11 @@ void Window::setProjection(const QMatrix4x4& m) {
     scheduleSynchronize();
 }
 
+void Window::scheduleSynchronize() {
+    contentItem()->update();
+    update();
+}
+
 QOpenGLTexture* Window::texture(const char* path) {
     return m_renderer->texture(path);
 }
@@ -85,7 +90,6 @@ void Window::scheduleUpdate(Item* item) {
 
 void Window::cancelUpdate(Item* item) {
     if (item->m_state & Item::ScheduledUpdate) {
-        qDebug() << "cancelling";
         auto it = std::find(m_updateItem.begin(), m_updateItem.end(), item);
         if (it != m_updateItem.end())
             m_updateItem.erase(it);

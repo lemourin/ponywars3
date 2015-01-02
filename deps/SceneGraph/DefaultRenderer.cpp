@@ -27,7 +27,7 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node) {
     Geometry* g = node->geometry();
     assert(g);
 
-    g->bind();
+    g->bind(shader->attributeLocation());
     if (g->indexCount())
         glDrawElements(g->drawingMode(), g->indexCount(), g->indexType(), g->indexData());
     else

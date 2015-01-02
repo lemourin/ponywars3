@@ -42,7 +42,7 @@ void Renderer::updateItem(Item* item) {
     }
 
     if (item->visible()) {
-        Node* node = item->synchronize(nullptr);
+        Node* node = item->synchronize(item->m_node);
         if (node != item->m_node) {
             delete item->m_node;
             item->m_node = node;
@@ -92,9 +92,11 @@ void Renderer::destroyNodes(Window* window) {
 
 void Renderer::render(Node* root) {
     RenderState state = m_state;
+    //qDebug() << "drawing" << root;
 
-    if (root->type() == Node::Type::GeometryNode)
+    if (root->type() == Node::Type::GeometryNode) {
         renderGeometryNode(static_cast<GeometryNode*>(root));
+    }
     else if (root->type() == Node::Type::TransformNode) {
         TransformNode* node = static_cast<TransformNode*>(root);
         m_state.setMatrix(state.matrix()*node->matrix());
@@ -107,6 +109,7 @@ void Renderer::render(Node* root) {
 }
 
 void Renderer::render() {
+    //qDebug() << "root = " << m_root;
     render(m_root);
 }
 

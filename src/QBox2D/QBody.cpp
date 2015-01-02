@@ -47,7 +47,7 @@ void QBody::setPosition(QPointF p) {
 
     rmatrix().setToIdentity();
     rmatrix().rotate(rotation(), 1, 0);
-    rmatrix().translate(-position().x(), -position().y());
+    rmatrix().translate(position().x(), position().y());
 
     if (body()) {
         body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
@@ -62,7 +62,7 @@ void QBody::setRotation(qreal r) {
 
     rmatrix().setToIdentity();
     rmatrix().rotate(rotation(), 1, 0);
-    rmatrix().translate(-position().x(), -position().y());
+    rmatrix().translate(position().x(), position().y());
 
     if (body()) {
         body()->SetTransform(body()->GetPosition(), r);
@@ -168,20 +168,14 @@ void QBody::initialize(QWorld* w) {
     if (body())
         return;
 
-    /*if (!world()) {
-        setWorld(Utility::findAncestor<QWorld>(this));
-        assert(world());
-    }*/
-
-    //m_bodyDef.position.Set(position().x(), position().y());
-    //m_bodyDef.angle = rotation()*M_PI/180;
-
     m_world = w;
     m_body = world()->world()->CreateBody(&m_bodyDef);
 
     for (QFixture* f = firstFixture(); f; f = f->next()) {
         f->initialize(this);
     }
+
+    //qDebug() << "hakuren" << effectiveMatrix() * QPointF(0, 0) << this;
 
 }
 
@@ -203,8 +197,6 @@ void QBody::enqueueFunction(std::function<void ()> f) {
 
 bool QBody::read(const QJsonObject& obj) {
     setPosition(QPointF(obj["x"].toDouble(), obj["y"].toDouble()));
-    //setWidth(obj["width"].toDouble());
-    //setHeight(obj["height"].toDouble());
     setRotation(obj["rotation"].toDouble());
     setBodyType(static_cast<BodyType>(obj["bodyType"].toInt()));
     setLinearDamping(obj["linearDamping"].toDouble());
@@ -230,8 +222,6 @@ bool QBody::write(QJsonObject& obj) const {
 
     obj["x"] = position().x();
     obj["y"] = position().y();
-    //obj["width"] = width();
-    //obj["height"] = height();
     obj["rotation"] = rotation();
     obj["bodyType"] = bodyType();
     obj["linearDamping"] = linearDamping();

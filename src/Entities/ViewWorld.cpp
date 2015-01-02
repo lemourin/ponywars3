@@ -58,13 +58,6 @@ void ViewWorld::mouseReleased(QPointF p) {
         world()->player()->mouseReleased(p);
 }
 
-void ViewWorld::geometryChanged(const QRectF& newGeometry,
-                                const QRectF& oldGeometry) {
-    //DisplayItem::geometryChanged(newGeometry, oldGeometry);
-
-    //m_world.setSize(newGeometry.size());
-}
-
 void ViewWorld::visibleAreaChanged() {
     DisplayItem::visibleAreaChanged();
 

@@ -11,6 +11,12 @@ void Shader::initialize() {
 
     program()->link();
 
+    int id = 0;
+    for (const std::string& name: attribute()) {
+        m_attributeLocation[id] = program()->attributeLocation(name.c_str());
+        id++;
+    }
+
     m_initialized = true;
 }
 

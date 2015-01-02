@@ -45,13 +45,6 @@ void SpriteSequence::timerEvent(QTimerEvent* t) {
     }
 }
 
-void SpriteSequence::geometryChanged(const QRectF& newGeometry,
-                                     const QRectF& oldGeometry) {
-    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
-
-    //m_texture.setSize(newGeometry.size());
-}
-
 void SpriteSequence::currentSpriteChanged() {
 }
 

@@ -32,6 +32,8 @@ class ColorMaterial: public Material {
                 const char* vertexShader() const override;
                 const char* fragmentShader() const override;
 
+                std::vector< std::string > attribute() const override;
+
                 void updateState(const Material* m, const RenderState& state);
         };
 
@@ -61,6 +63,8 @@ class TextureMaterial: public Material {
                 const char* vertexShader() const override;
                 const char* fragmentShader() const override;
 
+                std::vector< std::string > attribute() const override;
+
                 void updateState(const Material*, const RenderState &);
         };
 
@@ -88,6 +92,8 @@ class VertexColorMaterial: public Material {
 
                 const char* vertexShader() const override;
                 const char* fragmentShader() const override;
+
+                std::vector< std::string > attribute() const override;
 
                 void updateState(const Material*, const RenderState &);
         };

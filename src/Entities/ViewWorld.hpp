@@ -17,8 +17,6 @@ class ViewWorld: public DisplayItem {
         void mouseMoved(QPointF);
         void mousePressed(QPointF);
         void mouseReleased(QPointF);
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
         void visibleAreaChanged();
 
     public:

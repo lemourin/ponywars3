@@ -16,8 +16,8 @@ Fixture::~Fixture() {
 
 void Fixture::updatePosition() {
     if (normalMap() && body()) {
-        QPointF p = body()->position()+position();
-        normalMap()->rmatrix().translate(p.x(), p.y());
+        //QPointF p = body()->position()+position();
+        //normalMap()->rmatrix().translate(p.x(), p.y());
     }
 }
 

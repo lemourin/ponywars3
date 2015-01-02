@@ -31,13 +31,13 @@ void Geometry::updateVertexData() {
                  vertexData(), GL_STATIC_DRAW);
 }
 
-void Geometry::bind() {
+void Geometry::bind(const int* attributeLocation) {
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
     uint id = 0, offset = 0;
-    for (Attribute attribute: attributes()) {
-        glEnableVertexAttribArray(id);
-        glVertexAttribPointer(id,
+    for (Attribute attribute: Geometry::attribute()) {
+        glEnableVertexAttribArray(attributeLocation[id]);
+        glVertexAttribPointer(attributeLocation[id],
                               attribute.tupleSize,
                               attribute.primitiveType,
                               GL_FALSE, vertexSize(), (void*)(size_t(offset)));

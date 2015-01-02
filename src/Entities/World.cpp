@@ -40,7 +40,7 @@ World::World(ViewWorld* viewWorld):
     m_viewWorld(viewWorld),
     m_player(),
     m_fps(),
-    m_boundary(),
+    //m_boundary(),
     m_itemSet(this),
     m_mapEditor(this) {
 
@@ -112,7 +112,6 @@ void World::setPlayer(Player* player) {
         view()->setFocusedObject(player);
     }
 
-
     //emit playerChanged();
 }
 
@@ -136,7 +135,7 @@ void World::setPaused(bool p) {
 }
 
 void World::read(const QJsonObject& obj) {
-    m_itemSet.read(obj);
+    //m_itemSet.read(obj);
 
     QJsonObject p = obj["player"].toObject();
     Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());

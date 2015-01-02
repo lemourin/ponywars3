@@ -9,7 +9,6 @@
 class TexturedRectangle: public TexturedItem {
     private:
         QRectF m_textureRect;
-        QRectF m_boundingRect;
 
     protected:
         class Node: public SceneGraph::Node {
@@ -41,14 +40,6 @@ class TexturedRectangle: public TexturedItem {
 
         inline QRectF textureRect() const { return m_textureRect; }
         void setTextureRect(QRectF);
-
-        inline QPointF position() const { return m_boundingRect.topLeft(); }
-        inline void setPosition(QPointF p) { m_boundingRect.setTopLeft(p); }
-
-        inline QSizeF size() const { return m_boundingRect.size(); }
-        inline void setSize(QSizeF s) { m_boundingRect.setSize(s); }
-
-        inline QRectF boundingRect() const { return m_boundingRect; }
 
 };
 

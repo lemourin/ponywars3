@@ -43,9 +43,6 @@ class SpriteSequence: public SceneGraph::Item {
 
         const char* currentSprite() const;
         void setCurrentSprite(const char*);
-
-        inline void setMatrix(const QMatrix4x4& m) { m_texture.setMatrix(m); }
-        inline const QMatrix4x4& matrix() const { return m_texture.matrix(); }
 };
 
 #endif // SPRITESEQUENCE_HPP

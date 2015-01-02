@@ -82,7 +82,8 @@ QMatrix4x4 Item::effectiveMatrix() const {
         item = item->parent();
     }
 
-    return window() ? window()->projection() * matrix : matrix;
+    assert(window());
+    return window()->projection() * matrix;
 }
 
 QPointF Item::mapToItem(Item* item, QPointF p) {
@@ -172,7 +173,7 @@ void Item::mouseMoveEvent(QMouseEvent* e) {
 }
 
 void Item::update() {
-    if (window() && visible()) {
+    if (window()) {
         window()->scheduleUpdate(this);
         window()->scheduleSynchronize();
     }

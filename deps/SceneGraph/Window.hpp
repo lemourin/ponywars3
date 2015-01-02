@@ -50,7 +50,7 @@ class Window: public QQuickView {
         inline const QMatrix4x4& projection() const { return m_projection; }
         void setProjection(const QMatrix4x4& m);
 
-        inline void scheduleSynchronize() { contentItem()->update(); }
+        void scheduleSynchronize();
 
         QOpenGLTexture* texture(const char* path);
 };

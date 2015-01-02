@@ -32,9 +32,9 @@ class Geometry: public QOpenGLFunctions {
         virtual ~Geometry();
 
         void updateVertexData();
-        void bind();
+        void bind(const int* attributeLocation);
 
-        inline const std::vector<Attribute>& attributes() const { return m_attribute; }
+        inline const std::vector<Attribute>& attribute() const { return m_attribute; }
 
         inline uint vertexCount() const { return m_vertexCount; }
         inline uint vertexSize() const { return m_vertexSize; }

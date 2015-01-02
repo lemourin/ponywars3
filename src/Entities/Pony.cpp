@@ -12,16 +12,12 @@ void Pony::initialize(QWorld* w) {
     Creature::initialize(w);
 
     m_body.initialize(m_bodySource.c_str());
-    //m_body.setX(-0.5*width());
-    //m_body.setY(-0.5*height());
-    //m_body.setWidth(width());
-    //m_body.setHeight(height());
+    m_body.rmatrix().translate(-0.5*size().width(), -0.5*size().height());
+    m_body.rmatrix().scale(size().width(), size().height());
 
     m_wings.initialize(m_wingsSource.c_str());
-//    m_wings.setX(-0.5*width());
-//    m_wings.setY(-0.5*height());
-//    m_wings.setWidth(width());
-//    m_wings.setHeight(height());
+    m_wings.rmatrix().translate(-0.5*size().width(), -0.5*size().height());
+    m_wings.rmatrix().scale(size().width(), size().height());
 
     setCurrentSprite("standStill");
 }
@@ -42,6 +38,8 @@ void Pony::punchRequested() {
 bool Pony::read(const QJsonObject& obj) {
     Creature::read(obj);
 
+    m_size.setWidth(obj["width"].toDouble());
+    m_size.setHeight(obj["height"].toDouble());
     m_bodySource = obj["bodySource"].toString().toStdString();
     m_wingsSource = obj["wingsSource"].toString().toStdString();
 
@@ -53,6 +51,8 @@ bool Pony::write(QJsonObject& obj) const {
 
     obj["bodySource"] = QString(m_bodySource.c_str());
     obj["wingsSource"] = QString(m_wingsSource.c_str());
+    obj["width"] = m_size.width();
+    obj["height"] = m_size.height();
 
     return true;
 }

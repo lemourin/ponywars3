@@ -1,7 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <QQuickItem>
 #include "Entities/ViewWorld.hpp"
 #include "Lighting/LightSystem.hpp"
 
@@ -9,6 +8,7 @@ class Game: public DisplayItemFrame {
     private:
         ViewWorld m_viewWorld;
         LightSystem m_lightSystem;
+        SceneGraph::Image m_image;
 
     protected:
         void sizeChanged();

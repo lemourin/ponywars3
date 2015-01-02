@@ -8,7 +8,12 @@ DisplayItem::DisplayItem(DisplayItemFrame* parent):
     m_focusedObject(),
     m_flickable(),
     m_distance(),
-    m_scale(1) {
+    m_scale(1),
+    m_image(this) {
+
+    m_image.setSource(":/resources/bricks.jpg");
+    //m_image.rmatrix().translate(500, 500);
+    //m_image.rmatrix().scale(10, 10);
 
     //setFlag(ItemIsFocusScope);
     //setTransformOrigin(TopLeft);
@@ -94,12 +99,10 @@ void DisplayItem::updateVisibleArea() {
 
     QMatrix4x4 t = effectiveMatrix().inverted() * m_frame->effectiveMatrix();
     setVisibleArea(t.mapRect(QRectF(QPointF(), m_frame->size())));
-
-    qDebug() << visibleArea();
 }
 
 void DisplayItem::focusedObjectPositionChanged() {
-    setLookAt(-focusedObject()->matrix().map(QPointF()));
+    setLookAt(-focusedObject()->mapToItem(this, QPointF()));
 }
 
 void DisplayItem::returnLookAtToBounds() {
@@ -218,7 +221,8 @@ void DisplayItem::mouseReleased(QPointF) {
 void DisplayItemFrame::sizeChanged() {
 }
 
-DisplayItemFrame::DisplayItemFrame(Item*) {
+DisplayItemFrame::DisplayItemFrame(Item* parent):
+    SceneGraph::Item(parent) {
 }
 
 DisplayItemFrame::~DisplayItemFrame() {

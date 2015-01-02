@@ -31,7 +31,7 @@ void Game::sizeChanged() {
 
 bool Game::read(const QJsonObject& obj) {
     m_viewWorld.read(obj["viewWorld"].toObject());
-    m_lightSystem.read(obj["lightSystem"].toObject());
+    //m_lightSystem.read(obj["lightSystem"].toObject());
 
     return true;
 }
