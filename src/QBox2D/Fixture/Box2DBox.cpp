@@ -26,7 +26,12 @@ std::vector<QPointF> Box2DBox::vertices() const {
     };
 }
 
-void Box2DBox::setSize(QSizeF) {
+void Box2DBox::setSize(QSizeF s) {
+    if (m_size != s) {
+        m_size = s;
+        m_texturedRectangle.rmatrix().scale(s.width(), s.height());
+        m_normalMapRectangle.rmatrix().scale(s.width(), s.height());
+    }
 }
 
 bool Box2DBox::read(const QJsonObject& obj) {

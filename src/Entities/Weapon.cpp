@@ -41,6 +41,8 @@ bool Weapon::read(const QJsonObject& obj) {
     m_texture.setSource(obj["textureSource"].toString());
     m_texture.setTextureRect(Utility::Json::toRect(obj["textureRect"].toObject()));
 
+    setSize(QSizeF(obj["width"].toDouble(), obj["height"].toDouble()));
+
     return true;
 }
 
@@ -50,6 +52,8 @@ bool Weapon::write(QJsonObject& obj) const {
     obj["shootPoint"] = Utility::Json::toObject(shootPoint());
     obj["textureSource"] = m_texture.source();
     obj["textureRect"] = Utility::Json::toObject(m_texture.textureRect());
+    obj["width"] = m_size.width();
+    obj["height"] = m_size.height();
 
     return true;
 }
@@ -57,11 +61,15 @@ bool Weapon::write(QJsonObject& obj) const {
 void Weapon::initialize(QWorld* w) {
     QBody::initialize(w);
 
-    //m_texture.setWidth(width());
-    //m_texture.setHeight(height());
-
     for (QFixture* f = firstFixture(); f; f = f->next())
         f->setGroupIndex(-1);
+}
+
+void Weapon::setSize(QSizeF s) {
+    m_size = s;
+
+    m_texture.rmatrix().setToIdentity();
+    m_texture.rmatrix().scale(s.width(), s.height());
 }
 
 void Weapon::setShootPoint(QPointF p) {

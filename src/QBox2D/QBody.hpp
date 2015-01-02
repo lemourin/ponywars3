@@ -6,6 +6,7 @@
 #include <queue>
 #include "Utility/List.hpp"
 #include "Utility/BaseItem.hpp"
+#include "Geometry/Circle.hpp"
 
 class QFixture;
 class QWorld;
@@ -51,7 +52,7 @@ class QBody: public BaseItem {
         QPointF position() const;
         void setPosition(QPointF);
 
-        inline qreal rotation() const { return m_bodyDef.angle; }
+        inline qreal rotation() const { return m_bodyDef.angle*180.0/M_PI; }
         void setRotation(qreal);
 
         inline qreal linearDamping() const { return m_bodyDef.linearDamping; }

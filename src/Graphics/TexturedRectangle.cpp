@@ -21,7 +21,6 @@ SceneGraph::Node* TexturedRectangle::synchronize(SceneGraph::Node* old) {
         node = new Node;
     node->synchronize(this);
     //qDebug() << "shake" << old << node->parent() << this;
-    //qDebug() << "wa" << effectiveMatrix() * QPointF(0, 0);
     //update();
     return node;
 }

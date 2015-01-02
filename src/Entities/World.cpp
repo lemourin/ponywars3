@@ -135,7 +135,7 @@ void World::setPaused(bool p) {
 }
 
 void World::read(const QJsonObject& obj) {
-    //m_itemSet.read(obj);
+    m_itemSet.read(obj);
 
     QJsonObject p = obj["player"].toObject();
     Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());

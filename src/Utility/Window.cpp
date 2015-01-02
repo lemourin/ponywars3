@@ -74,7 +74,7 @@ void Window::resizeEvent(QResizeEvent* event) {
 
     QMatrix4x4 matrix;
     //matrix.perspective(45.0, (float)size().width()/size().height(), 0.1, 100);
-    matrix.ortho(QRectF(QPointF(0, 0), size()));
+    matrix.ortho(0, width(), height(), 0, -100, 100);
 
     setProjection(matrix);
 

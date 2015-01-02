@@ -19,6 +19,7 @@ class Weapon: public QBody {
         Hand* m_grabber;
 
         TexturedRectangle m_texture;
+        QSizeF m_size;
 
         void update();
         void updateEffectiveShootPoint();
@@ -35,6 +36,9 @@ class Weapon: public QBody {
         void initialize(QWorld*);
 
         virtual void shoot() = 0;
+
+        inline QSizeF size() const { return m_size; }
+        void setSize(QSizeF);
 
         inline QPointF effectiveShootPoint() const { return m_effectiveShootPoint; }
 

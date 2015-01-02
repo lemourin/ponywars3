@@ -2,7 +2,6 @@
 
 #include "QFixture.hpp"
 #include "QWorld.hpp"
-#include "Geometry/Circle.hpp"
 #include "Utility/Utility.hpp"
 #include "Utility/Factory.hpp"
 
@@ -46,8 +45,8 @@ void QBody::setPosition(QPointF p) {
     m_bodyDef.position = b2Vec2(p.x(), p.y());
 
     rmatrix().setToIdentity();
-    rmatrix().rotate(rotation(), 1, 0);
     rmatrix().translate(position().x(), position().y());
+    rmatrix().rotate(rotation()*180.0/M_PI, 0, 0, 1);
 
     if (body()) {
         body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
@@ -58,11 +57,11 @@ void QBody::setPosition(QPointF p) {
 }
 
 void QBody::setRotation(qreal r) {
-    m_bodyDef.angle = r;
+    m_bodyDef.angle = r*M_PI/180.0;
 
     rmatrix().setToIdentity();
-    rmatrix().rotate(rotation(), 1, 0);
     rmatrix().translate(position().x(), position().y());
+    rmatrix().rotate(rotation(), 0, 0, 1);
 
     if (body()) {
         body()->SetTransform(body()->GetPosition(), r);
@@ -246,7 +245,7 @@ void QBody::synchronize() {
 
     qreal newX = body()->GetPosition().x;
     qreal newY = body()->GetPosition().y;
-    qreal newRotation = body()->GetAngle();
+    qreal newRotation = body()->GetAngle()*180.0/M_PI;
 
     setPosition(QPointF(newX, newY));
     setRotation(newRotation);

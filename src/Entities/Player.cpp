@@ -37,6 +37,7 @@ void Player::mouseReleased(QPointF) {
 }
 
 void Player::keyPressEvent(QKeyEvent* event) {
+    qDebug() << "pff";
     if (event->isAutoRepeat()) {
         event->ignore();
         return;

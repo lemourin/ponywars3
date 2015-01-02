@@ -23,7 +23,7 @@
     },
     "viewWorld": {
         "height": 1000,
-        "scale": 30,
+        "scale": 11,
         "width": 1000,
         "world": {
             "bodies": [
@@ -1101,8 +1101,8 @@
                 "rotation": 0,
                 "width": 5,
                 "wingsSource": ":/resources/frontwingfluttershy.png",
-                "x": 500,
-                "y": 500
+                "x": 450,
+                "y": 630
             }
         }
     }
