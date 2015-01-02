@@ -32,7 +32,7 @@ class Weapon: public QBody {
         Weapon(SceneGraph::Item *parent = nullptr);
         ~Weapon();
 
-        void initialize();
+        void initialize(QWorld*);
 
         virtual void shoot() = 0;
 

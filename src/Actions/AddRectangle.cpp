@@ -19,8 +19,8 @@ void AddRectangle::reset() {
 QFixture* AddRectangle::fixture() const {
     Box2DBox* box = new Box2DBox;
 
-    box->matrix().translate(std::min(m_p1.x(), m_p2.x()),
-                            std::min(m_p1.y(), m_p2.y()));
+    box->rmatrix().translate(std::min(m_p1.x(), m_p2.x()),
+                             std::min(m_p1.y(), m_p2.y()));
 
     box->setSize(QSizeF(std::abs(m_p1.x()-m_p2.x()),
                         std::abs(m_p1.y()-m_p2.y())));

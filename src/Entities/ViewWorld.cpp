@@ -8,7 +8,6 @@ ViewWorld::ViewWorld(Game* game):
     DisplayItem(game),
     m_world(this),
     m_game(game) {
-
 }
 
 void ViewWorld::initialize() {
@@ -21,8 +20,7 @@ void ViewWorld::initialize() {
 bool ViewWorld::read(const QJsonObject& obj) {
     m_world.read(obj["world"].toObject());
 
-    //setWidth(obj["width"].toDouble());
-    //setHeight(obj["height"].toDouble());
+    setSize(QSizeF(obj["width"].toDouble(), obj["height"].toDouble()));
     setScale(obj["scale"].toDouble());
 
     return true;
@@ -33,8 +31,8 @@ bool ViewWorld::write(QJsonObject& obj) const {
     m_world.write(world);
     obj["world"] = world;
 
-    //obj["width"] = width();
-    //obj["height"] = height();
+    obj["width"] = size().width();
+    obj["height"] = size().height();
     obj["scale"] = scale();
 
     return true;
@@ -62,7 +60,7 @@ void ViewWorld::mouseReleased(QPointF p) {
 
 void ViewWorld::geometryChanged(const QRectF& newGeometry,
                                 const QRectF& oldGeometry) {
-    DisplayItem::geometryChanged(newGeometry, oldGeometry);
+    //DisplayItem::geometryChanged(newGeometry, oldGeometry);
 
     //m_world.setSize(newGeometry.size());
 }

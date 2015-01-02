@@ -82,7 +82,7 @@ QWorld::QWorld(SceneGraph::Item* parent):
     world()->SetContactListener(&m_contactListener);
     world()->SetDestructionListener(&m_destructionListener);
 
-    m_groundBody.initialize();
+    m_groundBody.initialize(this);
 }
 
 QWorld::~QWorld() {

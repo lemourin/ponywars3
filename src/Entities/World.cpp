@@ -24,14 +24,14 @@ Boundary::Boundary(qreal width,
     m_top(this),
     m_bottom(this) {
 
-    m_left.matrix().translate(0, 0);
+    m_left.rmatrix().translate(0, 0);
     m_left.setSize(QSizeF(thickness, height));
-    m_right.matrix().translate(width-thickness, 0);
+    m_right.rmatrix().translate(width-thickness, 0);
     m_right.setSize(QSizeF(thickness, height));
 
-    m_top.matrix().translate(0, 0);
+    m_top.rmatrix().translate(0, 0);
     m_top.setSize(QSizeF(width, thickness));
-    m_bottom.matrix().translate(0, height-thickness);
+    m_bottom.rmatrix().translate(0, height-thickness);
     m_bottom.setSize(QSizeF(width, thickness));
 }
 
@@ -142,10 +142,9 @@ void World::read(const QJsonObject& obj) {
     Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());
     assert(player);
 
-    //player->setParent(this);
-    //player->setParentItem(this);
+    player->setParent(this);
     player->read(p);
-    player->initialize();
+    player->initialize(this);
 
     setPlayer(player);
 }

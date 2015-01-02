@@ -29,9 +29,8 @@ class QFixture: public SceneGraph::Item {
     protected:
         //QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
 
-        virtual void initialize();
+        virtual void initialize(QBody* item);
         virtual b2Shape* createShape() const = 0;
-        //virtual QSGNode* createNode() const = 0;
 
         virtual inline void bodyPositionChanged() { }
         virtual inline void bodyRotationChanged() { }
@@ -69,6 +68,7 @@ class QFixture: public SceneGraph::Item {
         inline void setPosition(QPointF p) { m_position = p; }
 
         inline const b2Fixture* fixture() const { return m_fixture; }
+
         inline QBody* body() const { return m_body; }
 
         inline float density() const { return m_fixtureDef.density; }

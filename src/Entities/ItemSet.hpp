@@ -2,11 +2,14 @@
 #define ITEMSET_HPP
 #include "SceneGraph/Item.hpp"
 
+class World;
+
 class ItemSet: public SceneGraph::Item {
     private:
+        World* m_world;
 
     public:
-        ItemSet(SceneGraph::Item* = nullptr);
+        ItemSet(World* world);
 
         Q_INVOKABLE void dump(QString fileName);
         Q_INVOKABLE void load(QString fileName);

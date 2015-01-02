@@ -7,8 +7,9 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
-ItemSet::ItemSet(Item* parent):
-    SceneGraph::Item(parent) {
+ItemSet::ItemSet(World* world):
+    SceneGraph::Item(world),
+    m_world(world) {
 }
 
 void ItemSet::dump(QString /*fileName*/) {
@@ -58,7 +59,7 @@ void ItemSet::read(const QJsonObject& obj) {
 
         body->setParent(this);
         body->read(obj);
-        body->initialize();
+        body->initialize(m_world);
     }
 }
 

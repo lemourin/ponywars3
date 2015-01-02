@@ -157,8 +157,8 @@ void Creature::punch() {
     }
 }
 
-void Creature::initialize() {
-    QBody::initialize();
+void Creature::initialize(QWorld *w) {
+    QBody::initialize(w);
     onWorldStepped();
 }
 

@@ -1,20 +1,28 @@
 #ifndef TEXTUREDRECTANGLE_HPP
 #define TEXTUREDRECTANGLE_HPP
 
-#include <QSGGeometryNode>
-#include <QSGOpaqueTextureMaterial>
 #include "TexturedItem.hpp"
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Geometry.hpp"
+#include "SceneGraph/Material.hpp"
 
 class TexturedRectangle: public TexturedItem {
     private:
         QRectF m_textureRect;
+        QRectF m_boundingRect;
 
     protected:
-        class Node: public QSGTransformNode {
+        class Node: public SceneGraph::Node {
             private:
-                QSGGeometryNode m_geometryNode;
-                QSGGeometry m_geometry;
-                QSGOpaqueTextureMaterial m_material;
+                SceneGraph::GeometryNode m_geometryNode;
+                SceneGraph::Geometry m_geometry;
+                SceneGraph::TextureMaterial m_material;
+
+                struct Vertex {
+                    float x, y, tx, ty;
+
+                    void set(float, float, float, float);
+                };
 
             public:
                 Node();
@@ -26,13 +34,21 @@ class TexturedRectangle: public TexturedItem {
 
         };
 
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node* old);
 
     public:
         explicit TexturedRectangle(SceneGraph::Item* = nullptr);
 
         inline QRectF textureRect() const { return m_textureRect; }
         void setTextureRect(QRectF);
+
+        inline QPointF position() const { return m_boundingRect.topLeft(); }
+        inline void setPosition(QPointF p) { m_boundingRect.setTopLeft(p); }
+
+        inline QSizeF size() const { return m_boundingRect.size(); }
+        inline void setSize(QSizeF s) { m_boundingRect.setSize(s); }
+
+        inline QRectF boundingRect() const { return m_boundingRect; }
 
 };
 

@@ -16,7 +16,7 @@ class Fixture: public QFixture {
         void updateVisibility();
 
     protected:
-        void initialize();
+        void initialize(QBody*);
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
         //void itemChange(ItemChange, const ItemChangeData &);

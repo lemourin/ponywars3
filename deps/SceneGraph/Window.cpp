@@ -8,6 +8,9 @@ Window::Window(QWindow* parent):
     QQuickView(parent),
     m_renderer(),
     m_focusItem() {
+
+    m_root.setWindow(this);
+
     connect(this, &QQuickWindow::sceneGraphInitialized,
             this, &Window::onSceneGraphInitialized, Qt::DirectConnection);
     connect(this, &QQuickWindow::sceneGraphInvalidated,
@@ -24,6 +27,11 @@ Window::Window(QWindow* parent):
 }
 
 Window::~Window() {
+}
+
+void Window::setProjection(const QMatrix4x4& m) {
+    m_projection = m;
+    scheduleSynchronize();
 }
 
 QOpenGLTexture* Window::texture(const char* path) {
@@ -54,14 +62,7 @@ void Window::onBeforeSynchronizing() {
 }
 
 void Window::onItemDestroyed(Item* item) {
-    if (item->m_state & Item::ScheduledUpdate) {
-        auto it = std::find(m_updateItem.begin(), m_updateItem.end(), item);
-        if (it != m_updateItem.end())
-            m_updateItem.erase(it);
-        it = std::find(m_nextFrame.begin(), m_nextFrame.end(), item);
-        if (it != m_nextFrame.end())
-            m_nextFrame.erase(it);
-    }
+    cancelUpdate(item);
 
     m_destroyedItemNode.push_back(item->m_itemNode);
     m_destroyedNode.push_back(item->m_node);
@@ -79,6 +80,20 @@ void Window::scheduleUpdate(Item* item) {
     if (!(item->m_state & Item::ScheduledUpdate)) {
         m_updateItem.push_back(item);
         item->m_state |= Item::ScheduledUpdate;
+    }
+}
+
+void Window::cancelUpdate(Item* item) {
+    if (item->m_state & Item::ScheduledUpdate) {
+        qDebug() << "cancelling";
+        auto it = std::find(m_updateItem.begin(), m_updateItem.end(), item);
+        if (it != m_updateItem.end())
+            m_updateItem.erase(it);
+        it = std::find(m_nextFrame.begin(), m_nextFrame.end(), item);
+        if (it != m_nextFrame.end())
+            m_nextFrame.erase(it);
+
+        item->m_state &= ~Item::ScheduledUpdate;
     }
 }
 

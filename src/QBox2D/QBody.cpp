@@ -39,46 +39,41 @@ void QBody::destroyBody() {
 }
 
 QPointF QBody::position() const {
-    assert(body());
-    return QPointF(body()->GetPosition().x, body()->GetPosition().y);
+    return QPointF(m_bodyDef.position.x, m_bodyDef.position.y);
 }
 
 void QBody::setPosition(QPointF p) {
-    assert(body());
-    body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
-}
+    m_bodyDef.position = b2Vec2(p.x(), p.y());
 
-qreal QBody::rotation() const {
-    assert(body());
-    return body()->GetAngle();
+    rmatrix().setToIdentity();
+    rmatrix().rotate(rotation(), 1, 0);
+    rmatrix().translate(-position().x(), -position().y());
+
+    if (body()) {
+        body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
+        for (QFixture* f = firstFixture(); f; f = f->next())
+            f->bodyPositionChanged();
+    }
+
 }
 
 void QBody::setRotation(qreal r) {
-    assert(body());
-    body()->SetTransform(body()->GetPosition(), r);
+    m_bodyDef.angle = r;
+
+    rmatrix().setToIdentity();
+    rmatrix().rotate(rotation(), 1, 0);
+    rmatrix().translate(-position().x(), -position().y());
+
+    if (body()) {
+        body()->SetTransform(body()->GetPosition(), r);
+        for (QFixture* f = firstFixture(); f; f = f->next())
+            f->bodyRotationChanged();
+    }
 }
 
 void QBody::removeFixture(QFixture* fixture) {
     m_fixtureList.remove(&fixture->m_node);
 }
-
-void QBody::geometryChanged(const QRectF& newGeometry,
-                            const QRectF& oldGeometry) {
-    BaseItem::geometryChanged(newGeometry, oldGeometry);
-
-    if (newGeometry.topLeft() != oldGeometry.topLeft())
-        for (QFixture* f = firstFixture(); f; f = f->next())
-            f->bodyPositionChanged();
-
-}
-
-/*void QBody::itemChange(ItemChange change, const ItemChangeData& data) {
-    BaseItem::itemChange(change, data);
-
-    if (change == ItemRotationHasChanged)
-        for (QFixture* f = firstFixture(); f; f = f->next())
-            f->bodyRotationChanged();
-}*/
 
 void QBody::setLinearDamping(qreal linearDamping) {
     m_bodyDef.linearDamping = linearDamping;
@@ -156,7 +151,7 @@ void QBody::addFixture(QFixture* f) {
     f->setParent(this);
 
     if (body())
-        f->initialize();
+        f->initialize(this);
 }
 
 QFixture* QBody::firstFixture() const {
@@ -165,40 +160,36 @@ QFixture* QBody::firstFixture() const {
 
 void QBody::setTransform(QPointF position, qreal rotation) {
     if (body()) {
-        body()->SetTransform(b2Vec2(position.x(), position.y()),
-                             rotation*M_PI/180.0);
+        body()->SetTransform(b2Vec2(position.x(), position.y()), rotation);
     }
 }
 
-void QBody::initialize() {
+void QBody::initialize(QWorld* w) {
     if (body())
         return;
-
-    assert(world());
 
     /*if (!world()) {
         setWorld(Utility::findAncestor<QWorld>(this));
         assert(world());
     }*/
 
-    m_bodyDef.position.Set(position().x(), position().y());
-    m_bodyDef.angle = rotation()*M_PI/180;
+    //m_bodyDef.position.Set(position().x(), position().y());
+    //m_bodyDef.angle = rotation()*M_PI/180;
 
+    m_world = w;
     m_body = world()->world()->CreateBody(&m_bodyDef);
 
     for (QFixture* f = firstFixture(); f; f = f->next()) {
-        f->initialize();
+        f->initialize(this);
     }
+
 }
 
-void QBody::initializeLater() {
+void QBody::initializeLater(QWorld* w) {
     if (body())
         return;
-    assert(world());
-    //if (!world())
-    //    setWorld(Utility::findAncestor<QWorld>(this));
 
-    enqueueFunction(std::bind(&QBody::initialize, this));
+    enqueueFunction(std::bind(&QBody::initialize, this, w));
 }
 
 void QBody::enqueueFunction(std::function<void ()> f) {
@@ -265,7 +256,7 @@ void QBody::synchronize() {
 
     qreal newX = body()->GetPosition().x;
     qreal newY = body()->GetPosition().y;
-    qreal newRotation = body()->GetAngle()*180.0/M_PI;
+    qreal newRotation = body()->GetAngle();
 
     setPosition(QPointF(newX, newY));
     setRotation(newRotation);

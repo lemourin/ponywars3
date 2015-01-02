@@ -61,51 +61,25 @@ Window::Window(QWindow* parent):
     //rootContext()->setContextProperty("game", &m_game);
     //rootContext()->setContextProperty("world", m_game.view()->world());
     setSource(QUrl("qrc:/qml/main.qml"));
-
-    setClearBeforeRendering(false);
-    setPersistentOpenGLContext(false);
-    setPersistentSceneGraph(false);
     setResizeMode(SizeRootObjectToView);
 
     connect(engine(), &QQmlEngine::quit,
             this, &QQuickView::close);
-    connect(this, &Window::sceneGraphInvalidated,
-            this, &Window::onSceneGraphInvalidated, Qt::DirectConnection);
 
     m_game.setParent(rootItem());
     //m_game.setZ(-1);
 }
 
-Window::~Window() {
-    releaseResources();
-}
-
-void Window::onSceneGraphInvalidated() {
-    for (const auto& p: m_texture)
-        delete p.second;
-    m_texture.clear();
-}
-
 void Window::resizeEvent(QResizeEvent* event) {
-    QQuickView::resizeEvent(event);
+    SceneGraph::Window::resizeEvent(event);
 
-    //m_game.setSize(size());
-}
+    QMatrix4x4 matrix;
+    //matrix.perspective(45.0, (float)size().width()/size().height(), 0.1, 100);
+    matrix.ortho(0, width(), 0, height(), -1, 1);
 
-QSGTexture* Window::texture(const std::string& path) {
-    QSGTexture* t = m_texture[path];
-    if (t == nullptr) {
-        QImage image(path.c_str());
-        assert(image.isNull() == false);
+    setProjection(matrix);
 
-        t = createTextureFromImage(image);
-        t->setFiltering(QSGTexture::Linear);
-        t->setMipmapFiltering(QSGTexture::Linear);
-
-        m_texture[path] = t;
-    }
-
-    return t;
+    m_game.setSize(size());
 }
 
 void Window::registerTypes() {

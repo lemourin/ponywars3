@@ -54,8 +54,8 @@ bool Weapon::write(QJsonObject& obj) const {
     return true;
 }
 
-void Weapon::initialize() {
-    QBody::initialize();
+void Weapon::initialize(QWorld* w) {
+    QBody::initialize(w);
 
     //m_texture.setWidth(width());
     //m_texture.setHeight(height());

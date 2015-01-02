@@ -25,14 +25,13 @@ class SpriteSequence: public SceneGraph::Item {
         uint m_currentFrame;
         int m_timerId;
 
-        void visibleChanged();
 
     protected:
+        void visibleChanged();
         virtual void currentSpriteChanged();
         void timerEvent(QTimerEvent *);
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
-        //void itemChange(ItemChange, const ItemChangeData &);
 
 
     public:

@@ -27,10 +27,6 @@ class QBody: public BaseItem {
         void removeFixture(QFixture*);
 
     protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
-        /*void itemChange(ItemChange,
-                        const ItemChangeData &);*/
 
         virtual void synchronize();
 
@@ -49,13 +45,13 @@ class QBody: public BaseItem {
         explicit QBody(SceneGraph::Item* parent = nullptr);
         ~QBody();
 
-        virtual void initialize();
+        virtual void initialize(QWorld*);
         void destroyBody();
 
         QPointF position() const;
         void setPosition(QPointF);
 
-        qreal rotation() const;
+        inline qreal rotation() const { return m_bodyDef.angle; }
         void setRotation(qreal);
 
         inline qreal linearDamping() const { return m_bodyDef.linearDamping; }
@@ -103,7 +99,6 @@ class QBody: public BaseItem {
         inline b2Body* body() { return m_body; }
 
         inline QWorld* world() const { return m_world; }
-        inline void setWorld(QWorld* w) { m_world = w; }
 
         QRectF boundingRect() const;
 
@@ -111,7 +106,7 @@ class QBody: public BaseItem {
         bool testOverlap(const QRectF& rect) const;
         bool testOverlap(const QBody* other) const;
 
-        void initializeLater();
+        void initializeLater(QWorld*);
         void enqueueFunction(std::function<void()>);
 
         virtual bool read(const QJsonObject&);

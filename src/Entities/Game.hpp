@@ -11,8 +11,7 @@ class Game: public DisplayItemFrame {
         LightSystem m_lightSystem;
 
     protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+        void sizeChanged();
 
     public:
         explicit Game(SceneGraph::Item *parent = 0);

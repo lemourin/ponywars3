@@ -39,9 +39,8 @@ void LightSystem::read(const QJsonObject& obj) {
 
         StaticLight* light = new StaticLight(this);
         light->setLightSystem(this);
-        light->setWorld(world());
         light->read(lightData);
-        light->initialize();
+        light->initialize(world());
     }
 }
 
@@ -78,6 +77,10 @@ void LightSystem::initialize() {
     m_enlightedItems.setWorld(world());*/
 
     visibleAreaChanged();
+}
+
+void LightSystem::setSize(QSizeF s) {
+    m_size = s;
 }
 
 void LightSystem::setResolution(QSize s) {
@@ -177,7 +180,7 @@ void LightSystem::initializeDynamicLights() {
 
         //m_dynamicLight[i].setParent(m_framebuffer[i].sourceItem());
         m_dynamicLight[i].setLightSystem(this);
-        m_dynamicLight[i].setWorld(world());
+        //m_dynamicLight[i].setWorld(world());
         m_dynamicLight[i].setVisible(false);
 
         m_unusedLight.push_back(&m_dynamicLight[i]);

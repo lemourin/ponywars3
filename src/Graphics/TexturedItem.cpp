@@ -4,19 +4,21 @@
 
 TexturedItem::TexturedItem(Item* parent):
     SceneGraph::Item(parent) {
+    setVisible(false);
 }
 
 void TexturedItem::setSource(const QString& path) {
-    m_source = path;
-    /*if (m_source.isEmpty())
-        setFlag(ItemHasContents, false);
-    else
-        setFlag(ItemHasContents, true);
-    update();*/
+    if (m_source != path) {
+        m_source = path;
+        if (!path.isEmpty())
+            setVisible(true);
+        else
+            setVisible(false);
+    }
 }
 
-QSGTexture* TexturedItem::texture() const {
-    return static_cast<Window*>(window())->texture(source().toStdString());
+QOpenGLTexture* TexturedItem::texture() const {
+    return window()->texture(source().toStdString().c_str());
 }
 
 

@@ -41,13 +41,15 @@ void Renderer::updateItem(Item* item) {
         item->m_state &= ~Item::ParentChanged;
     }
 
-    Node* node = item->synchronize(nullptr);
-    if (node != item->m_node) {
-        delete item->m_node;
-        item->m_node = node;
+    if (item->visible()) {
+        Node* node = item->synchronize(nullptr);
+        if (node != item->m_node) {
+            delete item->m_node;
+            item->m_node = node;
 
-        if (node)
-            item->m_itemNode->appendChild(node);
+            if (node)
+                item->m_itemNode->appendChild(node);
+        }
     }
 }
 
@@ -114,17 +116,14 @@ void Renderer::synchronize(Window* window) {
         window->update();
     }
 
+    m_state.setMatrix(window->projection());
+
     updateNodes(window);
     destroyNodes(window);
 }
 
 void Renderer::setSize(QSize size) {
     m_size = size;
-
-    QMatrix4x4 matrix;
-    matrix.perspective(45.0, (float)size.width()/size.height(), 0.1, 100);
-
-    m_state.setMatrix(matrix);
 }
 
 void Renderer::setRoot(Item* item) {

@@ -47,7 +47,7 @@ void AddChain::keyPressEvent(QKeyEvent* event) {
 
         Chain* chain = new Chain(world());
         chain->setVertices(m_pts);
-        chain->initialize();
+        chain->initialize(world());
 
         m_state |= DirtyState::Finished;
         update();

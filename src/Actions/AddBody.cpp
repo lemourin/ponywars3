@@ -23,7 +23,7 @@ void AddBody::finished() {
 
     for (QFixture* f: m_fixtures)
         body->addFixture(f);
-    body->initialize();
+    body->initialize(world());
 
     m_fixtures.clear();
 }

@@ -9,7 +9,7 @@ Item {
     width: 800
     height: 600
 
-    GameOver { }
+    /*GameOver { }
     MenuDisplay { id: mainMenu }
     Data { id: debug }
     HUD { id: hud }
@@ -35,6 +35,6 @@ Item {
             mainMenu.toggle()
         else if (event.key === Qt.Key_Comma)
             game.dump("")
-    }
+    }*/
 
 }

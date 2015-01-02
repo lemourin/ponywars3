@@ -36,14 +36,15 @@ Item* Item::parent() const {
 
 void Item::setParent(Item* item) {
     if (parent() != item) {
-        parent()->removeChild(this);
+        if (parent())
+            parent()->removeChild(this);
         if (item)
             item->appendChild(this);
     }
 }
 
-QMatrix4x4& Item::matrix() {
-    m_state = ModelMatrixChanged;
+QMatrix4x4& Item::rmatrix() {
+    m_state |= ModelMatrixChanged;
     update();
 
     return m_matrix;
@@ -73,41 +74,89 @@ void Item::setMatrix(const QMatrix4x4& m) {
     update();
 }
 
+QMatrix4x4 Item::effectiveMatrix() const {
+    QMatrix4x4 matrix;
+    const Item* item = this;
+    while (item) {
+        matrix = item->matrix() * matrix;
+        item = item->parent();
+    }
+
+    return window() ? window()->projection() * matrix : matrix;
+}
+
+QPointF Item::mapToItem(Item* item, QPointF p) {
+    return item->effectiveMatrix() * mapToScreen(p);
+}
+
+QPointF Item::mapToScreen(QPointF p) {
+    return effectiveMatrix().inverted() * p;
+}
+
+QPointF Item::mapFromItem(Item* item, QPointF p) {
+    return item->mapToItem(this, p);
+}
+
+QPointF Item::mapFromScreen(QPointF p) {
+    return effectiveMatrix() * p;
+}
+
 void Item::setFocus(bool enabled) {
+    unsigned state = m_state;
     if (enabled)
-        m_state |= HasFocus;
+        state |= HasFocus;
     else
-        m_state &= ~HasFocus;
+        state &= ~HasFocus;
+
+    if (m_state != state) {
+        m_state = state;
+        focusChanged();
+    }
 }
 
 void Item::setVisible(bool enabled) {
+    unsigned state = m_state;
     if (enabled)
-        m_state |= Visible;
+        state |= Visible;
     else
-        m_state &= ~Visible;
+        state &= ~Visible;
+
+    if (m_state != state) {
+        m_state = state;
+
+        if (enabled)
+            update();
+
+        visibleChanged();
+    }
 }
 
-void Item::setWindow(Window* engine) {
-    if (m_window == engine)
+void Item::setWindow(Window* window) {
+    if (m_window == window)
         return;
     if (m_window)
         m_window->onItemDestroyed(this);
 
-    m_window = engine;
-
+    m_window = window;
     update();
 
-    if (engine) {
+    if (window) {
         if (focus())
-            engine->m_focusItem = this;
+            window->m_focusItem = this;
     }
 
     for (Item* item = firstChild(); item; item = item->next())
-        item->setWindow(engine);
+        item->setWindow(window);
 }
 
 Node* Item::synchronize(Node*) {
     return nullptr;
+}
+
+void Item::visibleChanged() {
+}
+
+void Item::focusChanged() {
 }
 
 void Item::keyPressEvent(QKeyEvent* e) {
@@ -123,7 +172,7 @@ void Item::mouseMoveEvent(QMouseEvent* e) {
 }
 
 void Item::update() {
-    if (window()) {
+    if (window() && visible()) {
         window()->scheduleUpdate(this);
         window()->scheduleSynchronize();
     }

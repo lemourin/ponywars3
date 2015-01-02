@@ -17,7 +17,7 @@ class Pony: public Creature {
 
     public:
         Pony(Item* = nullptr);
-        void initialize();
+        void initialize(QWorld*);
 
         void setCurrentSprite(const char*);
 

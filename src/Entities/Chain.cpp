@@ -66,7 +66,7 @@ void Chain::cutCircle(Circle circle) {
 
             Chain* chain = new Chain(world());
             chain->setVertices(list);
-            chain->initializeLater();
+            chain->initializeLater(world());
         }
     }
 

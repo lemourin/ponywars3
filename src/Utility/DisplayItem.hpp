@@ -14,14 +14,17 @@ class DisplayItemFrame: public SceneGraph::Item {
 
         DisplayItem* m_displayItem;
 
+        QSizeF m_size;
+
     protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+        virtual void sizeChanged();
 
     public:
         explicit DisplayItemFrame(SceneGraph::Item* = nullptr);
         ~DisplayItemFrame();
 
+        inline QSizeF size() const { return m_size; }
+        void setSize(QSizeF);
 };
 
 class DisplayItem: public SceneGraph::Item {
@@ -40,6 +43,7 @@ class DisplayItem: public SceneGraph::Item {
         QPointF m_startPoint;
         qreal m_distance;
 
+        QSizeF m_size;
         qreal m_scale;
 
         void focusedObjectPositionChanged();
@@ -55,8 +59,6 @@ class DisplayItem: public SceneGraph::Item {
         void mouseReleaseEvent(QMouseEvent *event);
         void hoverMoveEvent(QHoverEvent *event);
         void touchEvent(QTouchEvent *event);
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
 
         virtual void visibleAreaChanged();
 
@@ -67,6 +69,9 @@ class DisplayItem: public SceneGraph::Item {
     public:
         explicit DisplayItem(DisplayItemFrame *parent = nullptr);
         ~DisplayItem();
+
+        inline QSizeF size() const { return m_size; }
+        void setSize(QSizeF);
 
         inline qreal scale() const { return m_scale; }
         void setScale(qreal);

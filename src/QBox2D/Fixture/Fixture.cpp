@@ -17,7 +17,7 @@ Fixture::~Fixture() {
 void Fixture::updatePosition() {
     if (normalMap() && body()) {
         QPointF p = body()->position()+position();
-        normalMap()->matrix().translate(p.x(), p.y());
+        normalMap()->rmatrix().translate(p.x(), p.y());
     }
 }
 
@@ -34,12 +34,12 @@ void Fixture::updateSize() {
 }
 
 void Fixture::updateVisibility() {
-    if (normalMap())
-        normalMap()->setVisible(visible());
+    //if (normalMap())
+    //    normalMap()->setVisible(visible());
 }
 
-void Fixture::initialize() {
-    QFixture::initialize();
+void Fixture::initialize(QBody* b) {
+    QFixture::initialize(b);
 
     if (normalMap()) {
         World* w = static_cast<World*>(body()->world());

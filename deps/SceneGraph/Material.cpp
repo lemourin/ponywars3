@@ -107,7 +107,7 @@ const char* VertexColorMaterial::VertexColorShader::vertexShader() const {
     );
 }
 
-const char*VertexColorMaterial::VertexColorShader::fragmentShader() const {
+const char* VertexColorMaterial::VertexColorShader::fragmentShader() const {
     return GLSL(
         varying vec4 fcolor;
 
@@ -120,6 +120,10 @@ const char*VertexColorMaterial::VertexColorShader::fragmentShader() const {
 void VertexColorMaterial::VertexColorShader::updateState(const Material*,
                                                          const RenderState& state) {
     program()->setUniformValue(m_matrix, state.matrix());
+}
+
+TextureMaterial::TextureMaterial(): m_texture() {
+
 }
 
 }

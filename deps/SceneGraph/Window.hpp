@@ -16,6 +16,8 @@ class Window: public QQuickView {
         friend class Renderer;
 
         Renderer* m_renderer;
+        QMatrix4x4 m_projection;
+
         Item m_root;
         Item* m_focusItem;
         std::vector<Item*> m_updateItem;
@@ -27,9 +29,10 @@ class Window: public QQuickView {
         void onSceneGraphInvalidated();
         void onBeforeRendering();
         void onBeforeSynchronizing();
-
         void onItemDestroyed(Item*);
+
         void scheduleUpdate(Item*);
+        void cancelUpdate(Item*);
 
     protected:
         void keyPressEvent(QKeyEvent *);
@@ -43,6 +46,9 @@ class Window: public QQuickView {
 
         inline Item* rootItem() { return &m_root; }
         inline Item* focusItem() const { return m_focusItem; }
+
+        inline const QMatrix4x4& projection() const { return m_projection; }
+        void setProjection(const QMatrix4x4& m);
 
         inline void scheduleSynchronize() { contentItem()->update(); }
 

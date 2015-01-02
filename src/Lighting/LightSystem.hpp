@@ -25,6 +25,7 @@ class LightSystem: public SceneGraph::Item {
 //        Q_PROPERTY(QQuickItem* normalMap READ normalMapItem CONSTANT)
 
         Game* m_game;
+        QSizeF m_size;
         QSize m_resolution;
 
         EnlightedItems m_enlightedItems;
@@ -61,6 +62,9 @@ class LightSystem: public SceneGraph::Item {
         ~LightSystem();
 
         void initialize();
+
+        inline QSizeF size() const { return m_size; }
+        void setSize(QSizeF);
 
         inline QSize resolution() const { return m_resolution; }
         void setResolution(QSize s);

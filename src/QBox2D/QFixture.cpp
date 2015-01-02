@@ -107,16 +107,18 @@ bool QFixture::read(const QJsonObject& obj) {
     return true;
 }
 
-void QFixture::initialize() {
+void QFixture::initialize(QBody* item) {
     /*if (!m_body) {
         m_body = Utility::findAncestor<QBody>(this);
         assert(m_body);
     }*/
 
+    m_body = item;
+
     b2Shape *shape = createShape();
 
     m_fixtureDef.shape = shape;
-    m_fixture = body()->body()->CreateFixture(&m_fixtureDef);
+    m_fixture = item->body()->CreateFixture(&m_fixtureDef);
     m_fixture->SetUserData(this);
 
     delete shape;

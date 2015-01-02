@@ -80,15 +80,15 @@ void Player::beginContact(QFixture* other, b2Contact*) {
 }
 
 
-void Player::initialize() {
-    Pony::initialize();
+void Player::initialize(QWorld* w) {
+    Pony::initialize(w);
 
     for (QFixture* f = firstFixture(); f; f = f->next())
         f->setGroupIndex(-1);
     hand()->setRange(10);
 
     m_light.setLightSystem(world()->lightSystem());
-    m_light.initialize();
+    m_light.initialize(world());
 }
 
 World* Player::world() const {

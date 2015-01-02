@@ -30,7 +30,7 @@ class Creature: public QBody {
 
     public:
         explicit Creature(Item* = nullptr);
-        void initialize();
+        void initialize(QWorld*);
 
         enum State {
             GoingLeft = 1 << 0,

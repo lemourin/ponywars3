@@ -32,7 +32,7 @@ Image::ImageNode::ImageNode(Node* parent):
 }
 
 void Image::ImageNode::setTexture(QOpenGLTexture* t) {
-    m_material.m_texture = t;
+    m_material.setTexture(t);
 }
 
 }

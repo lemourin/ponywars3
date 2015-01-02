@@ -27,13 +27,13 @@ StaticLight::~StaticLight() {
         lightSystem()->removeLight(this);
 }
 
-void StaticLight::initialize() {
+void StaticLight::initialize(QWorld* w) {
     m_fixture.setPosition(QPointF(-radius(), -radius()));
     m_fixture.setSize(QSizeF(2*radius(), 2*radius()));
 
     lightSystem()->addLight(this);
 
-    QBody::initialize();
+    QBody::initialize(w);
 }
 
 bool StaticLight::read(const QJsonObject& obj) {

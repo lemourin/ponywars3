@@ -15,6 +15,20 @@ Game::Game(Item* parent):
     //setClip(true);
 }
 
+void Game::sizeChanged() {
+#ifdef Q_OS_ANDROID
+    const QSize maxres(800, 600);
+#else
+    const QSize maxres(1920, 1080);
+#endif
+
+    QSize resolution(std::min(int(size().width()), maxres.width()),
+                     std::min(int(size().height()), maxres.height()));
+
+    m_lightSystem.setResolution(resolution);
+    m_lightSystem.setSize(size());
+}
+
 bool Game::read(const QJsonObject& obj) {
     m_viewWorld.read(obj["viewWorld"].toObject());
     m_lightSystem.read(obj["lightSystem"].toObject());
@@ -32,24 +46,6 @@ bool Game::write(QJsonObject& obj) const {
     obj["lightSystem"] = lightSystem;
 
     return true;
-}
-
-void Game::geometryChanged(const QRectF& newGeometry,
-                           const QRectF& oldGeometry) {
-    DisplayItemFrame::geometryChanged(newGeometry, oldGeometry);
-
-    //m_lightSystem.setSize(newGeometry.size());
-
-#ifdef Q_OS_ANDROID
-    const QSize maxSize(800, 600);
-#else
-    const QSize maxSize(1920, 1080);
-#endif
-
-    /*QSize size(std::min(int(width()), maxSize.width()),
-               std::min(int(height()), maxSize.height()));
-    m_lightSystem.setResolution(size);*/
-
 }
 
 void Game::load(QString path) {

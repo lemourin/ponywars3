@@ -16,6 +16,8 @@ class Material {
 
 class ColorMaterial: public Material {
     private:
+        QColor m_color;
+
         class ColorShader: public Shader {
             private:
                 int m_matrix;
@@ -37,11 +39,14 @@ class ColorMaterial: public Material {
         inline Shader* shader() const { return Shader::get<ColorShader>(); }
 
     public:
-        QColor m_color;
+        inline QColor color() const { return m_color; }
+        inline void setColor(QColor c) { m_color = c; }
 };
 
 class TextureMaterial: public Material {
     private:
+        QOpenGLTexture* m_texture;
+
         class TextureShader: public Shader, public QOpenGLFunctions {
             private:
                 int m_matrix;
@@ -63,7 +68,10 @@ class TextureMaterial: public Material {
         inline Shader* shader() const { return Shader::get<TextureShader>(); }
 
     public:
-        QOpenGLTexture* m_texture = nullptr;
+        TextureMaterial();
+
+        inline QOpenGLTexture* texture() const { return m_texture; }
+        inline void setTexture(QOpenGLTexture* t) { m_texture = t; }
 };
 
 class VertexColorMaterial: public Material {

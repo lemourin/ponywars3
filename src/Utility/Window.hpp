@@ -40,18 +40,13 @@ class Window: public SceneGraph::Window {
         Environment m_environment;
 
         Game m_game;
-        std::unordered_map<std::string, QSGTexture*> m_texture;
-
-        void onSceneGraphInvalidated();
 
     protected:
         void resizeEvent(QResizeEvent *);
 
     public:
         Window(QWindow* = nullptr);
-        ~Window();
 
-        QSGTexture* texture(const std::string& path);
         static void registerTypes();
 };
 

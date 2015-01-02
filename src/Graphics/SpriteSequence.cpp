@@ -52,12 +52,6 @@ void SpriteSequence::geometryChanged(const QRectF& newGeometry,
     //m_texture.setSize(newGeometry.size());
 }
 
-/*void SpriteSequence::itemChange(ItemChange change, const ItemChangeData& data) {
-    QQuickItem::itemChange(change, data);
-    if (change == ItemVisibleHasChanged)
-        visibleChanged();
-}*/
-
 void SpriteSequence::currentSpriteChanged() {
 }
 

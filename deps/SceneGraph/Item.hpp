@@ -37,6 +37,9 @@ class Item: protected BaseObject {
     protected:
         virtual Node* synchronize(Node* old);
 
+        virtual void visibleChanged();
+        virtual void focusChanged();
+
         virtual void keyPressEvent(QKeyEvent*);
         virtual void touchEvent(QTouchEvent*);
         virtual void mouseMoveEvent(QMouseEvent*);
@@ -57,8 +60,17 @@ class Item: protected BaseObject {
         void setParent(Item*);
 
         inline const QMatrix4x4& matrix() const { return m_matrix; }
-        QMatrix4x4& matrix();
         void setMatrix(const QMatrix4x4& m);
+
+        QMatrix4x4& rmatrix();
+
+        QMatrix4x4 effectiveMatrix() const;
+
+        QPointF mapToItem(Item*, QPointF);
+        QPointF mapToScreen(QPointF);
+
+        QPointF mapFromItem(Item*, QPointF);
+        QPointF mapFromScreen(QPointF);
 
         inline bool focus() const { return m_state & HasFocus; }
         void setFocus(bool);
