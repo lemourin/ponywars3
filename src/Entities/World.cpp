@@ -24,14 +24,14 @@ Boundary::Boundary(qreal width,
     m_top(this),
     m_bottom(this) {
 
-    m_left.rmatrix().translate(0, 0);
+    m_left.translate(0, 0);
     m_left.setSize(QSizeF(thickness, height));
-    m_right.rmatrix().translate(width-thickness, 0);
+    m_right.translate(width-thickness, 0);
     m_right.setSize(QSizeF(thickness, height));
 
-    m_top.rmatrix().translate(0, 0);
+    m_top.translate(0, 0);
     m_top.setSize(QSizeF(width, thickness));
-    m_bottom.rmatrix().translate(0, height-thickness);
+    m_bottom.translate(0, height-thickness);
     m_bottom.setSize(QSizeF(width, thickness));
 }
 
@@ -40,7 +40,7 @@ World::World(ViewWorld* viewWorld):
     m_viewWorld(viewWorld),
     m_player(),
     m_fps(),
-    //m_boundary(),
+    m_boundary(),
     m_itemSet(this),
     m_mapEditor(this) {
 
@@ -108,6 +108,7 @@ void World::setPlayer(Player* player) {
     m_player = player;
 
     if (player) {
+        qDebug() << "focus";
         player->setFocus(true);
         view()->setFocusedObject(player);
     }

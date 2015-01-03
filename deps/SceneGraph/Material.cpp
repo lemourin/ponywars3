@@ -78,7 +78,7 @@ const char* TextureMaterial::TextureShader::fragmentShader() const {
         void main() {
             gl_FragColor = texture2D(texture, texcoord);
         }
-        );
+    );
 }
 
 std::vector<std::string> TextureMaterial::TextureShader::attribute() const {

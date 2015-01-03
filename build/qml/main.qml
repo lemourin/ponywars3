@@ -8,6 +8,7 @@ Item {
     id: root
     width: 800
     height: 600
+    focus: true
 
     /*GameOver { }
     MenuDisplay { id: mainMenu }
@@ -26,7 +27,7 @@ Item {
         visible: world.paused
         scale: 5
         color: "blue"
-    }
+    } */
 
     Keys.onPressed: {
         if (event.key === Qt.Key_Escape)
@@ -35,6 +36,6 @@ Item {
             mainMenu.toggle()
         else if (event.key === Qt.Key_Comma)
             game.dump("")
-    }*/
+    }
 
 }

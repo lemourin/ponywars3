@@ -12,8 +12,7 @@ class BaseItem: public SceneGraph::Item {
         DisplayItem* m_displayItem;
 
     protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+        void matrixChanged();
 
     public:
         explicit BaseItem(SceneGraph::Item* parent = nullptr);

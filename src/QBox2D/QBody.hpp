@@ -28,7 +28,6 @@ class QBody: public BaseItem {
         void removeFixture(QFixture*);
 
     protected:
-
         virtual void synchronize();
 
         virtual void beginContact(QFixture* other, b2Contact*);

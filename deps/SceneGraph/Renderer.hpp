@@ -35,6 +35,7 @@ class Renderer {
         void updateItem(Item*);
         void updateNodes(Window*);
         void destroyNodes(Window*);
+
         void render(Node*);
 
     protected:

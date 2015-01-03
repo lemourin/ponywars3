@@ -47,11 +47,12 @@ void BaseObject::removeChild(BaseObject* node) {
     if (m_lastChild == node)
         m_lastChild = m_lastChild->m_prev;
 
-    node->m_parent = nullptr;
     if (node->m_prev)
         node->m_prev->m_next = node->m_next;
     if (node->m_next)
         node->m_next->m_prev = node->m_prev;
+
+    node->m_parent = node->m_prev = node->m_next = nullptr;
 }
 
 }

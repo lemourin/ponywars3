@@ -26,12 +26,14 @@ void Renderer::updateItem(Item* item) {
     if (item->m_state & Item::ModelMatrixChanged) {
         item->m_itemNode->setMatrix(item->matrix());
         item->m_state &= ~Item::ModelMatrixChanged;
+
+        item->matrixChanged();
     }
 
     if (item->m_state & Item::ParentChanged) {
         Node* current = item->m_itemNode;
         Node* parent = item->parent() ? item->parent()->m_itemNode : nullptr;
-        if (current->parent() != parent) {
+        if (current->parent() != parent && item->visible()) {
             if (current->parent())
                 current->parent()->removeChild(current);
             if (parent)
@@ -39,6 +41,17 @@ void Renderer::updateItem(Item* item) {
         }
 
         item->m_state &= ~Item::ParentChanged;
+    }
+
+    if (item->m_state & Item::VisibleChanged) {
+        item->m_state &= ~Item::VisibleChanged;
+
+        if (item->parent()) {
+            if (!item->visible())
+                item->parent()->m_itemNode->removeChild(item->m_itemNode);
+            else
+                item->parent()->m_itemNode->appendChild(item->m_itemNode);
+        }
     }
 
     if (item->visible()) {
@@ -90,10 +103,9 @@ void Renderer::destroyNodes(Window* window) {
     }
 }
 
+
 void Renderer::render(Node* root) {
     RenderState state = m_state;
-    //qDebug() << "drawing" << root;
-
     if (root->type() == Node::Type::GeometryNode) {
         renderGeometryNode(static_cast<GeometryNode*>(root));
     }
@@ -109,7 +121,6 @@ void Renderer::render(Node* root) {
 }
 
 void Renderer::render() {
-    //qDebug() << "root = " << m_root;
     render(m_root);
 }
 

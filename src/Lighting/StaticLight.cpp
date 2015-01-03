@@ -56,7 +56,7 @@ void StaticLight::synchronize() {
 
 void StaticLight::geometryChanged(const QRectF& newGeometry,
                                   const QRectF& oldGeometry) {
-    Light::geometryChanged(newGeometry, oldGeometry);
+    //Light::geometryChanged(newGeometry, oldGeometry);
 
     if (dynamicLight()) {
         dynamicLight()->setPosition(position());

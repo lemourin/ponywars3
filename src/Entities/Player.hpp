@@ -12,8 +12,8 @@ class Player: public Pony {
 
         //Q_PROPERTY(Hand* hand READ hand CONSTANT)
 
-        //Hand m_hand;
-        //StaticLight m_light;
+        Hand m_hand;
+        StaticLight m_light;
 
         void mouseMoved(QPointF pos);
         void mousePressed(QPointF pos);
@@ -32,7 +32,7 @@ class Player: public Pony {
         Player(SceneGraph::Item* parent = nullptr);
         void initialize(QWorld*);
 
-        //inline Hand* hand() { return &m_hand; }
+        inline Hand* hand() { return &m_hand; }
         World* world() const;
 
         bool read(const QJsonObject &);

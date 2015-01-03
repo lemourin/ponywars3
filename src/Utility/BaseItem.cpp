@@ -11,11 +11,7 @@ BaseItem::~BaseItem() {
         displayItem()->setFocusedObject(nullptr);
 }
 
-void BaseItem::geometryChanged(const QRectF& newGeometry,
-                               const QRectF& oldGeometry) {
-    //QQuickItem::geometryChanged(newGeometry, oldGeometry);
-
-    if (newGeometry.topLeft() != oldGeometry.topLeft() && displayItem())
+void BaseItem::matrixChanged() {
+    if (displayItem())
         displayItem()->focusedObjectPositionChanged();
-
 }

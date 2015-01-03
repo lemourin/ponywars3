@@ -1,6 +1,8 @@
 #include "Window.hpp"
 #include "DefaultRenderer.hpp"
 #include "Node.hpp"
+#include <QQuickItem>
+#include <cassert>
 
 namespace SceneGraph {
 
@@ -27,6 +29,7 @@ Window::Window(QWindow* parent):
 }
 
 Window::~Window() {
+    m_root.setWindow(nullptr);
 }
 
 void Window::setProjection(const QMatrix4x4& m) {
@@ -45,13 +48,10 @@ QOpenGLTexture* Window::texture(const char* path) {
 
 void Window::onSceneGraphInitialized() {
     m_renderer = new DefaultRenderer;
-
-    m_root.setWindow(this);
     m_renderer->setRoot(&m_root);
 }
 
 void Window::onSceneGraphInvalidated() {
-    m_root.setWindow(nullptr);
     m_renderer->setRoot(nullptr);
 
     delete m_renderer;
@@ -68,6 +68,12 @@ void Window::onBeforeSynchronizing() {
 
 void Window::onItemDestroyed(Item* item) {
     cancelUpdate(item);
+
+    if (m_timerMap.find(item) != m_timerMap.end()) {
+        std::unordered_set<int> timer = m_timerMap[item];
+        for (int t: timer)
+            removeTimer(item, t);
+    }
 
     m_destroyedItemNode.push_back(item->m_itemNode);
     m_destroyedNode.push_back(item->m_node);
@@ -101,6 +107,25 @@ void Window::cancelUpdate(Item* item) {
     }
 }
 
+int Window::installTimer(Item* item, int interval) {
+    int id = startTimer(interval);
+    m_timerMap[item].insert(id);
+    m_timerItem[id] = item;
+
+    return id;
+}
+
+void Window::removeTimer(Item* item, int timerId) {
+    std::unordered_set<int>& set = m_timerMap[item];
+    assert(set.find(timerId) != set.end());
+
+    set.erase(set.find(timerId));
+    killTimer(timerId);
+
+    if (set.empty())
+        m_timerMap.erase(m_timerMap.find(item));
+}
+
 void Window::keyPressEvent(QKeyEvent* event) {
     QQuickView::keyPressEvent(event);
     if (event->isAccepted())
@@ -109,6 +134,20 @@ void Window::keyPressEvent(QKeyEvent* event) {
     Item* item = focusItem();
     while (item) {
         item->keyPressEvent(event);
+        if (event->isAccepted())
+            break;
+        item = item->parent();
+    }
+}
+
+void Window::keyReleaseEvent(QKeyEvent* event) {
+    QQuickView::keyReleaseEvent(event);
+    if (event->isAccepted())
+        return;
+
+    Item* item = focusItem();
+    while (item) {
+        item->keyReleaseEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
@@ -134,9 +173,9 @@ void Window::mousePressEvent(QMouseEvent* event) {
     if (event->isAccepted())
         return;
 
-    while (activeFocusItem())
+    /*while (activeFocusItem())
         activeFocusItem()->setFocus(false);
-    contentItem()->setFocus(true);
+    contentItem()->setFocus(true); */
 }
 
 void Window::mouseMoveEvent(QMouseEvent* event) {
@@ -151,6 +190,14 @@ void Window::mouseMoveEvent(QMouseEvent* event) {
             break;
         item = item->parent();
     }
+}
+
+void Window::timerEvent(QTimerEvent* event) {
+    if (m_timerItem.find(event->timerId()) != m_timerItem.end()) {
+        m_timerItem[event->timerId()]->timerEvent(event);
+    }
+
+    QQuickView::timerEvent(event);
 }
 
 }

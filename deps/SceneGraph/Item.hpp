@@ -29,7 +29,8 @@ class Item: protected BaseObject {
             ParentChanged = 1 << 1,
             ModelMatrixChanged = 1 << 2,
             HasFocus = 1 << 3,
-            Visible = 1 << 4
+            Visible = 1 << 4,
+            VisibleChanged = 1 << 5
         };
 
         void setWindow(Window*);
@@ -39,10 +40,13 @@ class Item: protected BaseObject {
 
         virtual void visibleChanged();
         virtual void focusChanged();
+        virtual void matrixChanged();
 
         virtual void keyPressEvent(QKeyEvent*);
+        virtual void keyReleaseEvent(QKeyEvent*);
         virtual void touchEvent(QTouchEvent*);
         virtual void mouseMoveEvent(QMouseEvent*);
+        virtual void timerEvent(QTimerEvent*);
 
     public:
         Item(Item* parent = nullptr);
@@ -62,7 +66,10 @@ class Item: protected BaseObject {
         inline const QMatrix4x4& matrix() const { return m_matrix; }
         void setMatrix(const QMatrix4x4& m);
 
-        QMatrix4x4& rmatrix();
+        void resetTransform();
+        void translate(qreal x, qreal y);
+        void scale(qreal x, qreal y);
+        void rotate(qreal angle, qreal x, qreal y, qreal z);
 
         QMatrix4x4 effectiveMatrix() const;
 
@@ -77,6 +84,9 @@ class Item: protected BaseObject {
 
         inline bool visible() const { return m_state & Visible; }
         void setVisible(bool);
+
+        int startTimer(int interval);
+        void killTimer(int timerId);
 
         void update();
 };

@@ -3,7 +3,8 @@
 
 PonyAnimation::PonyAnimation(Pony* parent):
     SpriteSequence(parent),
-    m_owner(parent) {
+    m_owner(parent),
+    m_flip(false) {
 
 }
 
@@ -68,13 +69,19 @@ void PonyAnimation::initialize(const char* source) {
 
 void PonyAnimation::updateState(unsigned added, unsigned /*removed*/) {
     if (added & Creature::TurnedLeft) {
-        QMatrix4x4 matrix;
-        matrix.scale(-1, 1);
-        //matrix.translate(-width(), 0);
-        setMatrix(matrix);
+        if (!m_flip) {
+            scale(-1, 1);
+            translate(-1, 0);
+            m_flip = true;
+        }
+
     }
     else if (added & Creature::TurnedRight) {
-        setMatrix(QMatrix4x4());
+        if (m_flip) {
+            scale(-1, 1);
+            translate(-1, 0);
+            m_flip = false;
+        }
     }
 
     if (strcmp(currentSprite(), "preparePunch") == 0)

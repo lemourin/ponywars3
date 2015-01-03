@@ -1,7 +1,8 @@
 #ifndef SCENEGRAPH_WINDOW_HPP
 #define SCENEGRAPH_WINDOW_HPP
 #include <QQuickView>
-#include <QQuickItem>
+#include <unordered_map>
+#include <unordered_set>
 #include "Item.hpp"
 
 class QOpenGLTexture;
@@ -25,6 +26,9 @@ class Window: public QQuickView {
         std::vector<Node*> m_destroyedItemNode;
         std::vector<Node*> m_destroyedNode;
 
+        std::unordered_map<int, Item*> m_timerItem;
+        std::unordered_map<Item*, std::unordered_set<int>> m_timerMap;
+
         void onSceneGraphInitialized();
         void onSceneGraphInvalidated();
         void onBeforeRendering();
@@ -34,11 +38,16 @@ class Window: public QQuickView {
         void scheduleUpdate(Item*);
         void cancelUpdate(Item*);
 
+        int installTimer(Item*, int interval);
+        void removeTimer(Item*, int timerId);
+
     protected:
         void keyPressEvent(QKeyEvent *);
+        void keyReleaseEvent(QKeyEvent *);
         void touchEvent(QTouchEvent *);
         void mousePressEvent(QMouseEvent *);
         void mouseMoveEvent(QMouseEvent *);
+        void timerEvent(QTimerEvent*);
 
     public:
         Window(QWindow* window = nullptr);

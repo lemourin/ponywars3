@@ -8,7 +8,7 @@ DisplayItem::DisplayItem(DisplayItemFrame* parent):
     m_focusedObject(),
     m_flickable(),
     m_distance(),
-    m_scale(1),
+    m_factor(1),
     m_image(this) {
 
     m_image.setSource(":/resources/bricks.jpg");
@@ -38,9 +38,9 @@ void DisplayItem::setSize(QSizeF size) {
     }
 }
 
-void DisplayItem::setScale(qreal f) {
-    if (f != m_scale) {
-        m_scale = f;
+void DisplayItem::setFactor(qreal f) {
+    if (f != m_factor) {
+        m_factor = f;
         updateVisibleArea();
     }
 }
@@ -92,17 +92,17 @@ void DisplayItem::updateVisibleArea() {
     returnScaleToBounds();
     returnLookAtToBounds();
 
-    rmatrix().setToIdentity();
-    rmatrix().translate(0.5*m_frame->size().width(), 0.5*m_frame->size().height());
-    rmatrix().scale(scale());
-    rmatrix().translate(-effectiveLookAt().x(), -effectiveLookAt().y());
+    resetTransform();
+    translate(0.5*m_frame->size().width(), 0.5*m_frame->size().height());
+    scale(factor(), factor());
+    translate(-effectiveLookAt().x(), -effectiveLookAt().y());
 
     QMatrix4x4 t = effectiveMatrix().inverted() * m_frame->effectiveMatrix();
     setVisibleArea(t.mapRect(QRectF(QPointF(), m_frame->size())));
 }
 
 void DisplayItem::focusedObjectPositionChanged() {
-    setLookAt(-focusedObject()->mapToItem(this, QPointF()));
+    setLookAt(-focusedObject()->matrix() * QPointF(0, 0));
 }
 
 void DisplayItem::returnLookAtToBounds() {
@@ -112,10 +112,10 @@ void DisplayItem::returnLookAtToBounds() {
     qreal width = size().width();
     qreal height = size().height();
 
-    p.rx() = std::max(p.x(), fwidth/(2*scale()));
-    p.rx() = std::min(p.x(), width-fwidth/(2*scale()));
-    p.ry() = std::max(p.y(), fheight/(2*scale()));
-    p.ry() = std::min(p.y(), height-fheight/(2*scale()));
+    p.rx() = std::max(p.x(), fwidth/(2*factor()));
+    p.rx() = std::min(p.x(), width-fwidth/(2*factor()));
+    p.ry() = std::max(p.y(), fheight/(2*factor()));
+    p.ry() = std::min(p.y(), height-fheight/(2*factor()));
 
     setEffectiveLookAt(p);
 }
@@ -127,15 +127,15 @@ void DisplayItem::returnScaleToBounds() {
     if (!qIsNull(w) && !qIsNull(h)) {
         qreal aspect = std::max(m_frame->size().width()/w,
                                 m_frame->size().height()/h);
-        setScale(std::max(scale(), aspect));
+        setFactor(std::max(factor(), aspect));
     }
 }
 
 void DisplayItem::wheelEvent(QWheelEvent* event) {
     if (event->angleDelta().y() > 0)
-        setScale(scale()*1.1);
+        setFactor(factor()*1.1);
     else
-        setScale(scale()/1.1);
+        setFactor(factor()/1.1);
 }
 
 void DisplayItem::mousePressEvent(QMouseEvent* event) {
@@ -202,7 +202,7 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
         qreal distance = QVector2D(p1-p2).length();
 
-        setScale(scale()*distance/m_distance);
+        setFactor(factor()*distance/m_distance);
     }
 }
 

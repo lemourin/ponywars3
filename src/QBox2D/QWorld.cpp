@@ -67,7 +67,7 @@ void QDestructionListener::SayGoodbye(b2Fixture* f) {
 
 QWorld::QWorld(SceneGraph::Item* parent):
     SceneGraph::Item(parent),
-    m_running(true),
+    m_running(false),
     m_locked(false),
     m_timeStep(1.0f / 60.0f),
     m_velocityIterations(10),
@@ -75,6 +75,7 @@ QWorld::QWorld(SceneGraph::Item* parent):
     m_frameTime(1000 / 60),
     m_world(b2Vec2(0, 10)),
     m_groundBody(this),
+    m_timer(-1),
     m_glinitialized() {
 
     //setFlag(ItemIsFocusScope);
@@ -82,7 +83,7 @@ QWorld::QWorld(SceneGraph::Item* parent):
     world()->SetContactListener(&m_contactListener);
     world()->SetDestructionListener(&m_destructionListener);
 
-    //m_groundBody.initialize(this);
+    m_groundBody.initialize(this);
 }
 
 QWorld::~QWorld() {
@@ -90,8 +91,7 @@ QWorld::~QWorld() {
 }
 
 void QWorld::initialize() {
-    //if (m_running)
-    //    m_timer.start(m_frameTime, this);
+    setRunning(true);
 }
 
 void QWorld::destroyBodies() {
@@ -109,10 +109,13 @@ void QWorld::setRunning(bool running) {
 
     m_running = running;
 
-    //if (running)
-    //    m_timer.start(m_frameTime, this);
-    //else
-    //    m_timer.stop();
+    if (running) {
+        m_timer = startTimer(m_frameTime);
+    }
+    else {
+        killTimer(m_timer);
+        m_timer = -1;
+    }
 }
 
 QPointF QWorld::gravity() const {
@@ -181,11 +184,11 @@ void QWorld::step() {
     m_locked = false;
 }
 
-void QWorld::timerEvent(QTimerEvent *event) {
-    if (event->timerId() == m_timer.timerId())
+void QWorld::timerEvent(QTimerEvent* event) {
+    if (event->timerId() == m_timer)
         step();
 
-    //QQuickItem::timerEvent(event);
+    SceneGraph::Item::timerEvent(event);
 }
 
 /*void QWorld::itemChange(ItemChange change, const ItemChangeData& data) {

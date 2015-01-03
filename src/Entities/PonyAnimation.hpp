@@ -12,6 +12,8 @@ class PonyAnimation: public SpriteSequence {
         Pony* m_owner;
         std::string m_source;
 
+        bool m_flip;
+
         void updateState(unsigned added, unsigned removed);
 
     protected:

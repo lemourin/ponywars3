@@ -12,12 +12,12 @@ void Pony::initialize(QWorld* w) {
     Creature::initialize(w);
 
     m_body.initialize(m_bodySource.c_str());
-    m_body.rmatrix().translate(-0.5*size().width(), -0.5*size().height());
-    m_body.rmatrix().scale(size().width(), size().height());
+    m_body.translate(-0.5*size().width(), -0.5*size().height());
+    m_body.scale(size().width(), size().height());
 
     m_wings.initialize(m_wingsSource.c_str());
-    m_wings.rmatrix().translate(-0.5*size().width(), -0.5*size().height());
-    m_wings.rmatrix().scale(size().width(), size().height());
+    m_wings.translate(-0.5*size().width(), -0.5*size().height());
+    m_wings.scale(size().width(), size().height());
 
     setCurrentSprite("standStill");
 }

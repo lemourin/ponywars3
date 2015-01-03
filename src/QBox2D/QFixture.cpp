@@ -30,6 +30,13 @@ void QFixture::destroyFixture() {
     }
 }
 
+void QFixture::setPosition(QPointF p) {
+    m_position = p;
+
+    resetTransform();
+    translate(p.x(), p.y());
+}
+
 void QFixture::setDensity(float density) {
     m_fixtureDef.density = density;
     if (m_fixture)

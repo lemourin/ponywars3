@@ -18,7 +18,7 @@ AddCircle::AddCircle(AddBody* parent):
 
 QFixture* AddCircle::fixture() const {
     Box2DCircle* circle = new Box2DCircle;
-    circle->rmatrix().translate(m_position.x(), m_position.y());
+    circle->translate(m_position.x(), m_position.y());
     circle->setRadius(m_radius);
 
     return circle;

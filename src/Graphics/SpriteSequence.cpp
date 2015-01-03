@@ -7,7 +7,7 @@ SpriteSequence::SpriteSequence(Item* parent):
     m_texture(this),
     m_currentSprite(),
     m_currentFrame(),
-    m_timerId() {
+    m_timerId(-1) {
 }
 
 void SpriteSequence::reset() {
@@ -15,21 +15,20 @@ void SpriteSequence::reset() {
     m_data.clear();
     m_currentSprite = 0;
     m_currentFrame = 0;
-    m_timerId = 0;
+    m_timerId = -1;
 }
 
 void SpriteSequence::visibleChanged() {
-    //killTimer(m_timerId);
-    m_timerId = 0;
+    if (m_timerId != -1) {
+        killTimer(m_timerId);
+        m_timerId = -1;
+    }
 
     if (m_currentSprite == nullptr)
         return;
 
     if (visible()) {
-        //m_texture.setWidth(width());
-        //m_texture.setHeight(height());
-
-        //m_timerId = startTimer(1000.0/m_currentSprite->m_frameRate);
+        m_timerId = startTimer(1000.0/m_currentSprite->m_frameRate);
     }
 }
 

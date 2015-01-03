@@ -21,7 +21,7 @@ bool ViewWorld::read(const QJsonObject& obj) {
     m_world.read(obj["world"].toObject());
 
     setSize(QSizeF(obj["width"].toDouble(), obj["height"].toDouble()));
-    setScale(obj["scale"].toDouble());
+    setFactor(obj["scale"].toDouble());
 
     return true;
 }
@@ -33,7 +33,7 @@ bool ViewWorld::write(QJsonObject& obj) const {
 
     obj["width"] = size().width();
     obj["height"] = size().height();
-    obj["scale"] = scale();
+    obj["scale"] = factor();
 
     return true;
 }

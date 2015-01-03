@@ -44,12 +44,12 @@ QPointF QBody::position() const {
 void QBody::setPosition(QPointF p) {
     m_bodyDef.position = b2Vec2(p.x(), p.y());
 
-    rmatrix().setToIdentity();
-    rmatrix().translate(position().x(), position().y());
-    rmatrix().rotate(rotation()*180.0/M_PI, 0, 0, 1);
+    resetTransform();
+    translate(position().x(), position().y());
+    rotate(rotation()*180.0/M_PI, 0, 0, 1);
 
     if (body()) {
-        body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
+        //body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
         for (QFixture* f = firstFixture(); f; f = f->next())
             f->bodyPositionChanged();
     }
@@ -59,12 +59,12 @@ void QBody::setPosition(QPointF p) {
 void QBody::setRotation(qreal r) {
     m_bodyDef.angle = r*M_PI/180.0;
 
-    rmatrix().setToIdentity();
-    rmatrix().translate(position().x(), position().y());
-    rmatrix().rotate(rotation(), 0, 0, 1);
+    resetTransform();
+    translate(position().x(), position().y());
+    rotate(rotation(), 0, 0, 1);
 
     if (body()) {
-        body()->SetTransform(body()->GetPosition(), r);
+        //body()->SetTransform(body()->GetPosition(), r);
         for (QFixture* f = firstFixture(); f; f = f->next())
             f->bodyRotationChanged();
     }
@@ -173,9 +173,6 @@ void QBody::initialize(QWorld* w) {
     for (QFixture* f = firstFixture(); f; f = f->next()) {
         f->initialize(this);
     }
-
-    //qDebug() << "hakuren" << effectiveMatrix() * QPointF(0, 0) << this;
-
 }
 
 void QBody::initializeLater(QWorld* w) {

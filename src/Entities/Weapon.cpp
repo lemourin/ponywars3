@@ -68,8 +68,8 @@ void Weapon::initialize(QWorld* w) {
 void Weapon::setSize(QSizeF s) {
     m_size = s;
 
-    m_texture.rmatrix().setToIdentity();
-    m_texture.rmatrix().scale(s.width(), s.height());
+    m_texture.resetTransform();
+    m_texture.scale(s.width(), s.height());
 }
 
 void Weapon::setShootPoint(QPointF p) {

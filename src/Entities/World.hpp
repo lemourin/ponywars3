@@ -45,7 +45,7 @@ class World: public QWorld {
         qreal m_fps;
 
         QElapsedTimer m_fpscounter;
-        //Boundary* m_boundary;
+        Boundary* m_boundary;
 
         ItemSet m_itemSet;
         MapEditor m_mapEditor;

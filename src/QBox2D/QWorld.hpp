@@ -42,7 +42,7 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         QBody m_groundBody;
         QContactListener m_contactListener;
         QDestructionListener m_destructionListener;
-        QBasicTimer m_timer;
+        int m_timer;
         QRectF m_visibleRect;
         std::vector<QBody*> m_visibleBodies;
         std::vector<QBody*> m_enqueued;

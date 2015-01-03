@@ -44,7 +44,7 @@ class DisplayItem: public SceneGraph::Item {
         qreal m_distance;
 
         QSizeF m_size;
-        qreal m_scale;
+        qreal m_factor;
 
         SceneGraph::Image m_image;
 
@@ -75,8 +75,8 @@ class DisplayItem: public SceneGraph::Item {
         inline QSizeF size() const { return m_size; }
         void setSize(QSizeF);
 
-        inline qreal scale() const { return m_scale; }
-        void setScale(qreal);
+        inline qreal factor() const { return m_factor; }
+        void setFactor(qreal);
 
         inline QRectF visibleArea() const { return m_visibleArea; }
         void setVisibleArea(QRectF);

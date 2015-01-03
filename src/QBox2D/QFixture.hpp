@@ -65,7 +65,7 @@ class QFixture: public SceneGraph::Item {
         virtual std::vector<QPointF> vertices() const = 0;
 
         inline QPointF position() const { return m_position; }
-        inline void setPosition(QPointF p) { m_position = p; }
+        void setPosition(QPointF p);
 
         inline const b2Fixture* fixture() const { return m_fixture; }
 

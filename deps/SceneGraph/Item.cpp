@@ -2,6 +2,7 @@
 #include "Window.hpp"
 #include "Node.hpp"
 #include "Renderer.hpp"
+#include "Window.hpp"
 #include <cassert>
 
 namespace SceneGraph {
@@ -11,11 +12,13 @@ Item::Item(Item* parent):
     m_window(),
     m_itemNode(),
     m_node(),
-    m_state(ParentChanged | Visible) {
+    m_state(ParentChanged) {
 
     if (parent && parent->window()) {
         setWindow(parent->window());
     }
+
+    setVisible(true);
 }
 
 Item::~Item() {
@@ -43,13 +46,6 @@ void Item::setParent(Item* item) {
     }
 }
 
-QMatrix4x4& Item::rmatrix() {
-    m_state |= ModelMatrixChanged;
-    update();
-
-    return m_matrix;
-}
-
 void Item::appendChild(Item* item) {
     item->setWindow(window());
 
@@ -70,7 +66,30 @@ void Item::removeChild(Item* item) {
 void Item::setMatrix(const QMatrix4x4& m) {
     m_matrix = m;
     m_state |= ModelMatrixChanged;
+    update();
+}
 
+void Item::resetTransform() {
+    m_matrix.setToIdentity();
+    m_state |= ModelMatrixChanged;
+    update();
+}
+
+void Item::translate(qreal x, qreal y) {
+    m_matrix.translate(x, y);
+    m_state |= ModelMatrixChanged;
+    update();
+}
+
+void Item::scale(qreal x, qreal y) {
+    m_matrix.scale(x, y);
+    m_state |= ModelMatrixChanged;
+    update();
+}
+
+void Item::rotate(qreal angle, qreal x, qreal y, qreal z) {
+    m_matrix.rotate(angle, x, y, z);
+    m_state |= ModelMatrixChanged;
     update();
 }
 
@@ -111,6 +130,12 @@ void Item::setFocus(bool enabled) {
 
     if (m_state != state) {
         m_state = state;
+
+        if (enabled) {
+            assert(window());
+            window()->m_focusItem = this;
+        }
+
         focusChanged();
     }
 }
@@ -123,13 +148,21 @@ void Item::setVisible(bool enabled) {
         state &= ~Visible;
 
     if (m_state != state) {
-        m_state = state;
-
-        if (enabled)
-            update();
+        m_state = state ^ VisibleChanged;
+        update();
 
         visibleChanged();
     }
+}
+
+int Item::startTimer(int interval) {
+    assert(window());
+    return window()->installTimer(this, interval);
+}
+
+void Item::killTimer(int timerId) {
+    assert(window());
+    window()->removeTimer(this, timerId);
 }
 
 void Item::setWindow(Window* window) {
@@ -160,7 +193,14 @@ void Item::visibleChanged() {
 void Item::focusChanged() {
 }
 
+void Item::matrixChanged() {
+}
+
 void Item::keyPressEvent(QKeyEvent* e) {
+    e->ignore();
+}
+
+void Item::keyReleaseEvent(QKeyEvent* e) {
     e->ignore();
 }
 
@@ -170,6 +210,9 @@ void Item::touchEvent(QTouchEvent* e) {
 
 void Item::mouseMoveEvent(QMouseEvent* e) {
     e->ignore();
+}
+
+void Item::timerEvent(QTimerEvent*) {
 }
 
 void Item::update() {
