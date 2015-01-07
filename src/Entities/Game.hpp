@@ -8,7 +8,6 @@ class Game: public DisplayItemFrame {
     private:
         ViewWorld m_viewWorld;
         LightSystem m_lightSystem;
-        SceneGraph::Image m_image;
 
     protected:
         void sizeChanged();

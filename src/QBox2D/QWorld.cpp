@@ -191,14 +191,6 @@ void QWorld::timerEvent(QTimerEvent* event) {
     SceneGraph::Item::timerEvent(event);
 }
 
-/*void QWorld::itemChange(ItemChange change, const ItemChangeData& data) {
-    QQuickItem::itemChange(change, data);
-    if (change == ItemSceneChange && data.window) {
-        connect(data.window, &QQuickWindow::beforeRendering,
-                this, &QWorld::onBeforeRendering, Qt::DirectConnection);
-    }
-}*/
-
 std::vector<QBody*> QWorld::bodies(const QRectF& rect) const {
     b2AABB b2rect;
     b2rect.lowerBound = b2Vec2(rect.topLeft().x(), rect.topLeft().y());
@@ -265,28 +257,6 @@ void QWorld::onBodyDestroyed(QBody* body) {
     if (it != m_enqueued.end())
         m_enqueued.erase(it);
 
-}
-
-void QWorld::onBeforeRendering() {
-    if (!m_glinitialized) {
-        initializeOpenGLFunctions();
-        initializeGL();
-
-        m_glinitialized = true;
-    }
-
-    //window()->resetOpenGLState();
-    renderGL();
-}
-
-void QWorld::initializeGL() {
-    qDebug() << reinterpret_cast<const char*>(glGetString(GL_VERSION));
-    qDebug() << reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-}
-
-void QWorld::renderGL() {
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 bool QWorld::BodyFinder::ReportFixture(b2Fixture* fixture) {

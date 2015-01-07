@@ -2,7 +2,6 @@
 #define DISPLAYITEM_HPP
 
 #include "SceneGraph/Item.hpp"
-#include "SceneGraph/Image.hpp"
 
 class BaseItem;
 class DisplayItem;
@@ -45,8 +44,6 @@ class DisplayItem: public SceneGraph::Item {
 
         QSizeF m_size;
         qreal m_factor;
-
-        SceneGraph::Image m_image;
 
         void focusedObjectPositionChanged();
 

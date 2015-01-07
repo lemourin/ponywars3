@@ -6,6 +6,7 @@
 class QKeyEvent;
 class QTouchEvent;
 class QMouseEvent;
+class QWheelEvent;
 
 namespace SceneGraph {
 
@@ -45,7 +46,10 @@ class Item: protected BaseObject {
         virtual void keyPressEvent(QKeyEvent*);
         virtual void keyReleaseEvent(QKeyEvent*);
         virtual void touchEvent(QTouchEvent*);
+        virtual void mousePressEvent(QMouseEvent*);
+        virtual void mouseReleaseEvent(QMouseEvent*);
         virtual void mouseMoveEvent(QMouseEvent*);
+        virtual void wheelEvent(QWheelEvent*);
         virtual void timerEvent(QTimerEvent*);
 
     public:

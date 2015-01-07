@@ -178,6 +178,10 @@ void Window::mousePressEvent(QMouseEvent* event) {
     contentItem()->setFocus(true); */
 }
 
+void Window::mouseReleaseEvent(QMouseEvent* event) {
+    QQuickView::mouseReleaseEvent(event);
+}
+
 void Window::mouseMoveEvent(QMouseEvent* event) {
     QQuickView::mouseMoveEvent(event);
     if (event->isAccepted())
@@ -186,6 +190,18 @@ void Window::mouseMoveEvent(QMouseEvent* event) {
     Item* item = focusItem();
     while (item) {
         item->mouseMoveEvent(event);
+        if (event->isAccepted())
+            break;
+        item = item->parent();
+    }
+}
+
+void Window::wheelEvent(QWheelEvent* event) {
+    QQuickView::wheelEvent(event);
+
+    Item* item = focusItem();
+    while (item) {
+        item->wheelEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();

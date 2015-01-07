@@ -89,11 +89,6 @@ void World::geometryChanged(const QRectF& newGeometry,
     }
 }*/
 
-void World::renderGL() {
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-}
-
 void World::onBodyDestroyed(QBody* body) {
     if (player() == body)
         setPlayer(nullptr);

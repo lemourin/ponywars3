@@ -42,11 +42,14 @@ class Window: public QQuickView {
         void removeTimer(Item*, int timerId);
 
     protected:
-        void keyPressEvent(QKeyEvent *);
-        void keyReleaseEvent(QKeyEvent *);
-        void touchEvent(QTouchEvent *);
-        void mousePressEvent(QMouseEvent *);
-        void mouseMoveEvent(QMouseEvent *);
+        void keyPressEvent(QKeyEvent*);
+        void keyReleaseEvent(QKeyEvent*);
+        void touchEvent(QTouchEvent*);
+        void mousePressEvent(QMouseEvent*);
+        void mouseReleaseEvent(QMouseEvent*);
+        void mouseMoveEvent(QMouseEvent*);
+        void wheelEvent(QWheelEvent*);
+
         void timerEvent(QTimerEvent*);
 
     public:

@@ -64,8 +64,7 @@ Window::Window(QWindow* parent):
     setSource(QUrl("qrc:/qml/main.qml"));
     setResizeMode(SizeRootObjectToView);
 
-    connect(engine(), &QQmlEngine::quit,
-            this, &QQuickView::close);
+    connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
     //m_game.setZ(-1);
 }
 
@@ -73,8 +72,7 @@ void Window::resizeEvent(QResizeEvent* event) {
     SceneGraph::Window::resizeEvent(event);
 
     QMatrix4x4 matrix;
-    //matrix.perspective(45.0, (float)size().width()/size().height(), 0.1, 100);
-    matrix.ortho(0, width(), height(), 0, -100, 100);
+    matrix.ortho(0, width(), height(), 0, -1, 1);
 
     setProjection(matrix);
 

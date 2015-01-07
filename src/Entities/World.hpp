@@ -57,7 +57,6 @@ class World: public QWorld {
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
         //void itemChange(ItemChange, const ItemChangeData &);
-        void renderGL();
         void onBodyDestroyed(QBody *);
 
     public:

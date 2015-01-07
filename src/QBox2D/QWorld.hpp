@@ -48,7 +48,6 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         std::vector<QBody*> m_enqueued;
         bool m_glinitialized;
 
-        void onBeforeRendering();
         void updateVisibleBodies();
         void step();
         void destroyBodies();
@@ -65,10 +64,6 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         };
 
         void timerEvent(QTimerEvent*);
-        //void itemChange(ItemChange, const ItemChangeData &);
-
-        virtual void initializeGL();
-        virtual void renderGL();
 
         virtual void onBodyDestroyed(QBody*);
 

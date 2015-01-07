@@ -8,12 +8,7 @@ DisplayItem::DisplayItem(DisplayItemFrame* parent):
     m_focusedObject(),
     m_flickable(),
     m_distance(),
-    m_factor(1),
-    m_image(this) {
-
-    m_image.setSource(":/resources/bricks.jpg");
-    //m_image.rmatrix().translate(500, 500);
-    //m_image.rmatrix().scale(10, 10);
+    m_factor(1) {
 
     //setFlag(ItemIsFocusScope);
     //setTransformOrigin(TopLeft);

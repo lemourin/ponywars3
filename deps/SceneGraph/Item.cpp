@@ -133,6 +133,9 @@ void Item::setFocus(bool enabled) {
 
         if (enabled) {
             assert(window());
+            if (window()->m_focusItem)
+                window()->m_focusItem->setFocus(false);
+
             window()->m_focusItem = this;
         }
 
@@ -174,11 +177,6 @@ void Item::setWindow(Window* window) {
     m_window = window;
     update();
 
-    if (window) {
-        if (focus())
-            window->m_focusItem = this;
-    }
-
     for (Item* item = firstChild(); item; item = item->next())
         item->setWindow(window);
 }
@@ -208,7 +206,19 @@ void Item::touchEvent(QTouchEvent* e) {
     e->ignore();
 }
 
+void Item::mousePressEvent(QMouseEvent* e) {
+    e->ignore();
+}
+
+void Item::mouseReleaseEvent(QMouseEvent* e) {
+    e->ignore();
+}
+
 void Item::mouseMoveEvent(QMouseEvent* e) {
+    e->ignore();
+}
+
+void Item::wheelEvent(QWheelEvent* e) {
     e->ignore();
 }
 
