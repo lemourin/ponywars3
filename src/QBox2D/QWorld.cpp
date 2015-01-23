@@ -259,6 +259,10 @@ void QWorld::onBodyDestroyed(QBody* body) {
 
 }
 
+void QWorld::onBodyAdded(QBody *) {
+
+}
+
 bool QWorld::BodyFinder::ReportFixture(b2Fixture* fixture) {
     m_foundBodies.push_back(QBody::toQBody(fixture->GetBody()));
     return true;

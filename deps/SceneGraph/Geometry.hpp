@@ -48,6 +48,7 @@ class Geometry: public QOpenGLFunctions {
         template <class T = void> inline T* vertexData() const {
             return static_cast<T*>(m_vertexData);
         }
+
         template <class T = void> inline T* indexData() const {
             return static_cast<T*>(m_indexData);
         }

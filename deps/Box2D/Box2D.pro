@@ -54,7 +54,7 @@ SOURCES += \
     Dynamics/Joints/b2DistanceJoint.cpp \
     Dynamics/Joints/b2MotorJoint.cpp \
     Dynamics/Joints/b2RopeJoint.cpp \
-    Dynamics/b2ContactManager.cpp 
+    Dynamics/b2ContactManager.cpp
 
 HEADERS += \
     Collision/b2TimeOfImpact.h \

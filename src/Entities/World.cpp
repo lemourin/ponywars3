@@ -96,6 +96,13 @@ void World::onBodyDestroyed(QBody* body) {
     QWorld::onBodyDestroyed(body);
 }
 
+void World::onBodyAdded(QBody* body) {
+    QWorld::onBodyAdded(body);
+
+    assert(lightSystem());
+    lightSystem()->addBody(body);
+}
+
 void World::setPlayer(Player* player) {
     if (m_player == player)
         return;
@@ -103,7 +110,6 @@ void World::setPlayer(Player* player) {
     m_player = player;
 
     if (player) {
-        qDebug() << "focus";
         player->setFocus(true);
         view()->setFocusedObject(player);
     }

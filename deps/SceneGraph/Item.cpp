@@ -47,6 +47,7 @@ void Item::setParent(Item* item) {
 }
 
 void Item::appendChild(Item* item) {
+    assert(item);
     item->setWindow(window());
 
     item->m_state |= ParentChanged;

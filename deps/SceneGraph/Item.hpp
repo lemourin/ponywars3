@@ -18,6 +18,7 @@ class Item: protected BaseObject {
     private:
         friend class Window;
         friend class Renderer;
+        friend class ShaderSource;
 
         Window* m_window;
         TransformNode* m_itemNode;
@@ -33,8 +34,6 @@ class Item: protected BaseObject {
             Visible = 1 << 4,
             VisibleChanged = 1 << 5
         };
-
-        void setWindow(Window*);
 
     protected:
         virtual Node* synchronize(Node* old);
@@ -63,6 +62,7 @@ class Item: protected BaseObject {
         void removeChild(Item*);
 
         inline Window* window() const { return m_window; }
+        void setWindow(Window*);
 
         Item* parent() const;
         void setParent(Item*);

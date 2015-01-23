@@ -69,7 +69,6 @@ SOURCES += \
     Graphics/SpriteSequence.cpp \
     Entities/PonyAnimation.cpp \
     Actions/AddFixture.cpp \
-    Graphics/ShaderSource.cpp \
     QBox2D/QJoint.cpp \
     Utility/BaseItem.cpp \
     Entities/ViewWorld.cpp \
@@ -133,7 +132,6 @@ HEADERS += \
     Graphics/SpriteSequence.hpp \
     Entities/PonyAnimation.hpp \
     Actions/AddFixture.hpp \
-    Graphics/ShaderSource.hpp \
     QBox2D/QJoint.hpp \
     Utility/Factory.hpp \
     Utility/Pool.hpp \

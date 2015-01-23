@@ -49,7 +49,6 @@ void QBody::setPosition(QPointF p) {
     rotate(rotation()*180.0/M_PI, 0, 0, 1);
 
     if (body()) {
-        //body()->SetTransform(b2Vec2(p.x(), p.y()), rotation());
         for (QFixture* f = firstFixture(); f; f = f->next())
             f->bodyPositionChanged();
     }
@@ -64,7 +63,6 @@ void QBody::setRotation(qreal r) {
     rotate(rotation(), 0, 0, 1);
 
     if (body()) {
-        //body()->SetTransform(body()->GetPosition(), r);
         for (QFixture* f = firstFixture(); f; f = f->next())
             f->bodyRotationChanged();
     }
@@ -170,9 +168,10 @@ void QBody::initialize(QWorld* w) {
     m_world = w;
     m_body = world()->world()->CreateBody(&m_bodyDef);
 
-    for (QFixture* f = firstFixture(); f; f = f->next()) {
+    for (QFixture* f = firstFixture(); f; f = f->next())
         f->initialize(this);
-    }
+
+    w->onBodyAdded(this);
 }
 
 void QBody::initializeLater(QWorld* w) {
@@ -246,6 +245,11 @@ void QBody::synchronize() {
 
     setPosition(QPointF(newX, newY));
     setRotation(newRotation);
+
+    m_content.resetTransform();
+    m_content.translate(position().x(), position().y());
+    m_content.rotate(rotation(), 0, 0, 1);
+
 }
 
 QBody* QBody::toQBody(b2Body* body) {
@@ -266,6 +270,10 @@ void QBody::preSolve(QFixture*, b2Contact*, const b2Manifold*) {
 }
 
 void QBody::postSolve(QFixture*, b2Contact*, const b2ContactImpulse*) {
+}
+
+void QBody::visibleChanged() {
+    m_content.setVisible(visible());
 }
 
 bool QBody::testPoint(const QPointF& point) const {

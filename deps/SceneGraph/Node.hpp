@@ -5,6 +5,7 @@
 
 namespace SceneGraph {
 
+class Renderer;
 class Material;
 class Geometry;
 
@@ -16,11 +17,25 @@ class Node: protected BaseObject {
             TransformNode
         };
 
+        enum Flag {
+            UsePreprocess = 1 << 0
+        };
+
     private:
+        friend class Renderer;
+
+        Renderer* m_renderer;
         Type m_type;
+        Flag m_flag;
+
+        void setRenderer(Renderer*);
+
+    protected:
+        virtual void preprocess();
 
     public:
         Node(Node* parent = nullptr, Type type = Type::Node);
+        ~Node();
 
         Node* firstChild() const;
         Node* next() const;
@@ -29,6 +44,10 @@ class Node: protected BaseObject {
         void removeChild(Node*);
 
         inline Type type() const { return m_type; }
+        inline Renderer* renderer() const { return m_renderer; }
+
+        inline Flag flag() const { return m_flag; }
+        void setFlag(Flag f);
 };
 
 class GeometryNode: public Node {

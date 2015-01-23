@@ -1,20 +1,28 @@
 #ifndef LIGHTBLENDER_HPP
 #define LIGHTBLENDER_HPP
-#include <QSGGeometryNode>
-#include <QSGMaterialShader>
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Shader.hpp"
+#include "SceneGraph/Material.hpp"
+#include "SceneGraph/Geometry.hpp"
+#include "SceneGraph/ShaderSource.hpp"
 #include <QColor>
 #include <QOpenGLFunctions>
+#include <QOpenGLFramebufferObject>
 
 class QSGDynamicTexture;
 class LightSystem;
 
 const int DYNAMIC_LIGHTS_COUNT = 1;
 
-class LightBlender: public QSGGeometryNode {
+class LightBlender: public SceneGraph::GeometryNode {
     private:
-        class Material: public QSGMaterial {
+        struct Vertex {
+            float x, y, tx, ty;
+        };
+
+        class Material: public SceneGraph::Material {
             private:
-                class Shader: public QSGMaterialShader, public QOpenGLFunctions {
+                class Shader: public SceneGraph::Shader, public QOpenGLFunctions {
                     private:
                         int m_id_matrix;
                         int m_id_opacity;
@@ -30,33 +38,33 @@ class LightBlender: public QSGGeometryNode {
                         void activate();
                         void deactivate();
 
-                        const char* const* attributeNames() const;
                         const char* vertexShader() const;
                         const char* fragmentShader() const;
 
-                        void updateState(const RenderState &state,
-                                         QSGMaterial *newMaterial,
-                                         QSGMaterial *oldMaterial);
+                        void updateState(const SceneGraph::Material*, const SceneGraph::RenderState&);
+                        std::vector< std::string > attribute() const;
                 };
 
-                QSGDynamicTexture* m_light[DYNAMIC_LIGHTS_COUNT];
-                QSGDynamicTexture* m_lightTexture;
+                //QSGDynamicTexture* m_light[DYNAMIC_LIGHTS_COUNT];
+                SceneGraph::ShaderSource::ShaderNode* m_lightTexture;
                 QColor m_ambient;
 
             public:
                 Material();
 
-                inline QSGMaterialShader* createShader() const { return new Shader; }
-                inline QSGMaterialType* type() const { static QSGMaterialType t; return &t; }
+                inline Shader* shader() const { return Shader::get<Shader>(); }
 
-                inline void setLightTexture(QSGDynamicTexture* c) { m_lightTexture = c; }
+                inline void setLightTexture(SceneGraph::ShaderSource::ShaderNode* c) { m_lightTexture = c; }
                 inline void setAmbient(QColor c) { m_ambient = c; }
-                void setLights(QSGDynamicTexture* array[DYNAMIC_LIGHTS_COUNT]);
+                //void setLights(QSGDynamicTexture* array[DYNAMIC_LIGHTS_COUNT]);
 
                 void update();
         } m_material;
 
-        QSGGeometry m_geometry;
+        SceneGraph::Geometry m_geometry;
+
+    protected:
+        void preprocess();
 
     public:
         LightBlender();
@@ -64,6 +72,5 @@ class LightBlender: public QSGGeometryNode {
         inline Material* material() { return &m_material; }
 
         void updateGeometry(LightSystem*);
-        void preprocess();
 };
 #endif // LIGHTBLENDER_HPP

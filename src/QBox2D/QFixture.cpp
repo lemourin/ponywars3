@@ -115,11 +115,6 @@ bool QFixture::read(const QJsonObject& obj) {
 }
 
 void QFixture::initialize(QBody* item) {
-    /*if (!m_body) {
-        m_body = Utility::findAncestor<QBody>(this);
-        assert(m_body);
-    }*/
-
     m_body = item;
 
     b2Shape *shape = createShape();

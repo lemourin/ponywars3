@@ -29,7 +29,7 @@ class DynamicLight: public Light {
     private:
         StaticLight* m_boundLight;
 
-        class DynamicNode: public Light::Node {
+        class DynamicNode: public Light::LightNode {
             private:
                 QSGNode m_shadows;
                 std::vector<ShadowNode*> m_unused;

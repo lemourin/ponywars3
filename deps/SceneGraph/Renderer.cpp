@@ -21,6 +21,7 @@ Renderer::~Renderer() {
 void Renderer::updateItem(Item* item) {
     if (item->m_itemNode == nullptr) {
         item->m_itemNode = new TransformNode;
+        item->m_itemNode->setRenderer(this);
     }
 
     if (item->m_state & Item::ModelMatrixChanged) {
@@ -82,6 +83,7 @@ void Renderer::updateNodes(Window* window) {
     }
 
     window->m_updateItem = window->m_nextFrame;
+    window->m_nextFrame.clear();
     if (window->m_updateItem.size() > 0) {
         window->scheduleSynchronize();
     }
@@ -90,6 +92,7 @@ void Renderer::updateNodes(Window* window) {
 void Renderer::destroyNodes(Window* window) {
     while (!window->m_destroyedItemNode.empty()) {
         Node* itemNode = window->m_destroyedItemNode.back();
+        assert(itemNode);
         window->m_destroyedItemNode.pop_back();
         while (itemNode->firstChild())
             itemNode->removeChild(itemNode->firstChild());
@@ -104,24 +107,38 @@ void Renderer::destroyNodes(Window* window) {
 }
 
 
-void Renderer::render(Node* root) {
-    RenderState state = m_state;
+void Renderer::render(Node* root, RenderState state) {
     if (root->type() == Node::Type::GeometryNode) {
-        renderGeometryNode(static_cast<GeometryNode*>(root));
+        renderGeometryNode(static_cast<GeometryNode*>(root), state);
     }
     else if (root->type() == Node::Type::TransformNode) {
         TransformNode* node = static_cast<TransformNode*>(root);
-        m_state.setMatrix(state.matrix()*node->matrix());
+        state.setMatrix(state.matrix()*node->matrix());
     }
 
     for (Node* node = root->firstChild(); node; node = node->next())
-        render(node);
+        render(node, state);
+}
 
-    m_state = state;
+void Renderer::nodeAdded(Node* node) {
+    update(node);
+}
+
+void Renderer::nodeDestroyed(Node* node) {
+    if (node->flag() & Node::UsePreprocess)
+        m_preprocess.erase(node);
+}
+
+void Renderer::update(Node* node) {
+    if (node->flag() & Node::UsePreprocess)
+        m_preprocess.insert(node);
 }
 
 void Renderer::render() {
-    render(m_root);
+    for (Node* node: m_preprocess)
+        node->preprocess();
+
+    render(m_root, m_state);
 }
 
 void Renderer::synchronize(Window* window) {
@@ -142,12 +159,17 @@ void Renderer::setSize(QSize size) {
 
 void Renderer::setRoot(Item* item) {
     if (item == nullptr) {
+        if (m_root)
+            m_root->setRenderer(nullptr);
+
         m_root = nullptr;
         return;
     }
 
-    if (!item->m_itemNode)
+    if (!item->m_itemNode) {
         item->m_itemNode = new TransformNode;
+        item->m_itemNode->setRenderer(this);
+    }
 
     m_root = item->m_itemNode;
 }
@@ -165,6 +187,10 @@ QOpenGLTexture* Renderer::texture(const char* path) {
     }
 
     return m_texture[path];
+}
+
+RenderState::RenderState(QMatrix4x4 m): m_matrix(m) {
+
 }
 
 }

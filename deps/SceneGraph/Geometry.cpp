@@ -1,5 +1,6 @@
 #include "Geometry.hpp"
 #include <cassert>
+#include <QDebug>
 
 namespace SceneGraph {
 

@@ -1,6 +1,5 @@
 #ifndef BASEITEM_HPP
 #define BASEITEM_HPP
-#include <QQuickItem>
 #include "SceneGraph/Item.hpp"
 
 class DisplayItem;

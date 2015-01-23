@@ -1,5 +1,6 @@
 #include "BaseObject.hpp"
 #include <cassert>
+#include <QDebug>
 
 namespace SceneGraph {
 
@@ -18,8 +19,8 @@ BaseObject::~BaseObject() {
     if (m_parent)
         m_parent->removeChild(this);
 
-    while (m_firstChild)
-        delete m_firstChild;
+    for (BaseObject* obj = firstChild(); obj; obj = obj->next())
+        removeChild(obj);
 }
 
 void BaseObject::appendChild(BaseObject* node) {

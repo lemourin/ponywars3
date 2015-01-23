@@ -1,9 +1,10 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
-#include <QSGGeometryNode>
 #include "QBox2D/QBody.hpp"
 #include "LightMaterial.hpp"
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Geometry.hpp"
 
 class LightSystem;
 class QSGTexture;
@@ -17,23 +18,25 @@ class Light: public QBody {
         LightSystem* m_lightSystem;
 
     protected:
-        class Node: public QSGGeometryNode {
+        class LightNode: public SceneGraph::GeometryNode {
             private:
-                QSGGeometry m_geometry;
+                struct Vertex { float x, y; };
+
+                SceneGraph::Geometry m_geometry;
                 LightMaterial m_material;
 
             public:
-                Node();
+                LightNode();
                 void preprocess();
 
                 inline LightMaterial* material() { return &m_material; }
-                inline QSGGeometry* geometry() { return &m_geometry; }
+                inline SceneGraph::Geometry* geometry() { return &m_geometry; }
 
-                void updateGeometry(qreal radius);
+                void updateGeometry(float radius);
                 void synchronize(Light* light);
         };
 
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
 
     public:
         Light(Item* = nullptr);

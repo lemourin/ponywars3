@@ -7,7 +7,7 @@ namespace SceneGraph {
 
 class DefaultRenderer: public Renderer, public QOpenGLFunctions {
     protected:
-        void renderGeometryNode(GeometryNode *node);
+        void renderGeometryNode(GeometryNode *node, const RenderState&);
 
     public:
         DefaultRenderer();

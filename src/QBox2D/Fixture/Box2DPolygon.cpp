@@ -7,7 +7,7 @@
 Box2DPolygon::Box2DPolygon(SceneGraph::Item* parent):
     Fixture(parent),
     m_texture(this),
-    m_normalMap(this) {
+    m_normalMap() {
     setTexture(&m_texture);
     setNormalMap(&m_normalMap);
 }

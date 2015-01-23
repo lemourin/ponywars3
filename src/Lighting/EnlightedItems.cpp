@@ -56,7 +56,7 @@ EnlightedNode::EnlightedNode(QFixture* fixture):
         m_geometry.vertexDataAsPoint2D()[i].set(v[i].x(), v[i].y());
 
     m_geometryNode.setGeometry(&m_geometry);
-    m_geometryNode.setMaterial(&m_material);
+    //m_geometryNode.setMaterial(&m_material);
 
     appendChildNode(&m_geometryNode);
 }
@@ -67,7 +67,7 @@ void EnlightedNode::update(QFixture* fixture, Light* light) {
 }
 
 void EnlightedNode::updateMaterial(Light* light) {
-    m_material.setNormalMap(light->lightSystem()->normalMap()->texture());
+    //m_material.setNormalMap(light->lightSystem()->normalMap()->texture());
     QVector3D p(light->position().x(), light->position().y(), 0/*light->z()*/);
     m_material.setLightPosition(matrix().inverted()*p);
     m_material.setColor(light->color());

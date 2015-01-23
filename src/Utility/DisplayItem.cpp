@@ -118,12 +118,9 @@ void DisplayItem::returnLookAtToBounds() {
 void DisplayItem::returnScaleToBounds() {
     qreal w = size().width();
     qreal h = size().height();
-
-    if (!qIsNull(w) && !qIsNull(h)) {
-        qreal aspect = std::max(m_frame->size().width()/w,
-                                m_frame->size().height()/h);
-        setFactor(std::max(factor(), aspect));
-    }
+    volatile qreal aspect = std::max(m_frame->size().width()/w,
+                                     m_frame->size().height()/h);
+    setFactor(std::max(factor(), (qreal)aspect));
 }
 
 void DisplayItem::wheelEvent(QWheelEvent* event) {

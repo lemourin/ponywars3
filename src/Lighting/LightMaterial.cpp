@@ -5,21 +5,12 @@
 
 LightMaterial::LightMaterial():
     m_normalMap() {
-    setFlag(Blending);
-    setFlag(RequiresFullMatrix);
-}
-
-QSGMaterialShader* LightMaterial::createShader() const {
-    return new Shader;
-}
-
-QSGMaterialType* LightMaterial::type() const {
-    static QSGMaterialType t;
-    return &t;
+    //setFlag(Blending);
+    //setFlag(RequiresFullMatrix);
 }
 
 void LightMaterial::Shader::initialize() {
-    QSGMaterialShader::initialize();
+    SceneGraph::Shader::initialize();
     initializeOpenGLFunctions();
 
     m_id_matrix = program()->uniformLocation("matrix");
@@ -31,7 +22,6 @@ void LightMaterial::Shader::initialize() {
 }
 
 void LightMaterial::Shader::activate() {
-    QSGMaterialShader::activate();
 #ifdef GL_MAX
     glGetIntegerv(GL_BLEND_EQUATION, &m_blendEquation);
     glBlendEquation(GL_MAX);
@@ -45,7 +35,6 @@ void LightMaterial::Shader::activate() {
 }
 
 void LightMaterial::Shader::deactivate() {
-    QSGMaterialShader::deactivate();
 #ifdef GL_MAX
     glBlendEquation(m_blendEquation);
 #else
@@ -99,30 +88,24 @@ const char* LightMaterial::Shader::fragmentShader() const {
     );
 }
 
-const char* const* LightMaterial::Shader::attributeNames() const {
-    static const char* const names[] = {
-        "vertex",
-        0
+std::vector<std::string> LightMaterial::Shader::attribute() const {
+    return {
+        "vertex"
     };
-
-    return names;
 }
 
-void LightMaterial::Shader::updateState(const RenderState& state,
-                                        QSGMaterial* cur,
-                                        QSGMaterial*) {
-    LightMaterial* material = static_cast<LightMaterial*>(cur);
+void LightMaterial::Shader::updateState(const SceneGraph::Material *mat,
+                                        const SceneGraph::RenderState &state) {
+    const LightMaterial* material = static_cast<const LightMaterial*>(mat);
 
     assert(material->normalMap());
 
-    material->normalMap()->bind();
+    glBindTexture(GL_TEXTURE_2D, material->normalMap()->texture()->handle());
     program()->setUniformValue(m_id_normalMap, 0);
     program()->setUniformValue(m_id_lightPosition, material->lightPosition());
     program()->setUniformValue(m_id_attenuation, material->attenuation());
     program()->setUniformValue(m_id_color, material->color());
 
-    if (state.isMatrixDirty())
-        program()->setUniformValue(m_id_matrix, state.combinedMatrix());
-    if (state.isOpacityDirty())
-        program()->setUniformValue(m_id_opacity, state.opacity());
+    program()->setUniformValue(m_id_matrix, state.matrix());
+    program()->setUniformValue(m_id_opacity, 1.f);
 }

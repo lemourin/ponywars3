@@ -1,4 +1,5 @@
 #include "Shader.hpp"
+#include <cassert>
 
 namespace SceneGraph {
 
@@ -9,11 +10,12 @@ void Shader::initialize() {
     program()->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShader());
     program()->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShader());
 
-    program()->link();
+    assert(program()->link());
 
     int id = 0;
     for (const std::string& name: attribute()) {
         m_attributeLocation[id] = program()->attributeLocation(name.c_str());
+        assert(m_attributeLocation[id] != -1);
         id++;
     }
 

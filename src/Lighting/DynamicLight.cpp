@@ -101,7 +101,7 @@ bool DynamicLight::castingShadow(QPointF p1, QPointF p2) const {
 }*/
 
 DynamicLight::DynamicNode::DynamicNode() {
-    appendChildNode(&m_shadows);
+    //appendChildNode(&m_shadows);
 }
 
 DynamicLight::DynamicNode::~DynamicNode() {

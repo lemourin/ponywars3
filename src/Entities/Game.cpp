@@ -12,7 +12,6 @@ Game::Game(Item* parent):
     m_lightSystem.initialize();
 
     load(":/json/map00.json");
-    //setClip(true);
 }
 
 void Game::sizeChanged() {
@@ -31,7 +30,7 @@ void Game::sizeChanged() {
 
 bool Game::read(const QJsonObject& obj) {
     m_viewWorld.read(obj["viewWorld"].toObject());
-    //m_lightSystem.read(obj["lightSystem"].toObject());
+    m_lightSystem.read(obj["lightSystem"].toObject());
 
     return true;
 }

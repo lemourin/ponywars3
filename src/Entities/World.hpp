@@ -13,6 +13,8 @@
 
 class Game;
 class Player;
+class LightSystem;
+class ViewWorld;
 
 class Boundary: public QBody {
     private:
@@ -27,8 +29,6 @@ class Boundary: public QBody {
                  qreal thickness,
                  SceneGraph::Item* = nullptr);
 };
-
-class ViewWorld;
 
 class World: public QWorld {
     private:
@@ -57,7 +57,8 @@ class World: public QWorld {
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
         //void itemChange(ItemChange, const ItemChangeData &);
-        void onBodyDestroyed(QBody *);
+        void onBodyDestroyed(QBody*);
+        void onBodyAdded(QBody*);
 
     public:
         explicit World(ViewWorld*);

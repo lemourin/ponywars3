@@ -2,6 +2,7 @@
 #define RENDERER_HPP
 #include <QMatrix4x4>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 class QOpenGLTexture;
@@ -22,24 +23,32 @@ class RenderState {
         inline void setMatrix(QMatrix4x4 m) { m_matrix = m; }
 
     public:
+        RenderState(QMatrix4x4 = QMatrix4x4());
+
         inline const QMatrix4x4& matrix() const { return m_matrix; }
 };
 
 class Renderer {
     private:
+        friend class Node;
+
         Node* m_root;
         RenderState m_state;
         QSize m_size;
         std::unordered_map< std::string, QOpenGLTexture* > m_texture;
+        std::unordered_set< Node* > m_preprocess;
 
         void updateItem(Item*);
         void updateNodes(Window*);
         void destroyNodes(Window*);
 
-        void render(Node*);
+        void nodeAdded(Node*);
+        void nodeDestroyed(Node*);
+
+        void update(Node*);
 
     protected:
-        virtual void renderGeometryNode(GeometryNode* node) = 0;
+        virtual void renderGeometryNode(GeometryNode* node, const RenderState&) = 0;
 
     public:
         Renderer();
@@ -49,13 +58,13 @@ class Renderer {
         void destroy();
 
         virtual void render();
+        void render(Node*, RenderState);
 
         void synchronize(Window* window);
 
         void setSize(QSize);
         void setRoot(Item*);
 
-        inline const RenderState& renderState() const { return m_state; }
         inline Node* root() const { return m_root; }
 
         QOpenGLTexture* texture(const char* path);

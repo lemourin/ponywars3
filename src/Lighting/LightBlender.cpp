@@ -1,25 +1,31 @@
 #include "LightBlender.hpp"
 #include "LightSystem.hpp"
-#include <QSGDynamicTexture>
+#include "SceneGraph/Renderer.hpp"
 #include <QTime>
 #define GLSL(shader) #shader
 
 LightBlender::LightBlender():
-    m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4) {
+    m_geometry({ {2, GL_FLOAT}, {2, GL_FLOAT} }, 4, sizeof(Vertex)) {
     setGeometry(&m_geometry);
     setMaterial(&m_material);
 
-    m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
+    //m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
     m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
+    m_geometry.vertexData<Vertex>()[0] = { 0.f, 0.f, 0.f, 0.f };
+    m_geometry.vertexData<Vertex>()[1] = { 0.f, 1.f, 0.f, 1.f };
+    m_geometry.vertexData<Vertex>()[2] = { 1.f, 0.f, 1.f, 0.f };
+    m_geometry.vertexData<Vertex>()[3] = { 1.f, 1.f, 1.f, 1.f };
+    m_geometry.updateVertexData();
 
     setFlag(UsePreprocess);
 }
 
-void LightBlender::updateGeometry(LightSystem* item) {
-    /*QSGGeometry::updateTexturedRectGeometry(&m_geometry,
-                                            item->boundingRect(),
-                                            QRectF(0, 0, 1, 1));
-    markDirty(DirtyGeometry);*/
+void LightBlender::updateGeometry(LightSystem*) {
+   /*m_geometry.vertexData<Vertex>()[0] = { 0.f, 0.f, 0.f, 0.f };
+    m_geometry.vertexData<Vertex>()[1] = { 0.f, 1.f, 0.f, 1.f };
+    m_geometry.vertexData<Vertex>()[2] = { 1.f, 0.f, 1.f, 0.f };
+    m_geometry.vertexData<Vertex>()[3] = { 1.f, 1.f, 1.f, 1.f };
+    m_geometry.updateVertexData();*/
 }
 
 void LightBlender::preprocess() {
@@ -27,7 +33,7 @@ void LightBlender::preprocess() {
 }
 
 void LightBlender::Material::Shader::initialize() {
-    QSGMaterialShader::initialize();
+    SceneGraph::Shader::initialize();
     initializeOpenGLFunctions();
 
     m_id_matrix = program()->uniformLocation("matrix");
@@ -38,8 +44,6 @@ void LightBlender::Material::Shader::initialize() {
 }
 
 void LightBlender::Material::Shader::activate() {
-    QSGMaterialShader::activate();
-
     glGetIntegerv(GL_BLEND_SRC_RGB, m_blend+0);
     glGetIntegerv(GL_BLEND_DST_RGB, m_blend+1);
     glGetIntegerv(GL_ACTIVE_TEXTURE, &m_activeTexture);
@@ -48,19 +52,8 @@ void LightBlender::Material::Shader::activate() {
 }
 
 void LightBlender::Material::Shader::deactivate() {
-    QSGMaterialShader::deactivate();
-
     glBlendFunc(m_blend[0], m_blend[1]);
     glActiveTexture(m_activeTexture);
-}
-
-const char* const* LightBlender::Material::Shader::attributeNames() const {
-    static const char* const attribute[] = {
-        "vertex",
-        "texcoord",
-        0
-    };
-    return attribute;
 }
 
 const char* LightBlender::Material::Shader::vertexShader() const {
@@ -80,7 +73,7 @@ const char* LightBlender::Material::Shader::vertexShader() const {
 const char* LightBlender::Material::Shader::fragmentShader() const {
     QString shader = GLSL(
         const int lightCount = %1;
-        uniform sampler2D light[lightCount];
+        //uniform sampler2D light[lightCount];
         uniform sampler2D lightTexture;
         uniform vec4 ambient;
         uniform float opacity;
@@ -88,8 +81,8 @@ const char* LightBlender::Material::Shader::fragmentShader() const {
 
         void main() {
             vec4 res = max(ambient, texture2D(lightTexture, coord));
-            for (int i=0; i<lightCount; i++)
-               res = max(res, texture2D(light[i], coord));
+            //for (int i=0; i<lightCount; i++)
+            //   res = max(res, texture2D(light[i], coord));
             gl_FragColor = opacity*res;
         }
     );
@@ -98,44 +91,52 @@ const char* LightBlender::Material::Shader::fragmentShader() const {
     return data;
 }
 
-void LightBlender::Material::Shader::updateState(const RenderState& state,
-                                                 QSGMaterial* mat,
-                                                 QSGMaterial*) {
+void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat,
+                                                 const SceneGraph::RenderState& state) {
+    const Material* material = static_cast<const Material*>(mat);
 
-    Material* material = static_cast<Material*>(mat);
-
-    GLint array[DYNAMIC_LIGHTS_COUNT];
+    /*GLint array[DYNAMIC_LIGHTS_COUNT];
     for (int i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
         glActiveTexture(GL_TEXTURE0+i);
-        material->m_light[i]->bind();
+        //material->m_light[i]->bind();
 
         array[i] = i;
-    }
+    }*/
 
-    glActiveTexture(GL_TEXTURE0+DYNAMIC_LIGHTS_COUNT);
-    material->m_lightTexture->bind();
+    glActiveTexture(GL_TEXTURE0);
+    if (material->m_lightTexture)
+        glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->texture()->handle());
 
-    program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
-    program()->setUniformValue(m_id_lightTexture, DYNAMIC_LIGHTS_COUNT);
+    //program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
+    program()->setUniformValue(m_id_lightTexture, 0);
     program()->setUniformValue(m_id_ambient, material->m_ambient);
 
-    if (state.isMatrixDirty())
-        program()->setUniformValue(m_id_matrix, state.combinedMatrix());
-    if (state.isOpacityDirty())
-        program()->setUniformValue(m_id_opacity, state.opacity());
+    //if (state.isMatrixDirty())
+    program()->setUniformValue(m_id_matrix, state.matrix());
+    //if (state.isOpacityDirty())
+    program()->setUniformValue(m_id_opacity, 1.0f);
+
+}
+
+std::vector<std::string> LightBlender::Material::Shader::attribute() const {
+    return {
+        "vertex",
+        "texcoord"
+    };
 }
 
 LightBlender::Material::Material():
     m_lightTexture() {
-    setFlag(Blending);
+    //setFlag(Blending);
 }
 
-void LightBlender::Material::setLights(QSGDynamicTexture* array[]) {
-    memcpy(m_light, array, sizeof(QSGDynamicTexture*)*DYNAMIC_LIGHTS_COUNT);
-}
+/*void LightBlender::Material::setLights(QSGDynamicTexture* array[]) {
+    //memcpy(m_light, array, sizeof(QSGDynamicTexture*)*DYNAMIC_LIGHTS_COUNT);
+}*/
 
 void LightBlender::Material::update() {
-    for (QSGDynamicTexture* t: m_light)
-        t->updateTexture();
-    m_lightTexture->updateTexture();
+    //for (QSGDynamicTexture* t: m_light)
+    //    t->updateTexture();
+    if (m_lightTexture)
+        m_lightTexture->updateTexture();
 }

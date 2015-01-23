@@ -34,6 +34,8 @@ class Window: public QQuickView {
         void onBeforeRendering();
         void onBeforeSynchronizing();
         void onItemDestroyed(Item*);
+        void destroyNode(Item*);
+        void invalidateNode(Item*);
 
         void scheduleUpdate(Item*);
         void cancelUpdate(Item*);
@@ -49,7 +51,6 @@ class Window: public QQuickView {
         void mouseReleaseEvent(QMouseEvent*);
         void mouseMoveEvent(QMouseEvent*);
         void wheelEvent(QWheelEvent*);
-
         void timerEvent(QTimerEvent*);
 
     public:

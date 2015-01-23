@@ -1,6 +1,7 @@
 #include "Window.hpp"
 #include "DefaultRenderer.hpp"
 #include "Node.hpp"
+#include <functional>
 #include <QQuickItem>
 #include <cassert>
 
@@ -52,6 +53,9 @@ void Window::onSceneGraphInitialized() {
 }
 
 void Window::onSceneGraphInvalidated() {
+    invalidateNode(rootItem());
+
+    m_renderer->synchronize(this);
     m_renderer->setRoot(nullptr);
 
     delete m_renderer;
@@ -75,16 +79,28 @@ void Window::onItemDestroyed(Item* item) {
             removeTimer(item, t);
     }
 
-    m_destroyedItemNode.push_back(item->m_itemNode);
-    m_destroyedNode.push_back(item->m_node);
-
-    item->m_itemNode = nullptr;
-    item->m_node = nullptr;
+    destroyNode(item);
 
     if (m_focusItem == item)
         m_focusItem = nullptr;
 
     scheduleSynchronize();
+}
+
+void Window::destroyNode(Item* item) {
+    if (item->m_itemNode)
+        m_destroyedItemNode.push_back(item->m_itemNode);
+    if (item->m_node)
+        m_destroyedNode.push_back(item->m_node);
+
+    item->m_itemNode = nullptr;
+    item->m_node = nullptr;
+}
+
+void Window::invalidateNode(Item *item) {
+    destroyNode(item);
+    for (Item* i = item->firstChild(); i; i = i->next())
+        invalidateNode(i);
 }
 
 void Window::scheduleUpdate(Item* item) {

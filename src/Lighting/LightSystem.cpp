@@ -15,7 +15,6 @@ LightSystem::LightSystem(Game* game):
     m_resolution(),
     m_normalMap(this),
     m_lightTexture(this) {
-    //setFlag(ItemHasContents);
 }
 
 LightSystem::~LightSystem() {
@@ -26,9 +25,8 @@ LightSystem::~LightSystem() {
         light->setLightSystem(nullptr);
     }
 
-    for (DynamicLight* light: m_unusedLight) {
+    for (DynamicLight* light: m_unusedLight)
         light->setLightSystem(nullptr);
-    }
 }
 
 void LightSystem::read(const QJsonObject& obj) {
@@ -81,13 +79,16 @@ void LightSystem::initialize() {
 
 void LightSystem::setSize(QSizeF s) {
     m_size = s;
+
+    resetTransform();
+    scale(m_size.width(), m_size.height());
 }
 
 void LightSystem::setResolution(QSize s) {
     m_resolution = s;
 
-    for (ShaderSource& fbo: m_framebuffer)
-        fbo.setTextureSize(m_resolution);
+    //for (SceneGraph::ShaderSource& fbo: m_framebuffer)
+    //    fbo.setTextureSize(m_resolution);
     normalMap()->setTextureSize(m_resolution);
     lightTexture()->setTextureSize(m_resolution);
 }
@@ -145,8 +146,6 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 
 void LightSystem::visibleAreaChanged() {
     QRectF rect = world()->view()->visibleArea();
-    for (ShaderSource& fbo: m_framebuffer)
-        fbo.setSourceRect(rect);
     normalMap()->setSourceRect(rect);
     lightTexture()->setSourceRect(rect);
 }
@@ -164,6 +163,10 @@ void LightSystem::worldSizeChanged() {
 
 }
 
+void LightSystem::addBody(QBody* body) {
+    body->content()->setParent(normalMap()->sourceItem());
+}
+
 QQuickItem* LightSystem::createParticleSystem() {
     const QUrl url("qrc:/lighting/qml/Lighting/ParticleSystem.qml");
     static QQmlComponent component(Utility::qmlEngine(), url);
@@ -174,9 +177,30 @@ QQuickItem* LightSystem::createParticleSystem() {
     return static_cast<QQuickItem*>(obj);
 }
 
+SceneGraph::Node *LightSystem::synchronize(SceneGraph::Node *old) {
+    LightBlender* node = static_cast<LightBlender*>(old);
+    if (!node) {
+        //QSGDynamicTexture* textureSet[DYNAMIC_LIGHTS_COUNT];
+        //uint it = 0;
+        //for (ShaderSource& fbo: m_framebuffer)
+        //    textureSet[it++] = fbo.texture();
+
+        node = new LightBlender;
+        //node->material()->setLights(textureSet);
+        node->material()->setAmbient(QColor(20, 20, 20, 0));
+    }
+
+    if (!normalMap()->shaderNode())
+        update();
+    else
+        node->material()->setLightTexture(lightTexture()->shaderNode());
+
+    return node;
+}
+
 void LightSystem::initializeDynamicLights() {
     for (uint i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
-        m_framebuffer[i].setParent(this);
+        //m_framebuffer[i].setParent(this);
 
         //m_dynamicLight[i].setParent(m_framebuffer[i].sourceItem());
         m_dynamicLight[i].setLightSystem(this);
@@ -189,7 +213,7 @@ void LightSystem::initializeDynamicLights() {
 
 void LightSystem::initializeLight(StaticLight* light) {
     assert(lightTexture());
-    //light->setParentItem(lightTexture()->sourceItem());
+    light->setParent(lightTexture()->sourceItem());
     light->setVisible(false);
 }
 

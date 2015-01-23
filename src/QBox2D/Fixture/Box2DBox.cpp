@@ -5,7 +5,7 @@
 Box2DBox::Box2DBox(Item* parent):
     Fixture(parent),
     m_texturedRectangle(this),
-    m_normalMapRectangle(this) {
+    m_normalMapRectangle() {
     setTexture(&m_texturedRectangle);
     setNormalMap(&m_normalMapRectangle);
 }

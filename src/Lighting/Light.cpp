@@ -10,7 +10,6 @@ Light::Light(SceneGraph::Item* parent):
     m_radius(1),
     m_renderFraction(2.5),
     m_lightSystem() {
-    //setFlag(ItemHasContents);
 }
 
 void Light::setAttenuation(QVector3D att) {
@@ -88,53 +87,49 @@ bool Light::write(QJsonObject& obj) const {
     return true;
 }
 
-/*QSGNode* Light::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
-    Light::Node* node = static_cast<Node*>(old);
+
+SceneGraph::Node *Light::synchronize(SceneGraph::Node *old) {
+    Light::LightNode* node = static_cast<LightNode*>(old);
     if (!node)
-        node = new Node;
+        node = new LightNode;
 
     node->synchronize(this);
 
     return node;
-}*/
+}
 
-Light::Node::Node():
-    m_geometry(QSGGeometry::defaultAttributes_Point2D(), 4) {
+Light::LightNode::LightNode():
+    m_geometry({ { 2, GL_FLOAT } }, 4, sizeof(Vertex)) {
 
     setGeometry(&m_geometry);
     setMaterial(&m_material);
 
-    m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
-    m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
-
     setFlag(UsePreprocess);
 }
 
-void Light::Node::preprocess() {
+void Light::LightNode::preprocess() {
     assert(material()->normalMap());
     material()->normalMap()->updateTexture();
 }
 
-void Light::Node::updateGeometry(qreal radius) {
-    QSGGeometry::Point2D* array = geometry()->vertexDataAsPoint2D();
-    array[0].set(-radius, -radius);
-    array[1].set( radius, -radius);
-    array[2].set(-radius,  radius);
-    array[3].set( radius,  radius);
+void Light::LightNode::updateGeometry(float radius) {
+    Vertex* array = geometry()->vertexData<Vertex>();
+    array[0] = { -radius, -radius };
+    array[1] = {  radius, -radius };
+    array[2] = { -radius,  radius };
+    array[3] = {  radius,  radius };
 
-    m_geometry.markVertexDataDirty();
-    markDirty(DirtyGeometry);
+    m_geometry.updateVertexData();
 }
 
-void Light::Node::synchronize(Light* light) {
+void Light::LightNode::synchronize(Light* light) {
     assert(light->lightSystem());
     assert(light->lightSystem()->normalMap());
 
     material()->setColor(light->color());
-    material()->setNormalMap(light->lightSystem()->normalMap()->texture());
+    material()->setNormalMap(light->lightSystem()->normalMap()->shaderNode());
     material()->setAttenuation(light->attenuation());
-    //material()->setLightPosition(QVector3D(0, 0, light->z()));
-    markDirty(DirtyMaterial);
+    material()->setLightPosition(QVector3D(0, 0, 15));
 
     updateGeometry(light->renderFraction()*light->radius());
 }

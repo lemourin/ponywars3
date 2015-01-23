@@ -23,6 +23,8 @@ class QBody: public BaseItem {
         List<QFixture*> m_fixtureList;
         QWorld* m_world;
 
+        SceneGraph::Item m_content;
+
         std::queue< std::function<void()> > m_work;
 
         void removeFixture(QFixture*);
@@ -34,6 +36,8 @@ class QBody: public BaseItem {
         virtual void endContact(QFixture* other, b2Contact*);
         virtual void preSolve(QFixture* other, b2Contact*, const b2Manifold*);
         virtual void postSolve(QFixture* other, b2Contact*, const b2ContactImpulse*);
+
+        void visibleChanged();
 
     public:
         enum BodyType {
@@ -84,13 +88,15 @@ class QBody: public BaseItem {
         inline qreal angularVelocity() const { return m_bodyDef.angularVelocity; }
         void setAngularVelocity(qreal velocity);
 
+        inline SceneGraph::Item* content() { return &m_content; }
+        inline const SceneGraph::Item* content() const { return &m_content; }
+
         void setTransform(QPointF position, qreal rotation);
 
         void addFixture(QFixture* f);
         QFixture* firstFixture() const;
 
-        void applyLinearImpulse(const QPointF &impulse,
-                                const QPointF &point);
+        void applyLinearImpulse(const QPointF &impulse, const QPointF &point);
         void applyTorque(qreal torque);
         void applyForce(const QPointF& force);
         QPointF worldCenter() const;

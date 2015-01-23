@@ -10,18 +10,8 @@ class Fixture: public QFixture {
         TexturedItem* m_texture;
         TexturedItem* m_normalMap;
 
-        void updatePosition();
-        void updateRotation();
-        void updateSize();
-        void updateVisibility();
-
     protected:
         void initialize(QBody*);
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
-        //void itemChange(ItemChange, const ItemChangeData &);
-        void bodyPositionChanged();
-        void bodyRotationChanged();
 
     public:
         explicit Fixture(Item* = nullptr);

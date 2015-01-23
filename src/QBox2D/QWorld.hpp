@@ -66,6 +66,7 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         void timerEvent(QTimerEvent*);
 
         virtual void onBodyDestroyed(QBody*);
+        virtual void onBodyAdded(QBody*);
 
         inline bool isRunning() const { return m_running; }
         void setRunning(bool running);

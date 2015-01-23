@@ -21,7 +21,8 @@ SOURCES += \
     Node.cpp \
     Renderer.cpp \
     Shader.cpp \
-    Window.cpp
+    Window.cpp \
+    ShaderSource.cpp
 
 HEADERS += \
     BaseObject.hpp \
@@ -35,4 +36,5 @@ HEADERS += \
     Node.hpp \
     Renderer.hpp \
     Shader.hpp \
-    Window.hpp
+    Window.hpp \
+    ShaderSource.hpp

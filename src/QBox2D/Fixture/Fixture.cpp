@@ -14,67 +14,12 @@ Fixture::~Fixture() {
     m_normalMap = nullptr;
 }
 
-void Fixture::updatePosition() {
-    if (normalMap() && body()) {
-        //QPointF p = body()->position()+position();
-        //normalMap()->rmatrix().translate(p.x(), p.y());
-    }
-}
-
-void Fixture::updateRotation() {
-    //if (normalMap() && body())
-    //    normalMap()->setRotation(body()->rotation());
-}
-
-void Fixture::updateSize() {
-//    if (texture())
-//        texture()->setSize(QSizeF(width(), height()));
-//    if (normalMap())
-//        normalMap()->setSize(QSizeF(width(), height()));
-}
-
-void Fixture::updateVisibility() {
-    //if (normalMap())
-    //    normalMap()->setVisible(visible());
-}
-
-void Fixture::initialize(QBody* b) {
+void Fixture::initialize(QBody *b) {
     QFixture::initialize(b);
 
-    if (normalMap()) {
-        World* w = static_cast<World*>(body()->world());
+    if (normalMap())
+        normalMap()->setParent(b->content());
 
-        assert(w->lightSystem());
-        //normalMap()->setParent(w->lightSystem()->normalMap()->sourceItem());
-    }
-
-    updatePosition();
-    updateRotation();
-    updateSize();
-    updateVisibility();
-}
-
-void Fixture::geometryChanged(const QRectF& newGeometry,
-                              const QRectF& oldGeometry) {
-    //QFixture::geometryChanged(newGeometry, oldGeometry);
-
-    updatePosition();
-    updateSize();
-}
-
-/*void Fixture::itemChange(ItemChange change, const ItemChangeData& data) {
-    QFixture::itemChange(change, data);
-
-    if (change == ItemVisibleHasChanged)
-        updateVisibility();
-}*/
-
-void Fixture::bodyPositionChanged() {
-    updatePosition();
-}
-
-void Fixture::bodyRotationChanged() {
-    updateRotation();
 }
 
 QString Fixture::textureSource() const {

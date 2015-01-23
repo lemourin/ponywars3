@@ -1,14 +1,16 @@
 #ifndef LIGHTMATERIAL_HPP
 #define LIGHTMATERIAL_HPP
-#include <QSGMaterial>
+#include "SceneGraph/Material.hpp"
+#include "SceneGraph/Renderer.hpp"
+#include "SceneGraph/ShaderSource.hpp"
 #include <QOpenGLFunctions>
 #include <QColor>
 
 class QSGDynamicTexture;
 
-class LightMaterial: public QSGMaterial {
+class LightMaterial: public SceneGraph::Material {
     private:
-        class Shader: public QSGMaterialShader, public QOpenGLFunctions {
+        class Shader: public SceneGraph::Shader, public QOpenGLFunctions {
             private:
                 int m_id_matrix;
                 int m_id_opacity;
@@ -28,22 +30,21 @@ class LightMaterial: public QSGMaterial {
                 const char* fragmentShader() const;
 
             public:
-                const char* const* attributeNames() const;
-                void updateState(const RenderState &state,
-                                 QSGMaterial *newMaterial,
-                                 QSGMaterial *oldMaterial);
+                std::vector < std::string > attribute() const;
+
+                void updateState(const Material* mat,
+                                 const SceneGraph::RenderState& state);
         };
 
         QColor m_color;
         QVector3D m_lightPosition;
         QVector3D m_attenuation;
-        QSGDynamicTexture* m_normalMap;
+        SceneGraph::ShaderSource::ShaderNode* m_normalMap;
 
     public:
         LightMaterial();
 
-        QSGMaterialShader* createShader() const;
-        QSGMaterialType* type() const;
+        SceneGraph::Shader* shader() const { return SceneGraph::Shader::get<Shader>(); }
 
         inline QColor color() const { return m_color; }
         inline void setColor(QColor c) { m_color = c; }
@@ -54,7 +55,7 @@ class LightMaterial: public QSGMaterial {
         inline QVector3D attenuation() const { return m_attenuation; }
         inline void setAttenuation(QVector3D att) { m_attenuation = att; }
 
-        inline QSGDynamicTexture* normalMap() const { return m_normalMap; }
-        inline void setNormalMap(QSGDynamicTexture* t) { m_normalMap = t; }
+        inline SceneGraph::ShaderSource::ShaderNode* normalMap() const { return m_normalMap; }
+        inline void setNormalMap(SceneGraph::ShaderSource::ShaderNode* t) { m_normalMap = t; }
 };
 #endif // LIGHTMATERIAL_HPP

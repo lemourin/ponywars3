@@ -3,7 +3,7 @@
 
 #include <QQuickItem>
 #include <unordered_set>
-#include "Graphics/ShaderSource.hpp"
+#include "SceneGraph/ShaderSource.hpp"
 #include "EnlightedItems.hpp"
 #include "LightBlender.hpp"
 #include "DynamicLight.hpp"
@@ -30,9 +30,9 @@ class LightSystem: public SceneGraph::Item {
 
         EnlightedItems m_enlightedItems;
 
-        ShaderSource m_normalMap;
-        ShaderSource m_lightTexture;
-        ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
+        SceneGraph::ShaderSource m_normalMap;
+        SceneGraph::ShaderSource m_lightTexture;
+        //SceneGraph::ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
         DynamicLight m_dynamicLight[DYNAMIC_LIGHTS_COUNT];
 
         std::vector<DynamicLight*> m_unusedLight;
@@ -50,12 +50,12 @@ class LightSystem: public SceneGraph::Item {
 
         void worldSizeChanged();
 
+        void addBody(QBody*);
+
         static QQuickItem* createParticleSystem();
 
     protected:
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+        SceneGraph::Node* synchronize(SceneGraph::Node *old);
 
     public:
         explicit LightSystem(Game* game);
@@ -69,10 +69,8 @@ class LightSystem: public SceneGraph::Item {
         inline QSize resolution() const { return m_resolution; }
         void setResolution(QSize s);
 
-        //inline QQuickItem* normalMapItem() const { return m_normalMap.shaderSourceItem(); }
-
-        inline ShaderSource* normalMap() { return &m_normalMap; }
-        inline ShaderSource* lightTexture() { return &m_lightTexture; }
+        inline SceneGraph::ShaderSource* normalMap() { return &m_normalMap; }
+        inline SceneGraph::ShaderSource* lightTexture() { return &m_lightTexture; }
 
         World* world() const;
 
