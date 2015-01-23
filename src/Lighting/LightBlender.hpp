@@ -46,7 +46,7 @@ class LightBlender: public SceneGraph::GeometryNode {
                 };
 
                 //QSGDynamicTexture* m_light[DYNAMIC_LIGHTS_COUNT];
-                SceneGraph::ShaderSource::ShaderNode* m_lightTexture;
+                SceneGraph::ShaderSource* m_lightTexture;
                 QColor m_ambient;
 
             public:
@@ -54,7 +54,7 @@ class LightBlender: public SceneGraph::GeometryNode {
 
                 inline Shader* shader() const { return Shader::get<Shader>(); }
 
-                inline void setLightTexture(SceneGraph::ShaderSource::ShaderNode* c) { m_lightTexture = c; }
+                inline void setLightTexture(SceneGraph::ShaderSource* c) { m_lightTexture = c; }
                 inline void setAmbient(QColor c) { m_ambient = c; }
                 //void setLights(QSGDynamicTexture* array[DYNAMIC_LIGHTS_COUNT]);
 

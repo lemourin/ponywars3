@@ -54,9 +54,7 @@ void Window::onSceneGraphInitialized() {
 
 void Window::onSceneGraphInvalidated() {
     invalidateNode(rootItem());
-
     m_renderer->synchronize(this);
-    m_renderer->setRoot(nullptr);
 
     delete m_renderer;
 }
@@ -99,6 +97,7 @@ void Window::destroyNode(Item* item) {
 
 void Window::invalidateNode(Item *item) {
     destroyNode(item);
+    cancelUpdate(item);
     for (Item* i = item->firstChild(); i; i = i->next())
         invalidateNode(i);
 }
@@ -115,9 +114,6 @@ void Window::cancelUpdate(Item* item) {
         auto it = std::find(m_updateItem.begin(), m_updateItem.end(), item);
         if (it != m_updateItem.end())
             m_updateItem.erase(it);
-        it = std::find(m_nextFrame.begin(), m_nextFrame.end(), item);
-        if (it != m_nextFrame.end())
-            m_nextFrame.erase(it);
 
         item->m_state &= ~Item::ScheduledUpdate;
     }

@@ -17,8 +17,10 @@ Fixture::~Fixture() {
 void Fixture::initialize(QBody *b) {
     QFixture::initialize(b);
 
-    if (normalMap())
+    if (normalMap()) {
+        normalMap()->setMatrix(matrix()*normalMap()->matrix());
         normalMap()->setParent(b->content());
+    }
 
 }
 

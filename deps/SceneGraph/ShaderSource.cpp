@@ -44,7 +44,6 @@ Node* ShaderSource::synchronize(Node *old) {
     }
 
     node->update(this);
-    //update();
 
     return node;
 }

@@ -25,8 +25,8 @@ class Player: public Pony {
         void keyPressEvent(QKeyEvent *event);
         void keyReleaseEvent(QKeyEvent *event);
         void beginContact(QFixture* other, b2Contact *);
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+
+        void synchronize();
 
     public:
         Player(SceneGraph::Item* parent = nullptr);

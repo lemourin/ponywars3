@@ -15,7 +15,6 @@ LightSystem::LightSystem(Game* game):
     m_resolution(),
     m_normalMap(this),
     m_lightTexture(this) {
-    normalMap()->update();
 }
 
 LightSystem::~LightSystem() {
@@ -189,12 +188,9 @@ SceneGraph::Node *LightSystem::synchronize(SceneGraph::Node *old) {
         node = new LightBlender;
         //node->material()->setLights(textureSet);
         node->material()->setAmbient(QColor(20, 20, 20, 0));
-    }
+        node->material()->setLightTexture(lightTexture());
 
-    if (!normalMap()->shaderNode())
-        update();
-    else
-        node->material()->setLightTexture(lightTexture()->shaderNode());
+    }
 
     return node;
 }

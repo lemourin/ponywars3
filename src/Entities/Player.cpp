@@ -80,6 +80,13 @@ void Player::beginContact(QFixture* other, b2Contact*) {
     //}
 }
 
+void Player::synchronize() {
+    Pony::synchronize();
+
+    m_light.setPosition(position());
+    m_hand.updateGrabbedWeapon();
+}
+
 
 void Player::initialize(QWorld* w) {
     Pony::initialize(w);
@@ -113,20 +120,10 @@ void Player::focusOutEvent(QFocusEvent*) {
     disableState(GoingLeft | GoingRight);
 }
 
-void Player::geometryChanged(const QRectF& newGeometry,
-                             const QRectF& oldGeometry) {
-    //Pony::geometryChanged(newGeometry, oldGeometry);
-
-    if (newGeometry.topLeft() != oldGeometry.topLeft()) {
-        //m_light.setPosition(position());
-        //m_hand.updateGrabbedWeapon();
-    }
-}
-
 bool Player::read(const QJsonObject& obj) {
     Pony::read(obj);
 
-    //m_light.read(obj["light"].toObject());
+    m_light.read(obj["light"].toObject());
 
     return true;
 }

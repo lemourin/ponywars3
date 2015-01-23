@@ -19,11 +19,6 @@ Renderer::~Renderer() {
 }
 
 void Renderer::updateItem(Item* item) {
-    if (item->m_itemNode == nullptr) {
-        item->m_itemNode = new TransformNode;
-        item->m_itemNode->setRenderer(this);
-    }
-
     if (item->m_state & Item::ModelMatrixChanged) {
         item->m_itemNode->setMatrix(item->matrix());
         item->m_state &= ~Item::ModelMatrixChanged;
@@ -71,19 +66,26 @@ void Renderer::updateNodes(Window* window) {
     if (!window->m_updateItem.empty())
         window->update();
 
+    for (Item* item: window->m_updateItem) {
+        if (item->m_itemNode == nullptr) {
+            item->m_itemNode = new TransformNode;
+            item->m_itemNode->setRenderer(this);
+        }
+    }
+
+    std::vector<Item*> nextFrame;
     for (size_t i=0; i<window->m_updateItem.size(); i++) {
         Item* item = window->m_updateItem[i];
         item->m_state &= ~Item::ScheduledUpdate;
         updateItem(item);
 
         if (item->m_state & Item::ScheduledUpdate) {
-            window->m_nextFrame.push_back(item);
+            nextFrame.push_back(item);
             window->m_updateItem.pop_back();
         }
     }
 
-    window->m_updateItem = window->m_nextFrame;
-    window->m_nextFrame.clear();
+    window->m_updateItem = nextFrame;
     if (window->m_updateItem.size() > 0) {
         window->scheduleSynchronize();
     }
@@ -121,17 +123,15 @@ void Renderer::render(Node* root, RenderState state) {
 }
 
 void Renderer::nodeAdded(Node* node) {
-    update(node);
+    if (node->flag() & Node::UsePreprocess)
+        m_preprocess.insert(node);
 }
 
 void Renderer::nodeDestroyed(Node* node) {
     if (node->flag() & Node::UsePreprocess)
         m_preprocess.erase(node);
-}
-
-void Renderer::update(Node* node) {
-    if (node->flag() & Node::UsePreprocess)
-        m_preprocess.insert(node);
+    if (node == m_root)
+        m_root = nullptr;
 }
 
 void Renderer::render() {

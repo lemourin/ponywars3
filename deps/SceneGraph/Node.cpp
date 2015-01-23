@@ -40,8 +40,8 @@ void Node::removeChild(Node* node) {
 void Node::setFlag(Flag f) {
     m_flag = f;
 
-    if (renderer())
-        renderer()->update(this);
+    if (renderer() && (f & UsePreprocess))
+        renderer()->m_preprocess.insert(this);
 }
 
 void Node::setRenderer(Renderer* r) {

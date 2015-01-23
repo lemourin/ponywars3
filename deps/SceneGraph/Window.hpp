@@ -22,7 +22,6 @@ class Window: public QQuickView {
         Item m_root;
         Item* m_focusItem;
         std::vector<Item*> m_updateItem;
-        std::vector<Item*> m_nextFrame;
         std::vector<Node*> m_destroyedItemNode;
         std::vector<Node*> m_destroyedNode;
 

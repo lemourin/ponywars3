@@ -102,10 +102,9 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
         array[i] = i;
     }*/
 
-    //assert(material->m_lightTexture);
+    assert(material->m_lightTexture);
     glActiveTexture(GL_TEXTURE0);
-    if (material->m_lightTexture)
-        glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->texture()->handle());
+    glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->shaderNode()->texture()->handle());
 
     //program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
     program()->setUniformValue(m_id_lightTexture, 0);
@@ -134,6 +133,5 @@ LightBlender::Material::Material():
 void LightBlender::Material::update() {
     //for (QSGDynamicTexture* t: m_light)
     //    t->updateTexture();
-    if (m_lightTexture)
-        m_lightTexture->updateTexture();
+    m_lightTexture->shaderNode()->updateTexture();
 }

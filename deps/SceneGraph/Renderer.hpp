@@ -45,8 +45,6 @@ class Renderer {
         void nodeAdded(Node*);
         void nodeDestroyed(Node*);
 
-        void update(Node*);
-
     protected:
         virtual void renderGeometryNode(GeometryNode* node, const RenderState&) = 0;
 
