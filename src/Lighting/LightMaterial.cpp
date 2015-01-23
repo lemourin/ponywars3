@@ -100,12 +100,12 @@ void LightMaterial::Shader::updateState(const SceneGraph::Material *mat,
 
     assert(material->normalMap());
 
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, material->normalMap()->texture()->handle());
     program()->setUniformValue(m_id_normalMap, 0);
     program()->setUniformValue(m_id_lightPosition, material->lightPosition());
     program()->setUniformValue(m_id_attenuation, material->attenuation());
     program()->setUniformValue(m_id_color, material->color());
-
     program()->setUniformValue(m_id_matrix, state.matrix());
     program()->setUniformValue(m_id_opacity, 1.f);
 }

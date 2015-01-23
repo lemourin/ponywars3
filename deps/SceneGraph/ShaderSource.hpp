@@ -15,7 +15,7 @@ class ShaderSource: public SceneGraph::Item {
             private:
                 friend class ShaderSource;
 
-                QOpenGLFramebufferObject m_fbo;
+                QOpenGLFramebufferObject* m_fbo;
                 TransformNode* m_capturedNode;
                 QColor m_background;
                 QRectF m_viewport;
@@ -27,7 +27,7 @@ class ShaderSource: public SceneGraph::Item {
                 ~ShaderNode();
 
                 void updateTexture();
-                inline QOpenGLFramebufferObject* texture() { return &m_fbo; }
+                inline QOpenGLFramebufferObject* texture() { return m_fbo; }
         };
 
     private:

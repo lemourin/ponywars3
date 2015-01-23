@@ -9,7 +9,6 @@ LightBlender::LightBlender():
     setGeometry(&m_geometry);
     setMaterial(&m_material);
 
-    //m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
     m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
     m_geometry.vertexData<Vertex>()[0] = { 0.f, 0.f, 0.f, 0.f };
     m_geometry.vertexData<Vertex>()[1] = { 0.f, 1.f, 0.f, 1.f };
@@ -103,6 +102,7 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
         array[i] = i;
     }*/
 
+    //assert(material->m_lightTexture);
     glActiveTexture(GL_TEXTURE0);
     if (material->m_lightTexture)
         glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->texture()->handle());
@@ -110,10 +110,7 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
     //program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
     program()->setUniformValue(m_id_lightTexture, 0);
     program()->setUniformValue(m_id_ambient, material->m_ambient);
-
-    //if (state.isMatrixDirty())
     program()->setUniformValue(m_id_matrix, state.matrix());
-    //if (state.isOpacityDirty())
     program()->setUniformValue(m_id_opacity, 1.0f);
 
 }

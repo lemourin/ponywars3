@@ -15,6 +15,7 @@ LightSystem::LightSystem(Game* game):
     m_resolution(),
     m_normalMap(this),
     m_lightTexture(this) {
+    normalMap()->update();
 }
 
 LightSystem::~LightSystem() {

@@ -51,17 +51,17 @@ Node* ShaderSource::synchronize(Node *old) {
 
 ShaderSource::ShaderNode::ShaderNode(QSize size, Node* parent):
     Node(parent),
-    m_fbo(size),
+    m_fbo(new QOpenGLFramebufferObject(size)),
     m_capturedNode() {
     initializeOpenGLFunctions();
 }
 
 ShaderSource::ShaderNode::~ShaderNode() {
-    //delete m_fbo;
+    delete m_fbo;
 }
 
 void ShaderSource::ShaderNode::updateTexture() {
-    m_fbo.bind();
+    m_fbo->bind();
 
     assert(renderer());
     if (m_capturedNode) {
@@ -77,17 +77,21 @@ void ShaderSource::ShaderNode::updateTexture() {
                      m_viewport.top(),
                      m_viewport.bottom(),
                      -1, 1);
-
         renderer()->render(m_capturedNode, RenderState(matrix));
     }
 
-    m_fbo.release();
+    m_fbo->release();
 }
 
 void ShaderSource::ShaderNode::update(ShaderSource *i) {
     m_capturedNode = i->m_sourceItem.m_itemNode;
     m_background = i->m_background;
     m_viewport = i->m_sourceRect;
+
+    if (m_fbo->size() != i->m_textureSize) {
+        delete m_fbo;
+        m_fbo = new QOpenGLFramebufferObject(i->m_textureSize);
+    }
 }
 
 }

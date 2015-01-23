@@ -63,6 +63,8 @@ class Renderer {
         void synchronize(Window* window);
 
         void setSize(QSize);
+        inline QSize size() const { return m_size; }
+
         void setRoot(Item*);
 
         inline Node* root() const { return m_root; }
