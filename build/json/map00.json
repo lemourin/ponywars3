@@ -12,11 +12,11 @@
                     "g": 0,
                     "r": 255
                 },
-                "dynamicShadows": false,
+                "dynamicShadows": true,
                 "radius": 40,
                 "renderFraction": 5,
-                "x": 450,
-                "y": 630,
+                "x": 530,
+                "y": 620,
                 "z": 15
             }
         ]

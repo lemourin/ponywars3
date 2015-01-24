@@ -51,14 +51,14 @@ void Item::appendChild(Item* item) {
     item->setWindow(window());
 
     item->m_state |= ParentChanged;
-    update();
+    item->update();
 
     BaseObject::appendChild(item);
 }
 
 void Item::removeChild(Item* item) {
     item->m_state |= ParentChanged;
-    update();
+    item->update();
 
     item->setWindow(nullptr);
     BaseObject::removeChild(item);

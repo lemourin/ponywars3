@@ -10,12 +10,6 @@ DisplayItem::DisplayItem(DisplayItemFrame* parent):
     m_distance(),
     m_factor(1) {
 
-    //setFlag(ItemIsFocusScope);
-    //setTransformOrigin(TopLeft);
-
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setAcceptHoverEvents(true);
-
     m_frame->m_displayItem = this;
 }
 

@@ -94,6 +94,7 @@ World* LightSystem::world() const {
 
 void LightSystem::addLight(StaticLight* light) {
     m_light.push_back(light);
+    light->setParent(lightTexture()->sourceItem());
 }
 
 void LightSystem::removeLight(StaticLight* light) {
@@ -118,8 +119,9 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 
             p->bindLight(nullptr);
         }
-        else
+        else {
             light->setParent(lightTexture()->sourceItem());
+        }
     }
     else {
         if (light-visible() && light->dynamicShadows() && !m_unusedLight.empty()) {
@@ -132,8 +134,9 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 
             light->setParent(nullptr);
         }
-        else
+        else {
             light->setParent(lightTexture()->sourceItem());
+        }
     }
 }
 
