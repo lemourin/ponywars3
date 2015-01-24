@@ -28,12 +28,12 @@ class LightSystem: public SceneGraph::Item {
         QSizeF m_size;
         QSize m_resolution;
 
-        EnlightedItems m_enlightedItems;
-
         SceneGraph::ShaderSource m_normalMap;
         SceneGraph::ShaderSource m_lightTexture;
-        //SceneGraph::ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
+        SceneGraph::ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
         DynamicLight m_dynamicLight[DYNAMIC_LIGHTS_COUNT];
+
+        EnlightedItems m_enlightedItems;
 
         std::vector<DynamicLight*> m_unusedLight;
         std::vector<StaticLight*> m_light;
@@ -42,17 +42,12 @@ class LightSystem: public SceneGraph::Item {
         void addLight(StaticLight*);
         void removeLight(StaticLight*);
 
-        void initializeLight(StaticLight*);
         void initializeDynamicLights();
 
         void lightVisibilityChanged(StaticLight*);
         void visibleAreaChanged();
 
-        void worldSizeChanged();
-
         void addBody(QBody*);
-
-        static QQuickItem* createParticleSystem();
 
     protected:
         SceneGraph::Node* synchronize(SceneGraph::Node *old);

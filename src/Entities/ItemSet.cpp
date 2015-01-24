@@ -12,6 +12,11 @@ ItemSet::ItemSet(World* world):
     m_world(world) {
 }
 
+ItemSet::~ItemSet() {
+    while (firstChild())
+        delete firstChild();
+}
+
 void ItemSet::dump(QString /*fileName*/) {
     //std::fstream file(fileName.toStdString(), std::fstream::out);
     //std::ostream& file = std::cout;

@@ -35,6 +35,7 @@ class Renderer {
         Node* m_root;
         RenderState m_state;
         QSize m_size;
+        uint m_frame;
         std::unordered_map< std::string, QOpenGLTexture* > m_texture;
         std::unordered_set< Node* > m_preprocess;
 
@@ -68,6 +69,8 @@ class Renderer {
         inline Node* root() const { return m_root; }
 
         QOpenGLTexture* texture(const char* path);
+
+        inline uint frame() const { return m_frame; }
 };
 
 }

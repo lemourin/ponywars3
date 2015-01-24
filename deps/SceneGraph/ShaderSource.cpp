@@ -51,7 +51,8 @@ Node* ShaderSource::synchronize(Node *old) {
 ShaderSource::ShaderNode::ShaderNode(QSize size, Node* parent):
     Node(parent),
     m_fbo(new QOpenGLFramebufferObject(size)),
-    m_capturedNode() {
+    m_capturedNode(),
+    m_lastUpdate(-1) {
     initializeOpenGLFunctions();
 }
 
@@ -60,9 +61,14 @@ ShaderSource::ShaderNode::~ShaderNode() {
 }
 
 void ShaderSource::ShaderNode::updateTexture() {
+    assert(renderer());
+
+    if (m_lastUpdate == renderer()->frame())
+        return;
+    m_lastUpdate = renderer()->frame();
+
     m_fbo->bind();
 
-    assert(renderer());
     if (m_capturedNode) {
         glClearColor(m_background.redF(),
                      m_background.greenF(),

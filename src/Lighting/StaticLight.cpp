@@ -52,21 +52,13 @@ bool StaticLight::write(QJsonObject& obj) const {
 
 void StaticLight::synchronize() {
     setTransform(position(), rotation());
-}
-
-void StaticLight::geometryChanged(const QRectF& newGeometry,
-                                  const QRectF& oldGeometry) {
-    //Light::geometryChanged(newGeometry, oldGeometry);
-
     if (dynamicLight()) {
         dynamicLight()->setPosition(position());
+        //qDebug() << position();
     }
 }
 
-/*void StaticLight::itemChange(ItemChange change, const ItemChangeData& data) {
-    Light::itemChange(change, data);
-
-    if (change == ItemVisibleHasChanged && lightSystem())
-        lightSystem()->lightVisibilityChanged(this);
-}*/
+void StaticLight::visibleChanged() {
+    lightSystem()->lightVisibilityChanged(this);
+}
 

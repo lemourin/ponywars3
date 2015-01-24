@@ -23,7 +23,7 @@
     },
     "viewWorld": {
         "height": 1000,
-        "scale": 11,
+        "scale": 10,
         "width": 1000,
         "world": {
             "bodies": [

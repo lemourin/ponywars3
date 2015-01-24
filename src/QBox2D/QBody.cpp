@@ -19,6 +19,9 @@ QBody::QBody(SceneGraph::Item* parent):
 
 QBody::~QBody() {
     destroyBody();
+
+    while (firstFixture())
+        delete firstFixture();
 }
 
 void QBody::destroyBody() {

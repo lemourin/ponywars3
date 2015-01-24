@@ -14,6 +14,7 @@ class Light: public QBody {
         QVector3D m_attenuation;
         qreal m_radius;
         qreal m_renderFraction;
+        qreal m_z;
         QColor m_color;
         LightSystem* m_lightSystem;
 
@@ -50,6 +51,9 @@ class Light: public QBody {
         inline qreal renderFraction() const { return m_renderFraction; }
         void setRenderFraction(qreal);
 
+        inline qreal z() const { return m_z; }
+        void setZ(qreal);
+
         inline QColor color() const { return m_color; }
         void setColor(QColor);
 
@@ -61,8 +65,6 @@ class Light: public QBody {
 
         bool read(const QJsonObject &);
         bool write(QJsonObject &) const;
-
-        inline bool enabled() const { return false; }
 };
 
 #endif // LIGHT_HPP

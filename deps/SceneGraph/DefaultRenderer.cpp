@@ -22,6 +22,7 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node, const RenderState& 
 
     shader->bind();
     shader->activate();
+
     shader->updateState(material, state);
 
     Geometry* g = node->geometry();
@@ -34,6 +35,7 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node, const RenderState& 
         glDrawArrays(g->drawingMode(), 0, g->vertexCount());
 
     shader->deactivate();
+
 
 }
 

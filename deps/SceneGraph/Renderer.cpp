@@ -10,7 +10,7 @@
 
 namespace SceneGraph {
 
-Renderer::Renderer(): m_root() {
+Renderer::Renderer(): m_root(), m_frame() {
 }
 
 Renderer::~Renderer() {
@@ -139,6 +139,7 @@ void Renderer::render() {
         node->preprocess();
 
     render(m_root, m_state);
+    m_frame++;
 }
 
 void Renderer::synchronize(Window* window) {

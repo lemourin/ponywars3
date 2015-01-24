@@ -16,10 +16,10 @@ void ColorMaterial::ColorShader::initialize() {
 
 const char* ColorMaterial::ColorShader::vertexShader() const {
     return GLSL(
-        attribute vec3 position;
+        attribute vec4 position;
         uniform mat4 matrix;
         void main() {
-            gl_Position = matrix*vec4(position, 1.0);
+            gl_Position = matrix*position;
         }
     );
 }
@@ -107,14 +107,14 @@ void VertexColorMaterial::VertexColorShader::initialize() {
 
 const char* VertexColorMaterial::VertexColorShader::vertexShader() const {
     return GLSL(
-        attribute vec3 position;
+        attribute vec4 position;
         attribute vec4 color;
         uniform mat4 matrix;
         varying vec4 fcolor;
 
         void main() {
             fcolor = color;
-            gl_Position = matrix*vec4(position, 1.0);
+            gl_Position = matrix*position;
         }
     );
 }

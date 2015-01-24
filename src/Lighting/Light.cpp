@@ -9,6 +9,7 @@ Light::Light(SceneGraph::Item* parent):
     m_attenuation(0.5, 0.01, 0.0025),
     m_radius(1),
     m_renderFraction(2.5),
+    m_z(1.0),
     m_lightSystem() {
 }
 
@@ -24,6 +25,11 @@ void Light::setRadius(qreal r) {
 
 void Light::setRenderFraction(qreal r) {
     m_renderFraction = r;
+    update();
+}
+
+void Light::setZ(qreal z) {
+    m_z = z;
     update();
 }
 
@@ -44,7 +50,7 @@ QRectF Light::renderRect() const {
 
 bool Light::read(const QJsonObject& obj) {
     setPosition(QPointF(obj["x"].toDouble(), obj["y"].toDouble()));
-    //setZ(obj["z"].toDouble());
+    setZ(obj["z"].toDouble());
     setRadius(obj["radius"].toDouble());
     setRenderFraction(obj["renderFraction"].toDouble());
 
@@ -68,7 +74,7 @@ bool Light::read(const QJsonObject& obj) {
 bool Light::write(QJsonObject& obj) const {
     obj["x"] = position().x();
     obj["y"] = position().y();
-    //obj["z"] = z();
+    obj["z"] = z();
     obj["radius"] = radius();
     obj["renderFraction"] = renderFraction();
 
@@ -129,7 +135,7 @@ void Light::LightNode::synchronize(Light* light) {
     material()->setColor(light->color());
     material()->setNormalMap(light->lightSystem()->normalMap()->shaderNode());
     material()->setAttenuation(light->attenuation());
-    material()->setLightPosition(QVector3D(0, 0, 15));
+    material()->setLightPosition(QVector3D(0, 0, light->z()));
 
     updateGeometry(light->renderFraction()*light->radius());
 }

@@ -12,13 +12,11 @@
 class QSGDynamicTexture;
 class LightSystem;
 
-const int DYNAMIC_LIGHTS_COUNT = 1;
+const int DYNAMIC_LIGHTS_COUNT = 3;
 
 class LightBlender: public SceneGraph::GeometryNode {
     private:
-        struct Vertex {
-            float x, y, tx, ty;
-        };
+        struct Vertex { float x, y, tx, ty; };
 
         class Material: public SceneGraph::Material {
             private:
@@ -45,7 +43,7 @@ class LightBlender: public SceneGraph::GeometryNode {
                         std::vector< std::string > attribute() const;
                 };
 
-                //QSGDynamicTexture* m_light[DYNAMIC_LIGHTS_COUNT];
+                SceneGraph::ShaderSource* m_light[DYNAMIC_LIGHTS_COUNT];
                 SceneGraph::ShaderSource* m_lightTexture;
                 QColor m_ambient;
 
@@ -56,7 +54,7 @@ class LightBlender: public SceneGraph::GeometryNode {
 
                 inline void setLightTexture(SceneGraph::ShaderSource* c) { m_lightTexture = c; }
                 inline void setAmbient(QColor c) { m_ambient = c; }
-                //void setLights(QSGDynamicTexture* array[DYNAMIC_LIGHTS_COUNT]);
+                void setLights(SceneGraph::ShaderSource* array[DYNAMIC_LIGHTS_COUNT]);
 
                 void update();
         } m_material;

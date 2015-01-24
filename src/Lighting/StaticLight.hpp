@@ -16,9 +16,7 @@ class StaticLight: public Light {
 
     protected:
         void synchronize();
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
-        //void itemChange(ItemChange, const ItemChangeData &);
+        void visibleChanged();
 
     public:
         StaticLight(SceneGraph::Item* = nullptr);

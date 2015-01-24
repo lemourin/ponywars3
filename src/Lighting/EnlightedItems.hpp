@@ -1,21 +1,23 @@
 #ifndef ENLIGHTEDITEMS_HPP
 #define ENLIGHTEDITEMS_HPP
 
-#include <QSGNode>
 #include <unordered_map>
 #include "LightMaterial.hpp"
 #include "Utility/Utility.hpp"
 #include "SceneGraph/Item.hpp"
+#include "SceneGraph/Geometry.hpp"
 
 class LightSystem;
 class QFixture;
 class Light;
 class World;
 
-class EnlightedNode: public QSGTransformNode {
+class EnlightedNode: public SceneGraph::TransformNode {
     private:
-        QSGGeometryNode m_geometryNode;
-        QSGGeometry m_geometry;
+        struct Vertex { float x, y; };
+
+        SceneGraph::GeometryNode m_geometryNode;
+        SceneGraph::Geometry m_geometry;
 
         LightMaterial m_material;
 
@@ -31,10 +33,9 @@ class EnlightedNode: public QSGTransformNode {
 class EnlightedItems: public SceneGraph::Item {
     private:        
         LightSystem* m_lightSystem;
-        World* m_world;
 
     protected:
-        class Node: public QSGNode {
+        class Node: public SceneGraph::Node {
             private:
                 std::unordered_map<std::pair<QFixture*, Light*>, EnlightedNode*> m_data;
 
@@ -42,20 +43,16 @@ class EnlightedItems: public SceneGraph::Item {
                 Node();
                 ~Node();
 
-                QSGNode* getEnlightedNode(QFixture* fixture, Light* light);
+                SceneGraph::Node* getEnlightedNode(QFixture*, Light*);
         };
 
-        //QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
+        SceneGraph::Node* synchronize(SceneGraph::Node* old);
 
     public:
-        explicit EnlightedItems(SceneGraph::Item* = nullptr);
+        explicit EnlightedItems(LightSystem*, SceneGraph::Item*);
 
         inline LightSystem* lightSystem() const { return m_lightSystem; }
-        inline void setLightSystem(LightSystem* l) { m_lightSystem = l; }
-
-        inline World* world() const { return m_world; }
-        inline void setWorld(World* i) { m_world = i; }
-
+        World* world() const;
 
 };
 

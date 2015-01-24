@@ -72,7 +72,7 @@ const char* LightBlender::Material::Shader::vertexShader() const {
 const char* LightBlender::Material::Shader::fragmentShader() const {
     QString shader = GLSL(
         const int lightCount = %1;
-        //uniform sampler2D light[lightCount];
+        uniform sampler2D light[lightCount];
         uniform sampler2D lightTexture;
         uniform vec4 ambient;
         uniform float opacity;
@@ -80,8 +80,8 @@ const char* LightBlender::Material::Shader::fragmentShader() const {
 
         void main() {
             vec4 res = max(ambient, texture2D(lightTexture, coord));
-            //for (int i=0; i<lightCount; i++)
-            //   res = max(res, texture2D(light[i], coord));
+            for (int i=0; i<lightCount; i++)
+               res = max(res, texture2D(light[i], coord));
             gl_FragColor = opacity*res;
         }
     );
@@ -94,20 +94,19 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
                                                  const SceneGraph::RenderState& state) {
     const Material* material = static_cast<const Material*>(mat);
 
-    /*GLint array[DYNAMIC_LIGHTS_COUNT];
-    for (int i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
+    GLint array[DYNAMIC_LIGHTS_COUNT];
+    for (uint i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
         glActiveTexture(GL_TEXTURE0+i);
-        //material->m_light[i]->bind();
-
+        glBindTexture(GL_TEXTURE_2D, material->m_light[i]->shaderNode()->texture()->handle());
         array[i] = i;
-    }*/
+    }
 
     assert(material->m_lightTexture);
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0+DYNAMIC_LIGHTS_COUNT);
     glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->shaderNode()->texture()->handle());
 
-    //program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
-    program()->setUniformValue(m_id_lightTexture, 0);
+    program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
+    program()->setUniformValue(m_id_lightTexture, DYNAMIC_LIGHTS_COUNT);
     program()->setUniformValue(m_id_ambient, material->m_ambient);
     program()->setUniformValue(m_id_matrix, state.matrix());
     program()->setUniformValue(m_id_opacity, 1.0f);
@@ -126,12 +125,12 @@ LightBlender::Material::Material():
     //setFlag(Blending);
 }
 
-/*void LightBlender::Material::setLights(QSGDynamicTexture* array[]) {
-    //memcpy(m_light, array, sizeof(QSGDynamicTexture*)*DYNAMIC_LIGHTS_COUNT);
-}*/
+void LightBlender::Material::setLights(SceneGraph::ShaderSource *array[]) {
+    memcpy(m_light, array, sizeof(SceneGraph::ShaderSource*)*DYNAMIC_LIGHTS_COUNT);
+}
 
 void LightBlender::Material::update() {
-    //for (QSGDynamicTexture* t: m_light)
-    //    t->updateTexture();
+    for (SceneGraph::ShaderSource* t: m_light)
+        t->shaderNode()->updateTexture();
     m_lightTexture->shaderNode()->updateTexture();
 }

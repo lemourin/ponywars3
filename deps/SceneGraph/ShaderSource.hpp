@@ -19,6 +19,7 @@ class ShaderSource: public SceneGraph::Item {
                 TransformNode* m_capturedNode;
                 QColor m_background;
                 QRectF m_viewport;
+                uint m_lastUpdate;
 
                 void update(ShaderSource* i);
 

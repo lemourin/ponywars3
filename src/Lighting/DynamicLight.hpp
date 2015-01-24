@@ -2,21 +2,21 @@
 #define DYNAMICLIGHT_HPP
 
 #include "Light.hpp"
-#include <QSGGeometryNode>
-#include <QSGFlatColorMaterial>
-#include <QSGSimpleMaterial>
-#include <QSGSimpleMaterialShader>
+#include "SceneGraph/Node.hpp"
 
 class World;
 class ViewWorld;
 class StaticLight;
 
-class ShadowNode: public QSGGeometryNode {
+class ShadowNode: public SceneGraph::GeometryNode {
     private:
-        QSGGeometry m_geometry;
-        QSGFlatColorMaterial m_material;
+        struct Vertex {
+            float x, y, z, w;
+            Vertex(float, float, float, float);
+        };
 
-        static const QSGGeometry::AttributeSet& attributes();
+        SceneGraph::Geometry m_geometry;
+        SceneGraph::ColorMaterial m_material;
 
     public:
         ShadowNode(QPointF p1, QPointF p2);
@@ -31,7 +31,7 @@ class DynamicLight: public Light {
 
         class DynamicNode: public Light::LightNode {
             private:
-                QSGNode m_shadows;
+                SceneGraph::Node m_shadows;
                 std::vector<ShadowNode*> m_unused;
 
             public:
@@ -47,7 +47,7 @@ class DynamicLight: public Light {
         bool castingShadow(QPointF p1, QPointF p2) const;
 
     protected:
-        //QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node *);
 
     public:
         explicit DynamicLight(SceneGraph::Item* = nullptr);

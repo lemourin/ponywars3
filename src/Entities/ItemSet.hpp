@@ -10,6 +10,7 @@ class ItemSet: public SceneGraph::Item {
 
     public:
         ItemSet(World* world);
+        ~ItemSet();
 
         Q_INVOKABLE void dump(QString fileName);
         Q_INVOKABLE void load(QString fileName);

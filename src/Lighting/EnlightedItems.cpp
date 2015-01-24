@@ -11,30 +11,34 @@
 #include <QSGFlatColorMaterial>
 #include <QSGDynamicTexture>
 
-EnlightedItems::EnlightedItems(Item* parent):
+EnlightedItems::EnlightedItems(LightSystem* system, SceneGraph::Item* parent):
     SceneGraph::Item(parent),
-    m_lightSystem(),
-    m_world() {
-    //setFlag(ItemHasContents);
+    m_lightSystem(system) {
 }
 
-/*QSGNode* EnlightedItems::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
+World *EnlightedItems::world() const {
+    return lightSystem()->world();
+}
+
+SceneGraph::Node *EnlightedItems::synchronize(SceneGraph::Node *old) {
     QRectF visibleArea = world()->view()->visibleArea();
 
     Node* node = static_cast<Node*>(old);
     if (!node)
         node = new Node;
-    node->removeAllChildNodes();
+    while (node->firstChild())
+        node->removeChild(node->firstChild());
 
     for (StaticLight* light: lightSystem()->visibleLights()) {
-        if (!light->enabled() || !light->dynamicLight())
+        if (!light->dynamicLight())
             continue;
-        QRectF lightRect = light->mapRectToScene(light->boundingRect());
+
+        QRectF lightRect = light->matrix().mapRect(light->boundingRect());
         QRectF rect = visibleArea.intersected(lightRect);
         for (QFixture* f: world()->fixtures(rect)) {
             if (f->shadowCaster()) {
-                QSGNode* enlightedNode = node->getEnlightedNode(f, light);
-                node->appendChildNode(enlightedNode);
+                SceneGraph::Node* enlightedNode = node->getEnlightedNode(f, light);
+                node->appendChild(enlightedNode);
             }
         }
     }
@@ -42,23 +46,24 @@ EnlightedItems::EnlightedItems(Item* parent):
     update();
 
     return node;
-}*/
+}
 
 EnlightedNode::EnlightedNode(QFixture* fixture):
-    m_geometry(QSGGeometry::defaultAttributes_Point2D(),
-               fixture->vertices().size()-1) {
+    m_geometry({ { 2, GL_FLOAT } },
+               fixture->vertices().size()-1,
+               sizeof(Vertex)) {
 
-    m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
     m_geometry.setDrawingMode(GL_TRIANGLE_FAN);
 
     std::vector<QPointF> v = fixture->vertices();
     for (uint i=0; i<v.size()-1; i++)
-        m_geometry.vertexDataAsPoint2D()[i].set(v[i].x(), v[i].y());
+        m_geometry.vertexData<Vertex>()[i] = { float(v[i].x()), float(v[i].y()) };
+    m_geometry.updateVertexData();
 
     m_geometryNode.setGeometry(&m_geometry);
-    //m_geometryNode.setMaterial(&m_material);
+    m_geometryNode.setMaterial(&m_material);
 
-    appendChildNode(&m_geometryNode);
+    appendChild(&m_geometryNode);
 }
 
 void EnlightedNode::update(QFixture* fixture, Light* light) {
@@ -67,25 +72,15 @@ void EnlightedNode::update(QFixture* fixture, Light* light) {
 }
 
 void EnlightedNode::updateMaterial(Light* light) {
-    //m_material.setNormalMap(light->lightSystem()->normalMap()->texture());
-    QVector3D p(light->position().x(), light->position().y(), 0/*light->z()*/);
+    m_material.setNormalMap(light->lightSystem()->normalMap()->shaderNode());
+    QVector3D p(light->position().x(), light->position().y(), light->z());
     m_material.setLightPosition(matrix().inverted()*p);
     m_material.setColor(light->color());
     m_material.setAttenuation(light->attenuation());
-
-    m_geometryNode.markDirty(DirtyMaterial);
 }
 
 void EnlightedNode::updateMatrix(QFixture* fixture) {
-    QMatrix4x4 matrix;
-    matrix.translate(fixture->body()->position().x(),
-                     fixture->body()->position().y());
-    matrix.translate(fixture->position().x(),
-                     fixture->position().y());
-    matrix.rotate(fixture->body()->rotation(), 0, 0, 1);
-    setMatrix(matrix);
-
-    markDirty(DirtyMatrix);
+    setMatrix(fixture->matrix()*fixture->body()->matrix());
 }
 
 EnlightedItems::Node::Node() {
@@ -96,7 +91,7 @@ EnlightedItems::Node::~Node() {
         delete pair.second;
 }
 
-QSGNode* EnlightedItems::Node::getEnlightedNode(QFixture* fixture, Light* light) {
+SceneGraph::Node* EnlightedItems::Node::getEnlightedNode(QFixture* fixture, Light* light) {
     std::pair<QFixture*, Light*> key = { fixture, light };
     if (m_data.find(key) == m_data.end()) {
         EnlightedNode* node = new EnlightedNode(fixture);
