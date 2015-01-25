@@ -5,8 +5,8 @@
 
 Game::Game(Item* parent):
     DisplayItemFrame(parent),
-    m_viewWorld(new ViewWorld(this)),
-    m_lightSystem(new LightSystem(this)) {
+    m_viewWorld(this),
+    m_lightSystem(this) {
 
     view()->initialize();
     lightSystem()->initialize();
@@ -15,11 +15,6 @@ Game::Game(Item* parent):
 }
 
 Game::~Game() {
-    delete m_viewWorld;
-    m_viewWorld = nullptr;
-
-    delete m_lightSystem;
-    m_lightSystem = nullptr;
 }
 
 void Game::sizeChanged() {

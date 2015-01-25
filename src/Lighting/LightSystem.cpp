@@ -24,8 +24,10 @@ LightSystem::~LightSystem() {
             light->dynamicLight()->setLightSystem(nullptr);
 
         light->setLightSystem(nullptr);
-        delete light;
     }
+
+    for (StaticLight* light: m_loadedLights)
+        delete light;
 
     for (DynamicLight* light: m_unusedLight)
         light->setLightSystem(nullptr);
@@ -41,6 +43,8 @@ void LightSystem::read(const QJsonObject& obj) {
         light->setLightSystem(this);
         light->read(lightData);
         light->initialize(world());
+
+        m_loadedLights.insert(light);
     }
 }
 
@@ -98,9 +102,13 @@ void LightSystem::addLight(StaticLight* light) {
 void LightSystem::removeLight(StaticLight* light) {
     light->setVisible(false);
 
-    auto it = std::find(m_light.begin(), m_light.end(), light);
-    if (it != m_light.end())
-        m_light.erase(it);
+    auto it1 = std::find(m_light.begin(), m_light.end(), light);
+    assert(it1 != m_light.end());
+    m_light.erase(it1);
+
+    auto it2 = m_loadedLights.find(light);
+    if (it2 != m_loadedLights.end())
+        m_loadedLights.erase(it2);
 }
 
 void LightSystem::lightVisibilityChanged(StaticLight* light) {
