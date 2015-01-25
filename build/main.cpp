@@ -7,15 +7,11 @@ int main(int argc, char** argv) {
 
     qputenv("QML_FORCE_THREADED_RENDERER", "1");
 
-    Utility::Engine::instance()->init();
     Window::registerTypes();
 
     Window window;
     window.show();
 
-    int exitCode = app.exec();
+    return app.exec();
 
-    Utility::Engine::instance()->destroy();
-
-    return exitCode;
 }

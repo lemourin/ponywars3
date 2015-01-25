@@ -4,7 +4,6 @@
 #include <QQmlEngine>
 
 class QQuickItem;
-class QSGGeometry;
 
 namespace Utility {
 
@@ -31,23 +30,7 @@ namespace Json {
 
 }
 
-class Engine {
-    private:
-        QQmlEngine* m_engine;
-
-        Engine();
-
-    public:
-        static Engine* instance();
-
-        void init();
-        void destroy();
-
-        inline QQmlEngine* engine() const { return m_engine; }
-};
-
 void clearFocus(QQuickItem* obj);
-QQmlEngine* qmlEngine();
 
 }
 

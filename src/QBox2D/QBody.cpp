@@ -19,9 +19,6 @@ QBody::QBody(SceneGraph::Item* parent):
 
 QBody::~QBody() {
     destroyBody();
-
-    while (firstFixture())
-        delete firstFixture();
 }
 
 void QBody::destroyBody() {
@@ -31,7 +28,7 @@ void QBody::destroyBody() {
     world()->onBodyDestroyed(this);
 
     while (firstFixture())
-        firstFixture()->destroyFixture();
+        delete firstFixture();
 
     body()->SetUserData(nullptr);
     body()->GetWorld()->DestroyBody(body());

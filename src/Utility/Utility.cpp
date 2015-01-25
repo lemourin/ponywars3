@@ -9,28 +9,6 @@ void Utility::clearFocus(QQuickItem *obj) {
         clearFocus(item);
 }
 
-Utility::Engine::Engine(): m_engine() {
-}
-
-Utility::Engine* Utility::Engine::instance() {
-    static Engine engine;
-    return &engine;
-}
-
-void Utility::Engine::init() {
-    m_engine = new QQmlEngine;
-}
-
-void Utility::Engine::destroy() {
-    delete m_engine;
-    m_engine = nullptr;
-}
-
-QQmlEngine* Utility::qmlEngine() {
-    return Engine::instance()->engine();
-}
-
-
 QJsonObject Utility::Json::toObject(QRectF rect) {
     QJsonObject obj;
     obj["x"] = rect.x();
