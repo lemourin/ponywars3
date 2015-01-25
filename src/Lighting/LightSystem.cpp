@@ -39,7 +39,7 @@ void LightSystem::read(const QJsonObject& obj) {
     for (int i=0; i<array.size(); i++) {
         QJsonObject lightData = array[i].toObject();
 
-        StaticLight* light = new StaticLight(this);
+        StaticLight* light = new StaticLight;
         light->setLightSystem(this);
         light->read(lightData);
         light->initialize(world());
@@ -97,6 +97,7 @@ World* LightSystem::world() const {
 
 void LightSystem::addLight(StaticLight* light) {
     m_light.push_back(light);
+    light->setParent(nullptr);
 }
 
 void LightSystem::removeLight(StaticLight* light) {
@@ -112,8 +113,10 @@ void LightSystem::removeLight(StaticLight* light) {
 }
 
 void LightSystem::lightVisibilityChanged(StaticLight* light) {
-    if (light->visible())
+    if (light->visible()) {
         m_visibleLights.insert(light);
+        light->setParent(lightTexture()->sourceItem());
+    }
     else
         m_visibleLights.erase(m_visibleLights.find(light));
 
@@ -125,23 +128,16 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 
             p->bindLight(nullptr);
         }
-        else {
-            light->setParent(lightTexture()->sourceItem());
-        }
     }
     else {
         if (light-visible() && light->dynamicShadows() && !m_unusedLight.empty()) {
             DynamicLight* p = m_unusedLight.back();
             m_unusedLight.pop_back();
 
-            p->bindLight(light);
             p->setVisible(true);
-            p->update();
+            p->bindLight(light);
 
             light->setParent(nullptr);
-        }
-        else {
-            light->setParent(lightTexture()->sourceItem());
         }
     }
 }

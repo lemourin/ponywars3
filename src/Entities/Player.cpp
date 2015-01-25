@@ -11,8 +11,7 @@
 
 Player::Player(Item* parent):
     Pony(parent),
-    m_hand(this),
-    m_light(this) {
+    m_hand(this) {
 }
 
 Player::~Player() {

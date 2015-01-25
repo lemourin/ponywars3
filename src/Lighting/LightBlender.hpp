@@ -12,7 +12,7 @@
 class QSGDynamicTexture;
 class LightSystem;
 
-const int DYNAMIC_LIGHTS_COUNT = 3;
+const int DYNAMIC_LIGHTS_COUNT = 1;
 
 class LightBlender: public SceneGraph::GeometryNode {
     private:
