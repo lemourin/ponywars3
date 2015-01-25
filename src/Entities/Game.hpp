@@ -6,20 +6,18 @@
 
 class Game: public DisplayItemFrame {
     private:
-        ViewWorld m_viewWorld;
-        LightSystem m_lightSystem;
+        ViewWorld* m_viewWorld;
+        LightSystem* m_lightSystem;
 
     protected:
         void sizeChanged();
 
     public:
         explicit Game(SceneGraph::Item *parent = 0);
+        ~Game();
 
-        inline ViewWorld* view() { return &m_viewWorld; }
-        inline const ViewWorld* view() const { return &m_viewWorld; }
-
-        inline LightSystem* lightSystem() { return &m_lightSystem; }
-        inline const LightSystem* lightSystem() const { return &m_lightSystem; }
+        inline ViewWorld* view() const { return m_viewWorld; }
+        inline LightSystem* lightSystem() const { return m_lightSystem; }
 
         bool read(const QJsonObject& obj);
         bool write(QJsonObject& obj) const;

@@ -47,6 +47,10 @@ World::World(ViewWorld* viewWorld):
     //setAcceptedMouseButtons(Qt::LeftButton);
 }
 
+World::~World() {
+    delete m_player;
+}
+
 void World::updateFps() {
     qreal t = m_fpscounter.restart();
 

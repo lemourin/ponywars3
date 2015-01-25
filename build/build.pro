@@ -8,7 +8,7 @@ RCC_DIR = .rcc
 LIBS += -L$$OUT_PWD/../build -lsrc -lBox2D -lSceneGraph -Wl,-R.
 INCLUDEPATH += ../src ../deps
 DESTDIR = $$OUT_PWD/../build
-TARGET = PonyWars2
+TARGET = PonyWars3
 
 SOURCES += main.cpp
 

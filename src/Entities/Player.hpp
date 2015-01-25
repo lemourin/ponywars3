@@ -30,6 +30,8 @@ class Player: public Pony {
 
     public:
         Player(SceneGraph::Item* parent = nullptr);
+        ~Player();
+
         void initialize(QWorld*);
 
         inline Hand* hand() { return &m_hand; }

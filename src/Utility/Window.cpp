@@ -65,7 +65,6 @@ Window::Window(QWindow* parent):
     setResizeMode(SizeRootObjectToView);
 
     connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
-    //m_game.setZ(-1);
 }
 
 void Window::resizeEvent(QResizeEvent* event) {

@@ -86,8 +86,10 @@ void DisplayItem::updateVisibleArea() {
     scale(factor(), factor());
     translate(-effectiveLookAt().x(), -effectiveLookAt().y());
 
-    QMatrix4x4 t = effectiveMatrix().inverted() * m_frame->effectiveMatrix();
-    setVisibleArea(t.mapRect(QRectF(QPointF(), m_frame->size())));
+    QRectF rect(QPointF(), m_frame->size());
+    setVisibleArea(matrix().inverted().mapRect(rect));
+
+    //qDebug() << visibleArea();
 }
 
 void DisplayItem::focusedObjectPositionChanged() {
@@ -205,6 +207,9 @@ void DisplayItem::mouseReleased(QPointF) {
 }
 
 void DisplayItemFrame::sizeChanged() {
+    //resetTransform();
+    //scale(size().width(), size().height());
+    //qDebug() << "swag";
 }
 
 DisplayItemFrame::DisplayItemFrame(Item* parent):

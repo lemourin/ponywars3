@@ -12,8 +12,10 @@
 Player::Player(Item* parent):
     Pony(parent),
     m_hand(this),
-    m_light(this)
-{
+    m_light(this) {
+}
+
+Player::~Player() {
 }
 
 void Player::mouseMoved(QPointF pos) {

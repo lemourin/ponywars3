@@ -27,10 +27,8 @@ LightSystem::~LightSystem() {
         delete light;
     }
 
-    for (DynamicLight* light: m_unusedLight) {
+    for (DynamicLight* light: m_unusedLight)
         light->setLightSystem(nullptr);
-        delete light;
-    }
 }
 
 void LightSystem::read(const QJsonObject& obj) {
@@ -89,12 +87,12 @@ void LightSystem::setResolution(QSize s) {
 }
 
 World* LightSystem::world() const {
+    assert(m_game->view());
     return m_game->view()->world();
 }
 
 void LightSystem::addLight(StaticLight* light) {
     m_light.push_back(light);
-    light->setParent(lightTexture()->sourceItem());
 }
 
 void LightSystem::removeLight(StaticLight* light) {

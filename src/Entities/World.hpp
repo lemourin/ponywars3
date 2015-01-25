@@ -62,6 +62,7 @@ class World: public QWorld {
 
     public:
         explicit World(ViewWorld*);
+        ~World();
 
         inline Player* player() const { return m_player; }
         void setPlayer(Player* p);

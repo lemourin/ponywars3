@@ -5,16 +5,26 @@
 
 Game::Game(Item* parent):
     DisplayItemFrame(parent),
-    m_viewWorld(this),
-    m_lightSystem(this) {
+    m_viewWorld(new ViewWorld(this)),
+    m_lightSystem(new LightSystem(this)) {
 
-    m_viewWorld.initialize();
-    m_lightSystem.initialize();
+    view()->initialize();
+    lightSystem()->initialize();
 
     load(":/json/map00.json");
 }
 
+Game::~Game() {
+    delete m_viewWorld;
+    m_viewWorld = nullptr;
+
+    delete m_lightSystem;
+    m_lightSystem = nullptr;
+}
+
 void Game::sizeChanged() {
+    DisplayItemFrame::sizeChanged();
+
 #ifdef Q_OS_ANDROID
     const QSize maxres(800, 600);
 #else
@@ -24,25 +34,25 @@ void Game::sizeChanged() {
     QSize resolution(std::min(int(size().width()), maxres.width()),
                      std::min(int(size().height()), maxres.height()));
 
-    m_lightSystem.setResolution(resolution);
-    m_lightSystem.setSize(size());
+    lightSystem()->setResolution(resolution);
+    lightSystem()->setSize(size());
 }
 
 bool Game::read(const QJsonObject& obj) {
-    m_viewWorld.read(obj["viewWorld"].toObject());
-    m_lightSystem.read(obj["lightSystem"].toObject());
+    view()->read(obj["viewWorld"].toObject());
+    lightSystem()->read(obj["lightSystem"].toObject());
 
     return true;
 }
 
 bool Game::write(QJsonObject& obj) const {
     QJsonObject viewWorld;
-    m_viewWorld.write(viewWorld);
+    view()->write(viewWorld);
     obj["viewWorld"] = viewWorld;
 
-    QJsonObject lightSystem;
-    m_lightSystem.write(lightSystem);
-    obj["lightSystem"] = lightSystem;
+    QJsonObject lights;
+    lightSystem()->write(lights);
+    obj["lightSystem"] = lights;
 
     return true;
 }

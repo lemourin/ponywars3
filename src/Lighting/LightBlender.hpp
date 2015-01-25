@@ -68,7 +68,5 @@ class LightBlender: public SceneGraph::GeometryNode {
         LightBlender();
 
         inline Material* material() { return &m_material; }
-
-        void updateGeometry(LightSystem*);
 };
 #endif // LIGHTBLENDER_HPP

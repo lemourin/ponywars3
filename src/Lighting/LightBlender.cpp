@@ -19,14 +19,6 @@ LightBlender::LightBlender():
     setFlag(UsePreprocess);
 }
 
-void LightBlender::updateGeometry(LightSystem*) {
-   /*m_geometry.vertexData<Vertex>()[0] = { 0.f, 0.f, 0.f, 0.f };
-    m_geometry.vertexData<Vertex>()[1] = { 0.f, 1.f, 0.f, 1.f };
-    m_geometry.vertexData<Vertex>()[2] = { 1.f, 0.f, 1.f, 0.f };
-    m_geometry.vertexData<Vertex>()[3] = { 1.f, 1.f, 1.f, 1.f };
-    m_geometry.updateVertexData();*/
-}
-
 void LightBlender::preprocess() {
     m_material.update();
 }
@@ -122,7 +114,6 @@ std::vector<std::string> LightBlender::Material::Shader::attribute() const {
 
 LightBlender::Material::Material():
     m_lightTexture() {
-    //setFlag(Blending);
 }
 
 void LightBlender::Material::setLights(SceneGraph::ShaderSource *array[]) {

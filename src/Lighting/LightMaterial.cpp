@@ -5,8 +5,6 @@
 
 LightMaterial::LightMaterial():
     m_normalMap() {
-    //setFlag(Blending);
-    //setFlag(RequiresFullMatrix);
 }
 
 void LightMaterial::Shader::initialize() {
