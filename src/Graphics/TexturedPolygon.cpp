@@ -1,6 +1,7 @@
 #include "TexturedPolygon.hpp"
 #include "Utility/Window.hpp"
 #include "Graphics/Primitives.hpp"
+#include "Geometry/Triangle.hpp"
 
 TexturedPolygon::TexturedPolygon(SceneGraph::Item *parent):
     TexturedItem(parent),
