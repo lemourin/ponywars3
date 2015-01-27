@@ -39,7 +39,6 @@ void Window::setProjection(const QMatrix4x4& m) {
 }
 
 void Window::scheduleSynchronize() {
-    contentItem()->update();
     update();
 }
 

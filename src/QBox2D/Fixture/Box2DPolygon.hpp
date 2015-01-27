@@ -14,7 +14,7 @@ class Box2DPolygon: public Fixture {
 
     protected:
         b2Shape* createShape() const;
-        QSGNode* createNode() const;
+        SceneGraph::Node* synchronize(SceneGraph::Node *);
 
     public:
         explicit Box2DPolygon(Item* = nullptr);

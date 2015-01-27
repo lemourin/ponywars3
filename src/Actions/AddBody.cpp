@@ -1,7 +1,7 @@
 #include "AddBody.hpp"
 #include "AddPolygon.hpp"
 #include "AddCircle.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/QFixture.hpp"
 #include "Entities/World.hpp"

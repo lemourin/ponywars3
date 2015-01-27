@@ -3,7 +3,7 @@
 #include "QBox2D/Fixture/Box2DEdge.hpp"
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/QFixture.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "Geometry/Circle.hpp"
 #include "Geometry/Vector2d.hpp"
 #include "Geometry/Functions.hpp"

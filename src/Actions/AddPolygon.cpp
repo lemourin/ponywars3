@@ -1,7 +1,7 @@
 #include "AddPolygon.hpp"
 #include "QBox2D/QWorld.hpp"
 #include "Geometry/Functions.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "QBox2D/Fixture/Box2DPolygon.hpp"
 #include "AddBody.hpp"
 #include <QSGSimpleRectNode>

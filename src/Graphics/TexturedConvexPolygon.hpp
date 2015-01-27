@@ -4,19 +4,20 @@
 
 class TexturedConvexPolygon: public TexturedPolygon {
     protected:
-        class Node: public QSGTransformNode {
+        class Node: public SceneGraph::Node {
             private:
-                QSGGeometryNode m_geometryNode;
-                QSGGeometry m_geometry;
-                QSGOpaqueTextureMaterial m_material;
+                SceneGraph::GeometryNode m_geometryNode;
+                SceneGraph::Geometry m_geometry;
+                SceneGraph::TextureMaterial m_material;
 
             public:
                 Node(const std::vector<QPointF>& pts,
                      QVector2D textureScale);
 
-                void setTexture(QSGTexture*);
+                void setTexture(QOpenGLTexture*);
         };
 
+        SceneGraph::Node* synchronize(SceneGraph::Node *);
         //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:

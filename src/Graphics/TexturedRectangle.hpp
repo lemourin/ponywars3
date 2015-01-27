@@ -17,12 +17,6 @@ class TexturedRectangle: public TexturedItem {
                 SceneGraph::Geometry m_geometry;
                 SceneGraph::TextureMaterial m_material;
 
-                struct Vertex {
-                    float x, y, tx, ty;
-
-                    void set(float, float, float, float);
-                };
-
             public:
                 Node();
 

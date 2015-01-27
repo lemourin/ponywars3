@@ -47,5 +47,41 @@ void triangulate(const std::vector<QPointF> &polygon,
     }
 }
 
+void toTriangleStrip(std::vector<QPointF> convexPolygon,
+                     std::vector<QPointF> &output) {
+    output = std::vector<QPointF>(convexPolygon.size());
+
+    size_t i = 1, j = convexPolygon.size()-1, index = 1;
+    bool left = false;
+
+    QPointF p0 = convexPolygon.front();
+    output[0] = p0;
+
+    while (index < (size_t)convexPolygon.size()) {
+        if (left) {
+            output[index] = convexPolygon[i];
+            i++;
+        }
+        else {
+            output[index] = convexPolygon[j];
+            j--;
+        }
+        left = !left, index++;
+    }
+}
+
+void toTriangles(std::vector<QPointF> polygon,
+                 std::vector<QPointF>& output) {
+    std::vector<Triangle> triangles;
+    Geometry::triangulate(polygon, triangles);
+
+    output.resize(triangles.size()*3);
+    uint id = 0;
+    for (uint i=0; i<triangles.size(); i++)
+        for (QPointF p: triangles[i])
+            output[id++] = p;
+
+}
+
 }
 

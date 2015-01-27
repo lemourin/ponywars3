@@ -7,7 +7,7 @@ class Box2DChain: public Box2DPolygon {
 
     protected:
         b2Shape* createShape() const;
-        QSGNode* createNode() const;
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
 
     public:
         explicit Box2DChain(Item* = nullptr);

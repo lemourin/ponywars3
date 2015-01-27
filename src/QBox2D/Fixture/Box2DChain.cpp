@@ -1,5 +1,5 @@
 #include "Box2DChain.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 
 Box2DChain::Box2DChain(SceneGraph::Item* parent): Box2DPolygon(parent) {
 }
@@ -16,10 +16,14 @@ b2Shape* Box2DChain::createShape() const {
     return chainShape;
 }
 
-QSGNode* Box2DChain::createNode() const {
-    PolygonNode* node = new PolygonNode(std::vector<QPointF>(m_vertices.begin(),
-                                                             m_vertices.end()-1));
-    node->setColor(Qt::red);
+SceneGraph::Node *Box2DChain::synchronize(SceneGraph::Node *old) {
+    PolygonNode* node = static_cast<PolygonNode*>(old);
+    if (!node) {
+        node = new PolygonNode(std::vector<QPointF>(m_vertices.begin(),
+                                                    m_vertices.end()-1));
+        node->setColor(Qt::red);
+    }
+
     return node;
 }
 

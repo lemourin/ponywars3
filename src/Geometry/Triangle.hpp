@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_HPP
 #define TRIANGLE_HPP
 #include <QPointF>
+#include <vector>
 
 class Triangle {
     public:
@@ -22,6 +23,12 @@ namespace Geometry {
 
 void triangulate(const std::vector<QPointF>& polygon,
                  std::vector<Triangle>& result);
+
+void toTriangleStrip(std::vector<QPointF> convexPolygon,
+                     std::vector<QPointF>& output);
+
+void toTriangles(std::vector<QPointF> polygon,
+                 std::vector<QPointF>& output);
 
 }
 

@@ -28,13 +28,13 @@ HEADERS += \
     BaseObject.hpp \
     Camera.hpp \
     Cube.hpp \
-    DefaultRenderer.hpp \
     Geometry.hpp \
     Image.hpp \
     Item.hpp \
     Material.hpp \
     Node.hpp \
-    Renderer.hpp \
     Shader.hpp \
     Window.hpp \
-    ShaderSource.hpp
+    ShaderSource.hpp \
+    DefaultRenderer.hpp \
+    Renderer.hpp

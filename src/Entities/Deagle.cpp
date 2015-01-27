@@ -1,6 +1,6 @@
 #include "Deagle.hpp"
 #include "QBox2D/QWorld.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include <QJsonObject>
 
 Deagle::Deagle(Item* p):

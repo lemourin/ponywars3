@@ -1,6 +1,6 @@
 #include "Box2DCircle.hpp"
 #include "Geometry/Circle.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 
 Box2DCircle::Box2DCircle(Item* parent):
     QFixture(parent),
@@ -29,9 +29,13 @@ b2Shape* Box2DCircle::createShape() const {
     return shape;
 }
 
-QSGNode* Box2DCircle::createNode() const {
-    CircleNode* node = new CircleNode(QPointF(), radius());
-    node->setColor(Qt::green);
+SceneGraph::Node* Box2DCircle::synchronize(SceneGraph::Node* old) {
+    CircleNode* node = static_cast<CircleNode*>(old);
+    if (!node) {
+        node = new CircleNode(QPointF(), radius());
+        node->setColor(Qt::green);
+    }
 
     return node;
 }
+

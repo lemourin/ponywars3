@@ -1,8 +1,9 @@
 #ifndef TEXTUREDPOLYGON_HPP
 #define TEXTUREDPOLYGON_HPP
 
-#include <QSGGeometryNode>
-#include <QSGOpaqueTextureMaterial>
+#include "SceneGraph/Geometry.hpp"
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Material.hpp"
 #include "TexturedItem.hpp"
 
 class TexturedPolygon: public TexturedItem {
@@ -11,20 +12,20 @@ class TexturedPolygon: public TexturedItem {
         std::vector<QPointF> m_vertices;
 
     protected:
-        class Node: public QSGTransformNode {
+        class Node: public SceneGraph::Node {
             private:
-                QSGGeometryNode m_geometryNode;
-                QSGGeometry m_geometry;
-                QSGOpaqueTextureMaterial m_material;
+                SceneGraph::GeometryNode m_geometryNode;
+                SceneGraph::Geometry m_geometry;
+                SceneGraph::TextureMaterial m_material;
 
             public:
                 Node(const std::vector<QPointF>& pts,
                      QVector2D textureScale);
 
-                void setTexture(QSGTexture*);
+                void setTexture(QOpenGLTexture*);
         };
 
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
 
     public:
         explicit TexturedPolygon(Item* parent = nullptr);

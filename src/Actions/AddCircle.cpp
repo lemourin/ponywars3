@@ -1,6 +1,6 @@
 #include "AddCircle.hpp"
 #include "AddBody.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "Geometry/Vector2d.hpp"
 #include "QBox2D/Fixture/Box2DCircle.hpp"
 #include "QBox2D/QWorld.hpp"

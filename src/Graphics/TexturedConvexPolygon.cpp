@@ -5,7 +5,7 @@ TexturedConvexPolygon::TexturedConvexPolygon(SceneGraph::Item *parent):
     TexturedPolygon(parent) {
 }
 
-/*QSGNode* TexturedConvexPolygon::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
+SceneGraph::Node *TexturedConvexPolygon::synchronize(SceneGraph::Node* old) {
     Node* node = static_cast<Node*>(old);
 
     if (!node) {
@@ -13,34 +13,33 @@ TexturedConvexPolygon::TexturedConvexPolygon(SceneGraph::Item *parent):
                         textureScale());
     }
 
-    node->setMatrix(matrix());
     node->setTexture(texture());
 
     return node;
-}*/
+}
 
 TexturedConvexPolygon::Node::Node(const std::vector<QPointF>& pts,
                                   QVector2D scale):
-    m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), pts.size()) {
+    m_geometry({ { 2, GL_FLOAT }, { 2, GL_FLOAT } }, pts.size(), sizeof(QVector4D)) {
 
     m_geometryNode.setGeometry(&m_geometry);
     m_geometryNode.setMaterial(&m_material);
-    appendChildNode(&m_geometryNode);
+    appendChild(&m_geometryNode);
 
-    m_geometry.setVertexDataPattern(QSGGeometry::StaticPattern);
     m_geometry.setDrawingMode(GL_TRIANGLE_FAN);
 
-    QSGGeometry::TexturedPoint2D* array = m_geometry.vertexDataAsTexturedPoint2D();
+    QVector4D* array = m_geometry.vertexData<QVector4D>();
     for (size_t i=0; i<pts.size(); i++)
-        array[i].set(pts[i].x(), pts[i].y(),
-                     pts[i].x()*scale.x(), pts[i].y()*scale.y());
+        array[i] = QVector4D(pts[i].x(), pts[i].y(),
+                             pts[i].x()*scale.x(), pts[i].y()*scale.y());
+    m_geometry.updateVertexData();
 
-    m_material.setFiltering(QSGTexture::Linear);
-    m_material.setMipmapFiltering(QSGTexture::Linear);
-    m_material.setHorizontalWrapMode(QSGTexture::Repeat);
-    m_material.setVerticalWrapMode(QSGTexture::Repeat);
+//    m_material.setFiltering(QSGTexture::Linear);
+//    m_material.setMipmapFiltering(QSGTexture::Linear);
+//    m_material.setHorizontalWrapMode(QSGTexture::Repeat);
+//    m_material.setVerticalWrapMode(QSGTexture::Repeat);
 }
 
-void TexturedConvexPolygon::Node::setTexture(QSGTexture* t) {
+void TexturedConvexPolygon::Node::setTexture(QOpenGLTexture *t) {
     m_material.setTexture(t);
 }

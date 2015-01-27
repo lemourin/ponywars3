@@ -29,7 +29,6 @@ SOURCES += \
     Geometry/Triangulate.cpp \
     Geometry/Vector2d.cpp \
     Geometry/Functions.cpp \
-    Geometry/Primitives.cpp \
     QBox2D/QFixture.cpp \
     QBox2D/QBody.cpp \
     QBox2D/QWorld.cpp \
@@ -74,7 +73,8 @@ SOURCES += \
     Entities/ViewWorld.cpp \
     Entities/Pony.cpp \
     Actions/MapEditorAction.cpp \
-    Entities/Game.cpp
+    Entities/Game.cpp \
+    Graphics/Primitives.cpp
 
 HEADERS += \
     Actions/Action.hpp \
@@ -91,7 +91,6 @@ HEADERS += \
     Geometry/Triangle.hpp \
     Geometry/Triangulate.hpp \
     Geometry/Edge.hpp \
-    Geometry/Primitives.hpp \
     Geometry/Vector2d.hpp \
     QBox2D/QFixture.hpp \
     QBox2D/QWorld.hpp \
@@ -140,5 +139,6 @@ HEADERS += \
     Entities/ViewWorld.hpp \
     Entities/Pony.hpp \
     Actions/MapEditorAction.hpp \
-    Entities/Game.hpp
+    Entities/Game.hpp \
+    Graphics/Primitives.hpp
 

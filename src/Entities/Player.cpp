@@ -3,7 +3,7 @@
 #include "Weapon.hpp"
 #include "Gun.hpp"
 #include "Enemy.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "Geometry/Functions.hpp"
 #include "Utility/DisplayItem.hpp"
 #include "Lighting/LightSystem.hpp"

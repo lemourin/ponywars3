@@ -9,7 +9,7 @@ class Box2DCircle: public QFixture {
 
     protected:
         b2Shape* createShape() const;
-        QSGNode* createNode() const;
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
 
     public:
         explicit Box2DCircle(SceneGraph::Item* = nullptr);

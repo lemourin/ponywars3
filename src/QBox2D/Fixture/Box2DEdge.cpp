@@ -1,5 +1,5 @@
 #include "Box2DEdge.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 
 Box2DEdge::Box2DEdge(Item* parent): QFixture(parent) {
 }
@@ -15,8 +15,12 @@ b2Shape* Box2DEdge::createShape() const {
     return new b2EdgeShape(m_edgeShape);
 }
 
-QSGNode* Box2DEdge::createNode() const {
-    std::vector<QPointF> v = vertices();
+SceneGraph::Node* Box2DEdge::synchronize(SceneGraph::Node *old) {
+    EdgeNode* node = static_cast<EdgeNode*>(old);
+    if (!node) {
+        std::vector<QPointF> v = vertices();
+        node = new EdgeNode(v[0], v[1]);
+    }
 
-    return new EdgeNode(v[0], v[1]);
+    return node;
 }

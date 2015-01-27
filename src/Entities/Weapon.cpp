@@ -4,7 +4,7 @@
 #include "QBox2D/QWorld.hpp"
 #include "QBox2D/QFixture.hpp"
 #include "Utility/Utility.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "Geometry/Circle.hpp"
 #include "Graphics/TexturedItem.hpp"
 #include <QJsonObject>

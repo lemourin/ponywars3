@@ -1,5 +1,5 @@
 #include "Box2DPolygon.hpp"
-#include "Geometry/Primitives.hpp"
+#include "Graphics/Primitives.hpp"
 #include "Utility/Utility.hpp"
 #include <QJsonObject>
 #include <QJsonArray>
@@ -67,8 +67,12 @@ b2Shape* Box2DPolygon::createShape() const {
     return shape;
 }
 
-QSGNode* Box2DPolygon::createNode() const {
-    ConvexPolygonNode* node = new ConvexPolygonNode(vertices());
-    node->setColor(Qt::blue);
+SceneGraph::Node *Box2DPolygon::synchronize(SceneGraph::Node* old) {
+    ConvexPolygonNode* node = static_cast<ConvexPolygonNode*>(old);
+    if (!node) {
+        node = new ConvexPolygonNode(vertices());
+        node->setColor(Qt::blue);
+    }
+
     return node;
 }
