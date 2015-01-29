@@ -109,7 +109,7 @@ World* Player::world() const {
 }
 
 void Player::healthChanged() {
-    if (world()->player() == this)
+    if (world() && world()->player() == this)
         world()->worldObject()->playerHealthChanged();
 
     if (health() <= 0) {
