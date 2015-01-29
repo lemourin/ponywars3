@@ -23,17 +23,15 @@ class QFixture: public SceneGraph::Item {
         b2FixtureDef m_fixtureDef;
         List<QFixture*>::Node m_node;
 
+        SceneGraph::Item m_content;
+
         QPointF m_position;
         bool m_shadowCaster;
 
     protected:
-        //QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
-
         virtual void initialize(QBody* item);
         virtual b2Shape* createShape() const = 0;
-
-        virtual inline void bodyPositionChanged() { }
-        virtual inline void bodyRotationChanged() { }
+        void matrixChanged();
 
     public:
         explicit QFixture(SceneGraph::Item* parent = nullptr);
@@ -94,6 +92,9 @@ class QFixture: public SceneGraph::Item {
 
         inline bool shadowCaster() const { return m_shadowCaster; }
         void setShadowCaster(bool);
+
+        inline const SceneGraph::Item* content() const { return &m_content; }
+        inline SceneGraph::Item* content() { return &m_content; }
 
         virtual bool read(const QJsonObject&);
         virtual bool write(QJsonObject&) const;

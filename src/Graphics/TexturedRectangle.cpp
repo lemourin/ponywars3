@@ -38,12 +38,6 @@ void TexturedRectangle::Node::synchronize(const TexturedRectangle* item) {
 
 void TexturedRectangle::Node::updateMaterial(const TexturedRectangle* item) {
     m_material.setTexture(item->texture());
-    //m_material.setFiltering(QSGTexture::Linear);
-    //m_material.setMipmapFiltering(QSGTexture::Linear);
-    //m_material.setHorizontalWrapMode(QSGTexture::Repeat);
-    //m_material.setVerticalWrapMode(QSGTexture::Repeat);
-
-    //markDirty(DirtyMaterial);
 }
 
 void TexturedRectangle::Node::updateGeometry(const TexturedRectangle* item) {

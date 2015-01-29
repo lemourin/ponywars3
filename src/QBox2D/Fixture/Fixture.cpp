@@ -9,19 +9,11 @@ Fixture::Fixture(SceneGraph::Item *parent):
     m_normalMap() {
 }
 
-Fixture::~Fixture() {
-    m_texture = nullptr;
-    m_normalMap = nullptr;
-}
-
 void Fixture::initialize(QBody *b) {
     QFixture::initialize(b);
 
-    if (normalMap()) {
-        normalMap()->setMatrix(matrix()*normalMap()->matrix());
-        normalMap()->setParent(b->content());
-    }
-
+    if (normalMap())
+        normalMap()->setParent(content());
 }
 
 QString Fixture::textureSource() const {

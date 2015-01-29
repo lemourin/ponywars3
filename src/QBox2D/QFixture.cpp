@@ -124,14 +124,13 @@ void QFixture::initialize(QBody* item) {
     m_fixture->SetUserData(this);
 
     delete shape;
+
+    m_content.setParent(item->content());
 }
 
-/*QSGNode* QFixture::updatePaintNode(QSGNode* old, UpdatePaintNodeData*) {
-    if (old)
-        return old;
-
-    return createNode();
-}*/
+void QFixture::matrixChanged() {
+    m_content.setMatrix(matrix());
+}
 
 QFixture* QFixture::toQFixture(b2Fixture* fixture) {
     return static_cast<QFixture*>(fixture->GetUserData());

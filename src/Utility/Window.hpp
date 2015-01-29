@@ -37,9 +37,8 @@ class Environment: public QObject {
 
 class Window: public SceneGraph::Window {
     private:
-        Environment m_environment;
-
         Game m_game;
+        Environment m_environment;
 
     protected:
         void resizeEvent(QResizeEvent *);

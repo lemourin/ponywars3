@@ -19,13 +19,6 @@ Item {
         opacity: 0.5
     }
 
-    TextField {
-    }
-
-    TextField {
-        x: 100
-    }
-
     BodyEditControl { }
 
     /*Text {

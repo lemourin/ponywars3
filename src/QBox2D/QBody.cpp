@@ -47,12 +47,6 @@ void QBody::setPosition(QPointF p) {
     resetTransform();
     translate(position().x(), position().y());
     rotate(rotation()*180.0/M_PI, 0, 0, 1);
-
-    if (body()) {
-        for (QFixture* f = firstFixture(); f; f = f->next())
-            f->bodyPositionChanged();
-    }
-
 }
 
 void QBody::setRotation(qreal r) {
@@ -61,11 +55,6 @@ void QBody::setRotation(qreal r) {
     resetTransform();
     translate(position().x(), position().y());
     rotate(rotation(), 0, 0, 1);
-
-    if (body()) {
-        for (QFixture* f = firstFixture(); f; f = f->next())
-            f->bodyRotationChanged();
-    }
 }
 
 void QBody::removeFixture(QFixture* fixture) {
@@ -249,7 +238,6 @@ void QBody::synchronize() {
     m_content.resetTransform();
     m_content.translate(position().x(), position().y());
     m_content.rotate(rotation(), 0, 0, 1);
-
 }
 
 QBody* QBody::toQBody(b2Body* body) {

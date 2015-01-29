@@ -2,6 +2,8 @@ TEMPLATE = lib
 QT =
 
 CONFIG += warn_off
+QMAKE_CXXFLAGS += -fno-strict-aliasing
+
 INCLUDEPATH += ..
 OBJECTS_DIR = .obj
 

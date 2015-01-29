@@ -15,7 +15,6 @@ class Fixture: public QFixture {
 
     public:
         explicit Fixture(Item* = nullptr);
-        ~Fixture();
 
         QString textureSource() const;
         void setTextureSource(QString);

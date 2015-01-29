@@ -6,6 +6,8 @@ CONFIG += c++11
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
+QMAKE_CXXFLAGS += -fno-strict-aliasing
+
 LIBS += -L$$OUT_PWD/../build -lBox2D -lSceneGraph
 
 INCLUDEPATH += $$PWD/../deps/
