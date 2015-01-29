@@ -59,8 +59,7 @@ Window::Window(QWindow* parent):
     m_environment(this) {
 
     rootContext()->setContextProperty("app", &m_environment);
-    //rootContext()->setContextProperty("game", &m_game);
-    //rootContext()->setContextProperty("world", m_game.view()->world());
+    rootContext()->setContextProperty("world", m_game.view()->world()->worldObject());
     setSource(QUrl("qrc:/qml/main.qml"));
     setResizeMode(SizeRootObjectToView);
 

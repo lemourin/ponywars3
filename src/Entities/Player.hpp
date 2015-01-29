@@ -10,8 +10,6 @@ class Player: public Pony {
     private:
         friend class ViewWorld;
 
-        //Q_PROPERTY(Hand* hand READ hand CONSTANT)
-
         Hand m_hand;
         StaticLight m_light;
 
@@ -20,10 +18,11 @@ class Player: public Pony {
         void mouseReleased(QPointF pos);
 
     protected:
-        void onHealthChanged();
-        void focusOutEvent(QFocusEvent *);
-        void keyPressEvent(QKeyEvent *event);
-        void keyReleaseEvent(QKeyEvent *event);
+        void healthChanged();
+        void focusChanged();
+        void keyPressEvent(QKeyEvent*);
+        void keyReleaseEvent(QKeyEvent*);
+        void mousePressEvent(QMouseEvent*);
         void beginContact(QFixture* other, b2Contact *);
 
         void synchronize();

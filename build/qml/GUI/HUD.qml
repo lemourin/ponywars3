@@ -10,8 +10,9 @@ Item {
         anchors.right: parent.right
         minimumValue: 0
         maximumValue: 100
-        visible: world.player !== null
-        value: world.player ? world.player.health : 0
+        //visible: world.player !== null
+        value: world.playerHealth
+        //value: world.player ? world.player.health : 0
         Text {
             anchors.centerIn: parent
             text: "Health: "+healthbar.value+"%"

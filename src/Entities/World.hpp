@@ -30,6 +30,43 @@ class Boundary: public QBody {
                  SceneGraph::Item* = nullptr);
 };
 
+class WorldObject: public QObject {
+    private:
+        Q_OBJECT
+
+        Q_PROPERTY(uint playerHealth READ playerHealth NOTIFY playerHealthChanged)
+        Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
+
+        World* m_world;
+
+        qreal m_fps;
+        QElapsedTimer m_fpscounter;
+
+        void updateFps();
+        void setFps(qreal);
+
+    public:
+        WorldObject(World *);
+
+        uint playerHealth() const;
+
+        inline qreal fps() const { return m_fps; }
+
+        Q_INVOKABLE void playerEnableGoLeft();
+        Q_INVOKABLE void playerDisableGoLeft();
+
+        Q_INVOKABLE void playerEnableGoRight();
+        Q_INVOKABLE void playerDisableGoRight();
+
+        Q_INVOKABLE void playerJumpRequested();
+        Q_INVOKABLE void playerPunchRequested();
+
+    signals:
+        void playerHealthChanged();
+        void fpsChanged();
+};
+
+
 class World: public QWorld {
     private:
         friend class ViewWorld;
@@ -42,21 +79,18 @@ class World: public QWorld {
         ViewWorld* m_viewWorld;
 
         Player* m_player;
-        qreal m_fps;
 
-        QElapsedTimer m_fpscounter;
         Boundary* m_boundary;
 
         ItemSet m_itemSet;
         MapEditor m_mapEditor;
 
-        void updateFps();
+        WorldObject m_worldObject;
 
     protected:
         void mousePressEvent(QMouseEvent*);
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
-        //void itemChange(ItemChange, const ItemChangeData &);
         void onBodyDestroyed(QBody*);
         void onBodyAdded(QBody*);
 
@@ -70,20 +104,20 @@ class World: public QWorld {
         inline ViewWorld* view() const { return m_viewWorld; }
         LightSystem* lightSystem() const;
 
-        inline qreal fps() const { return m_fps; }
-        void setFps(qreal);
-
         inline bool paused() const { return !isRunning(); }
         void setPaused(bool);
 
         inline MapEditor* mapEditor() { return &m_mapEditor; }
+        inline const MapEditor* mapEditor() const { return &m_mapEditor; }
+
+        inline WorldObject* worldObject() { return &m_worldObject; }
+        inline const WorldObject* worldObject() const { return &m_worldObject; }
 
         void read(const QJsonObject&);
         void write(QJsonObject&) const;
 
 //    signals:
 //        void playerChanged();
-//        void fpsChanged();
 //        void pausedChanged();
 //        void gameOver();
 //        void explosion(QPointF pos);

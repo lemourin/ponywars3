@@ -184,13 +184,31 @@ void Window::mousePressEvent(QMouseEvent* event) {
     if (event->isAccepted())
         return;
 
-    /*while (activeFocusItem())
-        activeFocusItem()->setFocus(false);
-    contentItem()->setFocus(true); */
+    Item* item = focusItem();
+    while (item) {
+        item->mousePressEvent(event);
+        if (event->isAccepted())
+            break;
+        item = item->parent();
+    }
+
+    rootObject()->forceActiveFocus();
+
 }
 
 void Window::mouseReleaseEvent(QMouseEvent* event) {
     QQuickView::mouseReleaseEvent(event);
+
+    if (event->isAccepted())
+        return;
+
+    Item* item = focusItem();
+    while (item) {
+        item->mouseReleaseEvent(event);
+        if (event->isAccepted())
+            break;
+        item = item->parent();
+    }
 }
 
 void Window::mouseMoveEvent(QMouseEvent* event) {

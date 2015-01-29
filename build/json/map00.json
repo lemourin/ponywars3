@@ -1095,7 +1095,7 @@
                     }
                 ],
                 "gravityScale": 20,
-                "health": 2000,
+                "health": 50,
                 "height": 5,
                 "light": {
                     "attenuation": {

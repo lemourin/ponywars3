@@ -5,9 +5,6 @@
 
 class Creature: public QBody {
     private:
-//        Q_PROPERTY(int health READ health
-//                   WRITE setHealth NOTIFY healthChanged)
-
         struct RayCastCallback: public b2RayCastCallback {
             QBody* m_hit;
 
@@ -25,7 +22,7 @@ class Creature: public QBody {
         void onWorldStepped();
 
     protected:
-        virtual inline void onHealthChanged() { }
+        virtual inline void healthChanged() { }
         virtual void currentStateChanged(unsigned added, unsigned removed);
 
     public:
@@ -57,19 +54,17 @@ class Creature: public QBody {
 
         bool canSee(QBody*);
 
-        Q_INVOKABLE void jump();
-        Q_INVOKABLE void punch();
+        void jump();
+        void punch();
 
-        Q_INVOKABLE void enableGoLeft();
-        Q_INVOKABLE void enableGoRight();
-        Q_INVOKABLE void disableGoLeft();
-        Q_INVOKABLE void disableGoRight();
+        void enableGoLeft();
+        void enableGoRight();
+        void disableGoLeft();
+        void disableGoRight();
 
-        Q_INVOKABLE virtual void jumpRequested();
-        Q_INVOKABLE virtual void punchRequested();
+        virtual void jumpRequested();
+        virtual void punchRequested();
 
-    //signals:
-    //    void healthChanged();
 };
 
 #endif // CREATURE_HPP

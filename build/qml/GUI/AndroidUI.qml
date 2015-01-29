@@ -18,7 +18,7 @@ Item {
         property int textMargin: 20
 
         id: playerOptions
-        visible: world.player ? world.player.activeFocus : false
+        //visible: world.player ? world.player.activeFocus : false
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -73,11 +73,11 @@ Item {
                     var p = mapToItem(left, point.x, point.y)
 
                     if (left.contains(Qt.point(p.x, p.y))) {
-                        world.player.enableGoLeft()
+                        world.playerEnableGoLeft()
                         onLeft = true
                     }
                     else {
-                        world.player.enableGoRight()
+                        world.playerEnableGoRight()
                         onLeft = false
                     }
                 }
@@ -86,8 +86,8 @@ Item {
                     if (!onLeft) {
                         var p1 = mapToItem(left, point.x, point.y)
                         if (left.contains(Qt.point(p1.x, p1.y))) {
-                            world.player.disableGoRight()
-                            world.player.enableGoLeft()
+                            world.playerDisableGoRight()
+                            world.playerEnableGoLeft()
                             onLeft = true
                         }
                     }
@@ -95,8 +95,8 @@ Item {
                     if (onLeft) {
                         var p2 = mapToItem(right, point.x, point.y)
                         if (right.contains(Qt.point(p2.x, p2.y))) {
-                            world.player.disableGoLeft()
-                            world.player.enableGoRight()
+                            world.playerDisableGoLeft()
+                            world.playerEnableGoRight()
                             onLeft = false
                         }
                     }
@@ -104,8 +104,8 @@ Item {
 
                 onReleased: {
                     //view.pinchArea.enabled = true
-                    world.player.disableGoLeft()
-                    world.player.disableGoRight()
+                    world.playerDisableGoLeft()
+                    world.playerDisableGoRight()
                 }
 
                 touchPoints: TouchPoint { id: point }
@@ -131,7 +131,7 @@ Item {
 
                 MultiPointTouchArea {
                     anchors.fill: parent
-                    onPressed: world.player.punchRequested()
+                    onPressed: world.playerPunchRequested()
                 }
             }
 
@@ -170,7 +170,7 @@ Item {
 
                 MultiPointTouchArea {
                     anchors.fill: parent
-                    onPressed: world.player.jumpRequested()
+                    onPressed: world.playerJumpRequested()
                 }
             }
         }

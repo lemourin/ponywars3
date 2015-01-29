@@ -11,7 +11,7 @@ class Enemy: public Pony {
     protected:
         void timerEvent(QTimerEvent *);
         void beginContact(QFixture* other, b2Contact *);
-        void onHealthChanged();
+        void healthChanged();
 
     public:
         explicit Enemy(SceneGraph::Item * = nullptr);

@@ -25,8 +25,8 @@ class Game: public DisplayItemFrame {
         bool read(const QJsonObject& obj);
         bool write(QJsonObject& obj) const;
 
-        Q_INVOKABLE void load(QString path);
-        Q_INVOKABLE void dump(QString path) const;
+        void load(QString path);
+        void dump(QString path) const;
 
 };
 

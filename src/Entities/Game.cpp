@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <QQuickWindow>
 #include <QJsonObject>
 #include <QJsonDocument>
 
@@ -72,5 +71,3 @@ void Game::dump(QString /*path*/) const {
 
     qDebug() << document.toJson();
 }
-
-

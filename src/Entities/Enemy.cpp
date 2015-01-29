@@ -9,7 +9,7 @@ Enemy::Enemy(SceneGraph::Item* parent):
     m_target() {
 }
 
-void Enemy::onHealthChanged() {
+void Enemy::healthChanged() {
     //if (health() <= 0)
     //    deleteLater();
 }

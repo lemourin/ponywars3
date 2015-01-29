@@ -75,6 +75,10 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
         event->ignore();
 }
 
+void Player::mousePressEvent(QMouseEvent *e) {
+    //qDebug() << "lawl";
+}
+
 void Player::beginContact(QFixture* other, b2Contact*) {
     //if (qobject_cast<Enemy*>(other->body())) {
     //    setHealth(health()-10);
@@ -104,7 +108,10 @@ World* Player::world() const {
     return static_cast<World*>(Creature::world());
 }
 
-void Player::onHealthChanged() {
+void Player::healthChanged() {
+    if (world()->player() == this)
+        world()->worldObject()->playerHealthChanged();
+
     if (health() <= 0) {
         //emit world()->gameOver();
 
@@ -117,8 +124,9 @@ void Player::onHealthChanged() {
     }
 }
 
-void Player::focusOutEvent(QFocusEvent*) {
-    disableState(GoingLeft | GoingRight);
+void Player::focusChanged() {
+    if (!focus())
+        disableState(GoingLeft | GoingRight);
 }
 
 bool Player::read(const QJsonObject& obj) {

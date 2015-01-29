@@ -13,6 +13,7 @@
 #include "Entities/Game.hpp"
 #include "Utility/Utility.hpp"
 #include "Utility/Factory.hpp"
+#include "SceneGraph/Window.hpp"
 
 Boundary::Boundary(qreal width,
                    qreal height,
@@ -39,23 +40,17 @@ World::World(ViewWorld* viewWorld):
     QWorld(viewWorld),
     m_viewWorld(viewWorld),
     m_player(),
-    m_fps(),
     m_boundary(),
     m_itemSet(this),
-    m_mapEditor(this) {
+    m_mapEditor(this),
+    m_worldObject(this) {
 
     //setAcceptedMouseButtons(Qt::LeftButton);
+
 }
 
 World::~World() {
     delete m_player;
-}
-
-void World::updateFps() {
-    qreal t = m_fpscounter.restart();
-
-    if (!qIsNull(t))
-        setFps(1000.0/t);
 }
 
 void World::mousePressEvent(QMouseEvent* event) {    
@@ -82,16 +77,6 @@ void World::geometryChanged(const QRectF& newGeometry,
 
     lightSystem()->worldSizeChanged();*/
 }
-
-/*void World::itemChange(ItemChange change, const ItemChangeData& data) {
-    QWorld::itemChange(change, data);
-
-    if (change == ItemSceneChange && data.window) {
-        m_fpscounter.restart();
-        connect(data.window, &QQuickWindow::beforeRendering,
-                this, &World::updateFps);
-    }
-}*/
 
 void World::onBodyDestroyed(QBody* body) {
     if (player() == body)
@@ -125,13 +110,6 @@ LightSystem* World::lightSystem() const {
     return view()->game()->lightSystem();
 }
 
-void World::setFps(qreal f) {
-    if (qIsNull(m_fps-f))
-        return;
-    m_fps = f;
-    //emit fpsChanged();
-}
-
 void World::setPaused(bool p) {
     if (paused() == p)
         return;
@@ -163,4 +141,55 @@ void World::write(QJsonObject& obj) const {
         obj["player"] = p;
     }
 }
+
+WorldObject::WorldObject(World *world):
+    m_world(world) {
+
+    m_fpscounter.restart();
+    connect(world->window(), &SceneGraph::Window::beforeRendering,
+            this, &WorldObject::updateFps);
+}
+
+void WorldObject::updateFps() {
+    qreal t = m_fpscounter.restart();
+
+    if (!qIsNull(t))
+        setFps(1000.0/t);
+}
+
+void WorldObject::setFps(qreal f) {
+    if (qIsNull(m_fps-f))
+        return;
+    m_fps = f;
+    emit fpsChanged();
+}
+
+uint WorldObject::playerHealth() const {
+    return m_world->player()->health();
+}
+
+void WorldObject::playerEnableGoLeft() {
+    m_world->player()->enableGoLeft();
+}
+
+void WorldObject::playerDisableGoLeft() {
+    m_world->player()->disableGoLeft();
+}
+
+void WorldObject::playerEnableGoRight() {
+    m_world->player()->enableGoRight();
+}
+
+void WorldObject::playerDisableGoRight() {
+    m_world->player()->disableGoRight();
+}
+
+void WorldObject::playerJumpRequested() {
+    m_world->player()->jumpRequested();
+}
+
+void WorldObject::playerPunchRequested() {
+    m_world->player()->punchRequested();
+}
+
 
