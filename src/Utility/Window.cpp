@@ -59,7 +59,11 @@ Window::Window(QWindow* parent):
     m_environment(this) {
 
     rootContext()->setContextProperty("app", &m_environment);
-    rootContext()->setContextProperty("world", m_game.view()->world()->worldObject());
+
+    World* world = m_game.view()->world();
+    rootContext()->setContextProperty("world", world->worldObject());
+    rootContext()->setContextProperty("mapEditor", world->mapEditor()->mapEditorObject());
+
     setSource(QUrl("qrc:/qml/main.qml"));
     setResizeMode(SizeRootObjectToView);
 
@@ -82,24 +86,6 @@ void Window::registerTypes() {
                                             1, 0,
                                             "Environment",
                                             "Uncreatable type!");
-    /*qmlRegisterType<MapEditor>();
-    qmlRegisterType<BodyEdit>();
-    qmlRegisterType<AddBody>();
-    qmlRegisterType<AddPolygon>();
-    qmlRegisterType<AddChain>();
-    qmlRegisterType<AddCircle>();
-    qmlRegisterType<AddRectangle>();
-    qmlRegisterType<DeleteItem>();
-    qmlRegisterType<GrabItem>();
-
-    qmlRegisterType<World>();
-    qmlRegisterType<DisplayItem>();
-
-    qmlRegisterType<Player>();
-    qmlRegisterType<Hand>();
-    qmlRegisterType<QBody>();
-    qmlRegisterType<Weapon>();*/
-
     Utility::registerType<Box2DBox>("Box2DBox");
     Utility::registerType<Box2DChain>("Box2DChain");
     Utility::registerType<Box2DCircle>("Box2DCircle");

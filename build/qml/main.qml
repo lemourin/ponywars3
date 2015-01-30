@@ -15,7 +15,7 @@ Item {
     Data { id: debug }
     HUD { id: hud }
     AndroidUI {
-        //visible: app.system === Environment.Android
+        visible: app.system === Environment.Android
         opacity: 0.5
     }
 

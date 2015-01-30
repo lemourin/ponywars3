@@ -4,9 +4,6 @@
 Action::Action(SceneGraph::Item* parent):
     SceneGraph::Item(parent),
     m_world() {
-    //setEnabled(false);
-    //connect(this, &QQuickItem::focusChanged,
-    //        this, &Action::focusChanged);
 }
 
 void Action::reset() {
@@ -14,12 +11,9 @@ void Action::reset() {
 }
 
 void Action::focusChanged() {
-    //setEnabled(hasFocus());
-
-    if (!hasFocus())
+    if (!focus())
         reset();
     else {
         onInit();
-        //forceActiveFocus();
     }
 }

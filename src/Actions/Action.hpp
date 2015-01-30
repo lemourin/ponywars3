@@ -10,7 +10,7 @@ class Action: public SceneGraph::Item {
 
     protected:
         inline virtual void onInit() { }
-        virtual void focusChanged();
+        void focusChanged();
 
     public:
         Action(SceneGraph::Item* = nullptr);
@@ -19,8 +19,6 @@ class Action: public SceneGraph::Item {
 
         inline World* world() const { return m_world; }
         inline void setWorld(World* w) { m_world = w; }
-
-        inline bool hasFocus() const { return false; }
 
         inline virtual void finished() { }
 

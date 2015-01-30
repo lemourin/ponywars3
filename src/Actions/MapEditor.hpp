@@ -9,10 +9,35 @@
 #include <QPointer>
 
 class MapEditorAction;
+class MapEditor;
+
+class MapEditorObject: public QObject {
+    private:
+        Q_OBJECT
+
+        Q_PROPERTY(bool focus READ focus NOTIFY focusChanged)
+
+        MapEditor* m_mapEditor;
+
+    protected:
+
+    public:
+        MapEditorObject(MapEditor*);
+
+        bool focus() const;
+
+
+        Q_INVOKABLE void toggleFocus();
+
+    signals:
+        void focusChanged();
+
+};
 
 class MapEditor: public Action {
     private:
         friend class MapEditorAction;
+        friend class MapEditorObject;
 
         /*Q_PROPERTY(AddChain* addChain READ addChain CONSTANT)
         Q_PROPERTY(AddBody* addBody READ addBody CONSTANT)
@@ -20,6 +45,8 @@ class MapEditor: public Action {
         Q_PROPERTY(DeleteItem* deleteItem READ deleteItem CONSTANT)
         Q_PROPERTY(BodyEdit* bodyEdit READ bodyEdit CONSTANT)
         Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)*/
+
+        MapEditorObject m_mapEditorObject;
 
         AddChain m_addChain;
         AddBody m_addBody;
@@ -43,6 +70,8 @@ class MapEditor: public Action {
 
     public:
         MapEditor(World*);
+
+        inline MapEditorObject* mapEditorObject() { return &m_mapEditorObject; }
 
         inline AddChain* addChain() { return &m_addChain; }
         inline AddBody* addBody() { return &m_addBody; }

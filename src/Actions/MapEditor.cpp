@@ -5,6 +5,7 @@
 
 MapEditor::MapEditor(World* item):
     Action(item),
+    m_mapEditorObject(this),
     m_addChain(this),
     m_addBody(this),
     m_grabItem(this),
@@ -61,4 +62,17 @@ void MapEditor::geometryChanged(const QRectF& newGeometry,
         action->setWidth(width());
         action->setHeight(height());
     }*/
+}
+
+MapEditorObject::MapEditorObject(MapEditor* item):
+    m_mapEditor(item) {
+}
+
+bool MapEditorObject::focus() const {
+    return m_mapEditor->focus();
+}
+
+void MapEditorObject::toggleFocus() {
+    m_mapEditor->setFocus(!m_mapEditor->focus());
+    emit focusChanged();
 }

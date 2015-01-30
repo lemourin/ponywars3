@@ -4,8 +4,6 @@ import Environment 1.0
 import "Network"
 
 Row {
-    property Item mapEditor: world.mapEditor
-
     id: mainMenu
 
     Column {
@@ -16,7 +14,7 @@ Row {
 
         Button {
             text: "MapEditor"
-            onClicked: mapEditor.focus ^= 1
+            onClicked: mapEditor.toggleFocus()
         }
 
         Button {

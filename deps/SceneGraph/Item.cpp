@@ -124,19 +124,22 @@ QPointF Item::mapFromScreen(QPointF p) {
 void Item::setFocus(bool enabled) {
     unsigned state = m_state;
     if (enabled)
-        state |= HasFocus;
+        m_state |= HasFocus;
     else
-        state &= ~HasFocus;
+        m_state &= ~HasFocus;
 
     if (m_state != state) {
-        m_state = state;
+        assert(window());
 
         if (enabled) {
-            assert(window());
             if (window()->m_focusItem)
                 window()->m_focusItem->setFocus(false);
 
             window()->m_focusItem = this;
+        }
+        else {
+            if (window()->m_focusItem == this)
+                window()->m_focusItem = nullptr;
         }
 
         focusChanged();
