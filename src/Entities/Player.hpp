@@ -13,9 +13,9 @@ class Player: public Pony {
         Hand m_hand;
         StaticLight m_light;
 
-        void mouseMoved(QPointF pos);
-        void mousePressed(QPointF pos);
-        void mouseReleased(QPointF pos);
+        //void mouseMoved(QPointF pos);
+        //void mousePressed(QPointF pos);
+        //void mouseReleased(QPointF pos);
 
     protected:
         void healthChanged();
@@ -23,6 +23,7 @@ class Player: public Pony {
         void keyPressEvent(QKeyEvent*);
         void keyReleaseEvent(QKeyEvent*);
         void mousePressEvent(QMouseEvent*);
+        void mouseMoveEvent(QMouseEvent*);
         void beginContact(QFixture* other, b2Contact *);
 
         void synchronize();

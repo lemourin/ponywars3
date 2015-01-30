@@ -38,6 +38,7 @@ class DisplayItem: public SceneGraph::Item {
         QPointF m_effectiveLookAt;
         QPointF m_lookAt;
         bool m_flickable;
+        bool m_buttonDown;
 
         QPointF m_startPoint;
         qreal m_distance;
@@ -56,14 +57,13 @@ class DisplayItem: public SceneGraph::Item {
         void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
-        void hoverMoveEvent(QHoverEvent *event);
         void touchEvent(QTouchEvent *event);
 
         virtual void visibleAreaChanged();
 
-        virtual void mouseMoved(QPointF);
+        /*virtual void mouseMoved(QPointF);
         virtual void mousePressed(QPointF);
-        virtual void mouseReleased(QPointF);
+        virtual void mouseReleased(QPointF);*/
 
     public:
         explicit DisplayItem(DisplayItemFrame *parent = nullptr);

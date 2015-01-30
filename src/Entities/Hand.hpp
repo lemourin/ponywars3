@@ -16,6 +16,7 @@ class Hand: public SceneGraph::Item {
         Player* m_owner;
         Weapon* m_grabbedWeapon;
         QMouseJoint* m_mouseJoint;
+        QPointF m_position;
         float m_range;
 
         void updateGrabbedWeapon();
@@ -25,6 +26,7 @@ class Hand: public SceneGraph::Item {
         ~Hand();
 
         void setHandPosition(QPointF pos);
+        inline QPointF position() const { return m_position; }
 
         inline Player* owner() const { return m_owner; }
 

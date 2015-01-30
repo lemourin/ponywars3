@@ -27,7 +27,11 @@ void Hand::setHandPosition(QPointF pos) {
     if (len > range())
         pos = QPointF(pos.x()/len*range(), pos.y()/len*range());
 
-    //setPosition(pos);
+    resetTransform();
+    translate(pos.x(), pos.y());
+
+    m_position = pos;
+
     updateGrabbedWeapon();
 }
 
@@ -61,7 +65,7 @@ void Hand::dropWeapon() {
 
 void Hand::updateGrabbedWeapon() {
     if (m_mouseJoint) {
-        QPointF p; //= mapToItem(owner()->world(), QPointF());
+        QPointF p = owner()->matrix() * position();
         if (p.x()-owner()->position().x() < 0)
             grabbedWeapon()->setFlip(-1);
         else

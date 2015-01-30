@@ -1008,8 +1008,8 @@
                     "linearDamping": 0,
                     "rotation": 360.00074767834303,
                     "shootPoint": {
-                        "x": 5,
-                        "y": 1
+                        "x": 1,
+                        "y": 0.4
                     },
                     "textureRect": {
                         "h": 0.070422534999999994,
@@ -1053,8 +1053,8 @@
                     "linearDamping": 0,
                     "rotation": 0.0008715289489489035,
                     "shootPoint": {
-                        "x": 5,
-                        "y": 1
+                        "x": 1,
+                        "y": 0.4
                     },
                     "textureRect": {
                         "h": 0.070422534999999994,

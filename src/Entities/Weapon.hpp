@@ -57,6 +57,9 @@ class Weapon: public QBody {
         bool read(const QJsonObject &);
         bool write(QJsonObject &) const;
 
+        inline static Type* key() { static Type t; return &t; }
+        inline Type* type() const { return key(); }
+
 
 //    signals:
 //        void bulletCountChanged();

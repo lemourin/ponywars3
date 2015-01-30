@@ -17,26 +17,6 @@ Player::Player(Item* parent):
 Player::~Player() {
 }
 
-void Player::mouseMoved(QPointF pos) {
-    hand()->setHandPosition(mapFromItem(world(), pos));
-}
-
-void Player::mousePressed(QPointF) {
-}
-
-void Player::mouseReleased(QPointF) {
-    //if (hand()->grabbedWeapon())
-    //    return hand()->grabbedWeapon()->shoot();
-
-    /*QPointF pos = mapToItem(world(), hand()->position());
-    QBody* body = world()->bodyUnderPoint(pos, [](QBody* body) {
-        return qobject_cast<Weapon*>(body) != nullptr;
-    });
-
-    if (body)
-        hand()->grabWeapon(static_cast<Weapon*>(body));*/
-}
-
 void Player::keyPressEvent(QKeyEvent* event) {
     if (event->isAutoRepeat()) {
         event->ignore();
@@ -75,8 +55,21 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
         event->ignore();
 }
 
-void Player::mousePressEvent(QMouseEvent *e) {
-    //qDebug() << "lawl";
+void Player::mousePressEvent(QMouseEvent *) {
+    if (hand()->grabbedWeapon())
+        return hand()->grabbedWeapon()->shoot();
+
+    QPointF pos = matrix() * hand()->position();
+    QBody* body = world()->bodyUnderPoint(pos, [](QBody* body) {
+        return body->type() == Weapon::key();
+    });
+
+    if (body)
+        hand()->grabWeapon(static_cast<Weapon*>(body));
+}
+
+void Player::mouseMoveEvent(QMouseEvent *e) {
+    hand()->setHandPosition(mapFromScreen(e->pos()));
 }
 
 void Player::beginContact(QFixture* other, b2Contact*) {
@@ -91,7 +84,6 @@ void Player::synchronize() {
     m_light.setPosition(position());
     m_hand.updateGrabbedWeapon();
 }
-
 
 void Player::initialize(QWorld* w) {
     Pony::initialize(w);

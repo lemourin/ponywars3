@@ -30,8 +30,10 @@ void Weapon::setBulletCount(int count) {
 }
 
 void Weapon::setFlip(int f) {
-    m_flip = f;
-    updateEffectiveShootPoint();
+    if (m_flip != f) {
+        m_flip = f;
+        updateEffectiveShootPoint();
+    }
 }
 
 bool Weapon::read(const QJsonObject& obj) {
@@ -91,16 +93,16 @@ void Weapon::update() {
 }
 
 void Weapon::updateEffectiveShootPoint() {
-    QMatrix4x4 matrix;
+    m_texture.resetTransform();
+    m_texture.scale(size().width(), size().height());
 
-    if (flip() == -1) {
-        matrix.scale(1, -1);
-        //matrix.translate(0, -height());
-        m_texture.setMatrix(matrix);
+    if (m_flip == -1) {
+        m_texture.translate(0, 0.5);
+        m_texture.scale(1, -1);
+        m_texture.translate(0, -0.5);
     }
 
-    m_texture.setMatrix(matrix);
-    setEffectiveShootPoint(matrix*shootPoint());
+    setEffectiveShootPoint(m_texture.matrix()*shootPoint());
 }
 
 void Weapon::preSolve(QFixture*, b2Contact* contact, const b2Manifold*) {

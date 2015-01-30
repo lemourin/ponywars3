@@ -8,17 +8,17 @@ Gun::Gun(SceneGraph::Item* parent):
 }
 
 void Gun::shoot() {
-    /*if (bulletCount() <= 0)
+    if (bulletCount() <= 0)
         return;
     setBulletCount(bulletCount()-1);
 
-    Circle circle((Vector2d)mapToItem(world(), effectiveShootPoint()), 0.5);
+    Circle circle((Vector2d)(matrix()*effectiveShootPoint()), 0.5);
 
     Bullet* bullet = new Bullet(circle, world());
-    bullet->initialize();
+    bullet->initialize(world());
 
     float angle = body()->GetAngle();
-    bullet->applyForce(QPointF(cos(angle)*5000, sin(angle)*5000));*/
+    bullet->applyForce(QPointF(cos(angle)*5000, sin(angle)*5000));
 }
 
 Bullet::Bullet(Circle circle, Item* p): QBody(p) {
@@ -31,7 +31,6 @@ Bullet::Bullet(Circle circle, Item* p): QBody(p) {
     f->setShadowCaster(false);
     f->setRadius(circle.radius());
     f->setGroupIndex(-1);
-    //f->setFlag(ItemHasContents);
 
     addFixture(f);
 }

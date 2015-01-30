@@ -16,6 +16,7 @@ LightSystem::LightSystem(Game* game):
     m_normalMap(this),
     m_lightTexture(this),
     m_enlightedItems(this, lightTexture()->sourceItem()) {
+    //setVisible(false);
 }
 
 LightSystem::~LightSystem() {

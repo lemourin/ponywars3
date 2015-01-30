@@ -7,6 +7,7 @@ DisplayItem::DisplayItem(DisplayItemFrame* parent):
     m_frame(parent),
     m_focusedObject(),
     m_flickable(),
+    m_buttonDown(),
     m_distance(),
     m_factor(1) {
 
@@ -88,8 +89,6 @@ void DisplayItem::updateVisibleArea() {
 
     QRectF rect(QPointF(), m_frame->size());
     setVisibleArea(matrix().inverted().mapRect(rect));
-
-    //qDebug() << visibleArea();
 }
 
 void DisplayItem::focusedObjectPositionChanged() {
@@ -127,37 +126,30 @@ void DisplayItem::wheelEvent(QWheelEvent* event) {
 }
 
 void DisplayItem::mousePressEvent(QMouseEvent* event) {
-    if (!flickable()) {
-        mousePressed(event->localPos());
+    if (event->button() != Qt::LeftButton || !flickable())
         return;
-    }
 
-    m_startPoint = event->localPos();
+    m_buttonDown = true;
+    m_startPoint = mapFromScreen(event->pos());
 }
 
 void DisplayItem::mouseMoveEvent(QMouseEvent* event) {
-    if (!flickable()) {
-        mouseMoved(event->localPos());
+    if (!m_buttonDown)
         return;
-    }
 
-    setLookAt(effectiveLookAt()-event->localPos()+m_startPoint);
+    QPointF p = mapFromScreen(event->pos());
+    setLookAt(effectiveLookAt()-p+m_startPoint);
 }
 
 void DisplayItem::mouseReleaseEvent(QMouseEvent* event) {
-    if (!flickable())
-        mouseReleased(event->localPos());
-}
-
-void DisplayItem::hoverMoveEvent(QHoverEvent* event) {
-    if (!flickable())
-        mouseMoved(event->posF());
+    if (event->button() == Qt::LeftButton)
+        m_buttonDown = false;
 }
 
 void DisplayItem::touchEvent(QTouchEvent* event) {
     if (event->touchPointStates() & Qt::TouchPointPressed) {
         if (event->touchPoints().size() == 1) {
-            mousePressed(event->touchPoints().front().pos());
+            //mousePressed(event->touchPoints().front().pos());
         }
         else if (event->touchPoints().size() == 2) {
             QPointF p1 = mapFromScreen(event->touchPoints()[0].pos());
@@ -169,7 +161,7 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
     if (event->touchPointStates() & Qt::TouchPointReleased) {
         if (event->touchPoints().size() == 1) {
-            mouseReleased(event->touchPoints().front().pos());
+            //mouseReleased(event->touchPoints().front().pos());
         }
     }
 
@@ -181,7 +173,7 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
             setLookAt(effectiveLookAt()-p2+p1);
         }
         else {
-            mouseMoved(event->touchPoints().front().pos());
+            //mouseMoved(event->touchPoints().front().pos());
         }
     }
     else if (event->touchPoints().size() == 2) {
@@ -195,15 +187,6 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 }
 
 void DisplayItem::visibleAreaChanged() {
-}
-
-void DisplayItem::mouseMoved(QPointF) {
-}
-
-void DisplayItem::mousePressed(QPointF) {
-}
-
-void DisplayItem::mouseReleased(QPointF) {
 }
 
 void DisplayItemFrame::sizeChanged() {

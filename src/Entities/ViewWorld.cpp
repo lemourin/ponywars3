@@ -38,26 +38,6 @@ bool ViewWorld::write(QJsonObject& obj) const {
     return true;
 }
 
-bool ViewWorld::sendEvent() const {
-    return false;
-    //return world() && world()->player() && world()->player()->hasActiveFocus();
-}
-
-void ViewWorld::mouseMoved(QPointF p) {
-    if (sendEvent())
-        world()->player()->mouseMoved(p);
-}
-
-void ViewWorld::mousePressed(QPointF p) {
-    if (sendEvent())
-        world()->player()->mousePressed(p);
-}
-
-void ViewWorld::mouseReleased(QPointF p) {
-    if (sendEvent())
-        world()->player()->mouseReleased(p);
-}
-
 void ViewWorld::visibleAreaChanged() {
     DisplayItem::visibleAreaChanged();
 

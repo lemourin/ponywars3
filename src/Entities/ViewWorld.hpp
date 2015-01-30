@@ -11,12 +11,10 @@ class ViewWorld: public DisplayItem {
         World m_world;
         Game* m_game;
 
-        bool sendEvent() const;
-
     protected:
-        void mouseMoved(QPointF);
+        /*void mouseMoved(QPointF);
         void mousePressed(QPointF);
-        void mouseReleased(QPointF);
+        void mouseReleased(QPointF);*/
         void visibleAreaChanged();
 
     public:

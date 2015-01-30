@@ -40,6 +40,8 @@ class QBody: public BaseItem {
         void visibleChanged();
 
     public:
+        struct Type { };
+
         enum BodyType {
             Static,
             Kinematic,
@@ -117,6 +119,8 @@ class QBody: public BaseItem {
 
         virtual bool read(const QJsonObject&);
         virtual bool write(QJsonObject&) const;
+
+        virtual Type* type() const { return nullptr; }
 
         static QBody* toQBody(b2Body *body);
         static const QBody* toQBody(const b2Body *body);
