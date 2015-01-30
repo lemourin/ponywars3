@@ -160,8 +160,8 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
             mousePressed(event->touchPoints().front().pos());
         }
         else if (event->touchPoints().size() == 2) {
-            QPointF p1 = event->touchPoints()[0].pos();
-            QPointF p2 = event->touchPoints()[1].pos();
+            QPointF p1 = mapFromScreen(event->touchPoints()[0].pos());
+            QPointF p2 = mapFromScreen(event->touchPoints()[1].pos());
 
             m_distance = QVector2D(p1-p2).length();
         }
@@ -175,8 +175,8 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
     if (event->touchPoints().size() == 1) {
         if (flickable()) {
-            QPointF p1 = event->touchPoints().front().lastPos();
-            QPointF p2 = event->touchPoints().front().pos();
+            QPointF p1 = mapFromScreen(event->touchPoints().front().lastPos());
+            QPointF p2 = mapFromScreen(event->touchPoints().front().pos());
 
             setLookAt(effectiveLookAt()-p2+p1);
         }
@@ -185,8 +185,8 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
         }
     }
     else if (event->touchPoints().size() == 2) {
-        QPointF p1 = event->touchPoints()[0].pos();
-        QPointF p2 = event->touchPoints()[1].pos();
+        QPointF p1 = mapFromScreen(event->touchPoints()[0].pos());
+        QPointF p2 = mapFromScreen(event->touchPoints()[1].pos());
 
         qreal distance = QVector2D(p1-p2).length();
 
@@ -207,9 +207,6 @@ void DisplayItem::mouseReleased(QPointF) {
 }
 
 void DisplayItemFrame::sizeChanged() {
-    //resetTransform();
-    //scale(size().width(), size().height());
-    //qDebug() << "swag";
 }
 
 DisplayItemFrame::DisplayItemFrame(Item* parent):

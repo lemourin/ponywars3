@@ -102,8 +102,7 @@ QMatrix4x4 Item::effectiveMatrix() const {
         item = item->parent();
     }
 
-    assert(window());
-    return window()->projection() * matrix;
+    return matrix;
 }
 
 QPointF Item::mapToItem(Item* item, QPointF p) {
@@ -111,7 +110,7 @@ QPointF Item::mapToItem(Item* item, QPointF p) {
 }
 
 QPointF Item::mapToScreen(QPointF p) {
-    return effectiveMatrix().inverted() * p;
+    return effectiveMatrix() * p;
 }
 
 QPointF Item::mapFromItem(Item* item, QPointF p) {
@@ -119,7 +118,7 @@ QPointF Item::mapFromItem(Item* item, QPointF p) {
 }
 
 QPointF Item::mapFromScreen(QPointF p) {
-    return effectiveMatrix() * p;
+    return effectiveMatrix().inverted() * p;
 }
 
 void Item::setFocus(bool enabled) {

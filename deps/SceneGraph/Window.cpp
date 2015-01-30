@@ -257,7 +257,9 @@ Window::RootItem::RootItem(Window *w, QQuickItem* parent):
 
 void Window::RootItem::touchEvent(QTouchEvent *e) {
     QQuickItem::touchEvent(e);
+
     m_window->touchEvent(e);
+    e->accept();
 }
 
 
