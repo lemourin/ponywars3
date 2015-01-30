@@ -3,6 +3,7 @@
 #include "Player.hpp"
 #include "QBox2D/QWorld.hpp"
 #include "QBox2D/QFixture.hpp"
+#include "Entities/World.hpp"
 #include "Utility/Utility.hpp"
 #include "Graphics/Primitives.hpp"
 #include "Geometry/Circle.hpp"
@@ -26,7 +27,9 @@ void Weapon::setBulletCount(int count) {
     if (m_bulletCount == count)
         return;
     m_bulletCount = count;
-    //emit bulletCountChanged();
+
+    if (grabber() && grabber()->owner() && grabber()->owner()->world())
+        emit grabber()->owner()->world()->worldObject()->bulletCountChanged();
 }
 
 void Weapon::setFlip(int f) {

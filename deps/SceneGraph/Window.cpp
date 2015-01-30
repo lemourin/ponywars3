@@ -144,11 +144,15 @@ void Window::keyPressEvent(QKeyEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->keyPressEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::keyReleaseEvent(QKeyEvent* event) {
@@ -158,11 +162,15 @@ void Window::keyReleaseEvent(QKeyEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->keyReleaseEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::touchEvent(QTouchEvent* event) {
@@ -172,11 +180,15 @@ void Window::touchEvent(QTouchEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->touchEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::mousePressEvent(QMouseEvent* event) {
@@ -186,14 +198,17 @@ void Window::mousePressEvent(QMouseEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->mousePressEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
 
-    rootObject()->forceActiveFocus();
+    if (!item)
+        event->ignore();
 
+    rootObject()->forceActiveFocus();
 }
 
 void Window::mouseReleaseEvent(QMouseEvent* event) {
@@ -204,11 +219,15 @@ void Window::mouseReleaseEvent(QMouseEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->mouseReleaseEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::mouseMoveEvent(QMouseEvent* event) {
@@ -218,11 +237,15 @@ void Window::mouseMoveEvent(QMouseEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->mouseMoveEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::wheelEvent(QWheelEvent* event) {
@@ -230,11 +253,15 @@ void Window::wheelEvent(QWheelEvent* event) {
 
     Item* item = focusItem();
     while (item) {
+        event->accept();
         item->wheelEvent(event);
         if (event->isAccepted())
             break;
         item = item->parent();
     }
+
+    if (!item)
+        event->ignore();
 }
 
 void Window::timerEvent(QTimerEvent* event) {
@@ -257,8 +284,32 @@ Window::RootItem::RootItem(Window *w, QQuickItem* parent):
 
 void Window::RootItem::touchEvent(QTouchEvent *e) {
     QQuickItem::touchEvent(e);
+    if (e->isAccepted())
+        return;
 
     m_window->touchEvent(e);
+
+    if (!e->isAccepted() && e->touchPoints().size() == 1) {
+        QTouchEvent::TouchPoint p = e->touchPoints().front();
+        if (e->touchPointStates() & Qt::TouchPointPressed) {
+            QMouseEvent t(QEvent::MouseButtonPress, p.pos(),
+                          Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+            m_window->mousePressEvent(&t);
+        }
+
+        if (e->touchPointStates() & Qt::TouchPointMoved) {
+            QMouseEvent t(QEvent::MouseMove, p.pos(),
+                          Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+            m_window->mouseMoveEvent(&t);
+        }
+
+        if (e->touchPointStates() & Qt::TouchPointReleased) {
+            QMouseEvent t(QEvent::MouseButtonRelease, p.pos(),
+                          Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+            m_window->mouseReleaseEvent(&t);
+        }
+    }
+
     e->accept();
 }
 

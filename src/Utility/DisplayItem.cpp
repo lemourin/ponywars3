@@ -148,21 +148,14 @@ void DisplayItem::mouseReleaseEvent(QMouseEvent* event) {
 
 void DisplayItem::touchEvent(QTouchEvent* event) {
     if (event->touchPointStates() & Qt::TouchPointPressed) {
-        if (event->touchPoints().size() == 1) {
-            //mousePressed(event->touchPoints().front().pos());
-        }
-        else if (event->touchPoints().size() == 2) {
+        if (event->touchPoints().size() == 2) {
             QPointF p1 = mapFromScreen(event->touchPoints()[0].pos());
             QPointF p2 = mapFromScreen(event->touchPoints()[1].pos());
 
             m_distance = QVector2D(p1-p2).length();
         }
-    }
-
-    if (event->touchPointStates() & Qt::TouchPointReleased) {
-        if (event->touchPoints().size() == 1) {
-            //mouseReleased(event->touchPoints().front().pos());
-        }
+        else
+            event->ignore();
     }
 
     if (event->touchPoints().size() == 1) {
@@ -172,9 +165,8 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
             setLookAt(effectiveLookAt()-p2+p1);
         }
-        else {
-            //mouseMoved(event->touchPoints().front().pos());
-        }
+        else
+            event->ignore();
     }
     else if (event->touchPoints().size() == 2) {
         QPointF p1 = mapFromScreen(event->touchPoints()[0].pos());
@@ -184,6 +176,8 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
         setFactor(factor()*distance/m_distance);
     }
+    else
+        event->ignore();
 }
 
 void DisplayItem::visibleAreaChanged() {

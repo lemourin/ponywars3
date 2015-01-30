@@ -35,6 +35,8 @@ class WorldObject: public QObject {
         Q_OBJECT
 
         Q_PROPERTY(uint playerHealth READ playerHealth NOTIFY playerHealthChanged)
+        Q_PROPERTY(bool equippedWeapon READ equippedWeapon NOTIFY equippedWeaponChanged)
+        Q_PROPERTY(uint bulletCount READ bulletCount NOTIFY bulletCountChanged)
         Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
 
         World* m_world;
@@ -49,6 +51,8 @@ class WorldObject: public QObject {
         WorldObject(World *);
 
         uint playerHealth() const;
+        bool equippedWeapon() const;
+        uint bulletCount() const;
 
         inline qreal fps() const { return m_fps; }
 
@@ -61,8 +65,12 @@ class WorldObject: public QObject {
         Q_INVOKABLE void playerJumpRequested();
         Q_INVOKABLE void playerPunchRequested();
 
+        Q_INVOKABLE void playerDropWeapon();
+
     signals:
         void playerHealthChanged();
+        void equippedWeaponChanged();
+        void bulletCountChanged();
         void fpsChanged();
 };
 
@@ -70,11 +78,6 @@ class WorldObject: public QObject {
 class World: public QWorld {
     private:
         friend class ViewWorld;
-
-//        Q_PROPERTY(Player* player READ player WRITE setPlayer NOTIFY playerChanged)
-//        Q_PROPERTY(qreal fps READ fps WRITE setFps NOTIFY fpsChanged)
-//        Q_PROPERTY(MapEditor* mapEditor READ mapEditor CONSTANT)
-//        Q_PROPERTY(bool paused READ paused WRITE setPaused NOTIFY pausedChanged)
 
         ViewWorld* m_viewWorld;
 
@@ -115,12 +118,6 @@ class World: public QWorld {
 
         void read(const QJsonObject&);
         void write(QJsonObject&) const;
-
-//    signals:
-//        void playerChanged();
-//        void pausedChanged();
-//        void gameOver();
-//        void explosion(QPointF pos);
 };
 
 #endif // WORLD_HPP

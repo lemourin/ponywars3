@@ -55,7 +55,9 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
         event->ignore();
 }
 
-void Player::mousePressEvent(QMouseEvent *) {
+void Player::mousePressEvent(QMouseEvent *e) {
+    hand()->setHandPosition(mapFromScreen(e->pos()));
+
     if (hand()->grabbedWeapon())
         return hand()->grabbedWeapon()->shoot();
 

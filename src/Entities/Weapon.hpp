@@ -8,9 +8,6 @@ class Hand;
 
 class Weapon: public QBody {
     private:
-//        Q_PROPERTY(int bulletCount READ bulletCount
-//                   WRITE setBulletCount NOTIFY bulletCountChanged)
-
         QPointF m_shootPoint;
         int m_bulletCount;
         int m_flip;
@@ -59,10 +56,6 @@ class Weapon: public QBody {
 
         inline static Type* key() { static Type t; return &t; }
         inline Type* type() const { return key(); }
-
-
-//    signals:
-//        void bulletCountChanged();
 };
 
 

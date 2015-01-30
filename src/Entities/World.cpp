@@ -168,6 +168,15 @@ uint WorldObject::playerHealth() const {
     return m_world->player()->health();
 }
 
+bool WorldObject::equippedWeapon() const {
+    return m_world->player()->hand()->grabbedWeapon() != nullptr;
+}
+
+uint WorldObject::bulletCount() const {
+    assert(equippedWeapon());
+    return m_world->player()->hand()->grabbedWeapon()->bulletCount();
+}
+
 void WorldObject::playerEnableGoLeft() {
     m_world->player()->enableGoLeft();
 }
@@ -190,6 +199,10 @@ void WorldObject::playerJumpRequested() {
 
 void WorldObject::playerPunchRequested() {
     m_world->player()->punchRequested();
+}
+
+void WorldObject::playerDropWeapon() {
+    m_world->player()->hand()->dropWeapon();
 }
 
 

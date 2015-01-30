@@ -141,7 +141,7 @@ Item {
                 height: Math.max(left.height,
                                  dropText.contentHeight+playerOptions.textMargin)
                 border.color: left.border.color
-                visible: world.player ? world.player.hand.grabbedWeapon : false
+                visible: world.equippedWeapon
 
                 Text {
                     id: dropText
@@ -151,7 +151,7 @@ Item {
 
                 MultiPointTouchArea {
                     anchors.fill: parent
-                    onPressed: world.player.hand.dropWeapon()
+                    onPressed: world.playerDropWeapon()
                 }
             }
 

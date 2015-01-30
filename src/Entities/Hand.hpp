@@ -10,9 +10,6 @@ class Hand: public SceneGraph::Item {
         friend class Weapon;
         friend class Player;
 
-//        Q_PROPERTY(Weapon* grabbedWeapon READ grabbedWeapon
-//                   NOTIFY grabbedWeaponChanged)
-
         Player* m_owner;
         Weapon* m_grabbedWeapon;
         QMouseJoint* m_mouseJoint;
@@ -37,10 +34,7 @@ class Hand: public SceneGraph::Item {
         inline void setRange(float range) { m_range = range; }
 
         void grabWeapon(Weapon* item);
-        Q_INVOKABLE void dropWeapon();
-
-    //signals:
-    //    void grabbedWeaponChanged();
+        void dropWeapon();
 
 };
 #endif // HAND_HPP
