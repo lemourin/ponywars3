@@ -9,6 +9,7 @@ namespace SceneGraph {
 
 Window::Window(QWindow* parent):
     QQuickView(parent),
+    m_rootItem(this, contentItem()),
     m_renderer(),
     m_focusItem() {
 
@@ -22,7 +23,6 @@ Window::Window(QWindow* parent):
             this, &Window::onBeforeRendering, Qt::DirectConnection);
     connect(this, &QQuickWindow::beforeSynchronizing,
             this, &Window::onBeforeSynchronizing, Qt::DirectConnection);
-    contentItem()->setFlag(QQuickItem::ItemHasContents);
 
     setResizeMode(SizeRootObjectToView);
     setClearBeforeRendering(false);
@@ -244,6 +244,22 @@ void Window::timerEvent(QTimerEvent* event) {
 
     QQuickView::timerEvent(event);
 }
+
+void Window::resizeEvent(QResizeEvent *event) {
+    QQuickView::resizeEvent(event);
+    m_rootItem.setSize(event->size());
+}
+
+Window::RootItem::RootItem(Window *w, QQuickItem* parent):
+    QQuickItem(parent),
+    m_window(w) {
+}
+
+void Window::RootItem::touchEvent(QTouchEvent *e) {
+    QQuickItem::touchEvent(e);
+    m_window->touchEvent(e);
+}
+
 
 }
 

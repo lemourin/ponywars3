@@ -1,6 +1,7 @@
 #ifndef SCENEGRAPH_WINDOW_HPP
 #define SCENEGRAPH_WINDOW_HPP
 #include <QQuickView>
+#include <QQuickItem>
 #include <unordered_map>
 #include <unordered_set>
 #include "Item.hpp"
@@ -14,7 +15,17 @@ class Renderer;
 class Window: public QQuickView {
     private:
         friend class Item;
+        friend class RootItem;
         friend class Renderer;
+
+        class RootItem: public QQuickItem {
+            public:
+                Window* m_window;
+            protected:
+                void touchEvent(QTouchEvent*);
+            public:
+                RootItem(Window*, QQuickItem* = nullptr);
+        } m_rootItem;
 
         Renderer* m_renderer;
         QMatrix4x4 m_projection;
@@ -51,6 +62,7 @@ class Window: public QQuickView {
         void mouseMoveEvent(QMouseEvent*);
         void wheelEvent(QWheelEvent*);
         void timerEvent(QTimerEvent*);
+        void resizeEvent(QResizeEvent*);
 
     public:
         Window(QWindow* window = nullptr);
