@@ -127,7 +127,7 @@ void DisplayItem::wheelEvent(QWheelEvent* event) {
 
 void DisplayItem::mousePressEvent(QMouseEvent* event) {
     if (event->button() != Qt::LeftButton || !flickable())
-        return;
+        return event->ignore();
 
     m_buttonDown = true;
     m_startPoint = mapFromScreen(event->pos());
@@ -135,7 +135,7 @@ void DisplayItem::mousePressEvent(QMouseEvent* event) {
 
 void DisplayItem::mouseMoveEvent(QMouseEvent* event) {
     if (!m_buttonDown)
-        return;
+        return event->ignore();
 
     QPointF p = mapFromScreen(event->pos());
     setLookAt(effectiveLookAt()-p+m_startPoint);
@@ -144,6 +144,8 @@ void DisplayItem::mouseMoveEvent(QMouseEvent* event) {
 void DisplayItem::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton)
         m_buttonDown = false;
+    else
+        event->ignore();
 }
 
 void DisplayItem::touchEvent(QTouchEvent* event) {
@@ -154,8 +156,6 @@ void DisplayItem::touchEvent(QTouchEvent* event) {
 
             m_distance = QVector2D(p1-p2).length();
         }
-        else
-            event->ignore();
     }
 
     if (event->touchPoints().size() == 1) {

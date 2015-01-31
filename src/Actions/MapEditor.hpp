@@ -28,9 +28,6 @@ class MapEditor: public Action {
 
         ActionObject m_object;
 
-        void actionEnabledChanged(SubAction*);
-        void setCurrentAction(QString);
-
     protected:
         void onInit();
         void reset();

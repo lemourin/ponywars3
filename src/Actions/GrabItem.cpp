@@ -86,12 +86,12 @@ SceneGraph::Node *GrabItem::synchronize(SceneGraph::Node *old) {
 
 void GrabItem::mousePressEvent(QMouseEvent* event) {
     if (event->button() != Qt::LeftButton)
-        return;
+        return event->ignore();
 
-    if (!pickItem(mapFromScreen(event->pos())))
-        event->ignore();
-    else
+    if (pickItem(mapFromScreen(event->pos())))
         m_pressed = true;
+    else
+        event->ignore();
 }
 
 void GrabItem::mouseReleaseEvent(QMouseEvent* event) {
@@ -106,8 +106,9 @@ void GrabItem::mouseReleaseEvent(QMouseEvent* event) {
 void GrabItem::mouseMoveEvent(QMouseEvent* event) {
     if (!m_pressed)
         event->ignore();
-    else
+    else {
         setDirection(mapFromScreen(event->pos()));
+    }
 }
 
 ArrowNode::ArrowNode():

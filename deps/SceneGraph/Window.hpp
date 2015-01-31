@@ -21,8 +21,10 @@ class Window: public QQuickView {
         class RootItem: public QQuickItem {
             public:
                 Window* m_window;
+
             protected:
                 void touchEvent(QTouchEvent*);
+
             public:
                 RootItem(Window*, QQuickItem* = nullptr);
         } m_rootItem;

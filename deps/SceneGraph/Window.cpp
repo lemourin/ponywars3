@@ -283,10 +283,6 @@ Window::RootItem::RootItem(Window *w, QQuickItem* parent):
 }
 
 void Window::RootItem::touchEvent(QTouchEvent *e) {
-    QQuickItem::touchEvent(e);
-    if (e->isAccepted())
-        return;
-
     m_window->touchEvent(e);
 
     if (!e->isAccepted() && e->touchPoints().size() == 1) {
