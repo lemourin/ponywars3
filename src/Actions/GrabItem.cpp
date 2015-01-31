@@ -7,7 +7,6 @@
 #include "Geometry/Circle.hpp"
 #include "Entities/ViewWorld.hpp"
 #include <Box2D/Box2D.h>
-#include <QSGFlatColorMaterial>
 
 GrabItem::GrabItem(MapEditor* parent):
     SubAction(parent),

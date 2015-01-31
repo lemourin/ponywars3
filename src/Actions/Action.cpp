@@ -21,8 +21,11 @@ void Action::setEnabled(bool e) {
 }
 
 void Action::enabledChanged() {
-    if (!enabled())
+    if (!enabled()) {
+        if (m_currentSubAction)
+            m_currentSubAction->setEnabled(false);
         reset();
+    }
     else {
         setFocus(true);
         onInit();
