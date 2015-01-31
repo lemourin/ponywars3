@@ -53,7 +53,6 @@ class TextureMaterial: public Material {
             private:
                 int m_matrix;
                 int m_texture;
-                int m_activeTexture;
 
             protected:
                 void initialize();

@@ -16,6 +16,8 @@ class AddRectangle: public AddFixture {
         unsigned m_state;
         QPointF m_p1, m_p2, m_cursor;
 
+        ActionObject m_object;
+
     protected:
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
@@ -27,6 +29,8 @@ class AddRectangle: public AddFixture {
 
         void reset();
         QFixture* fixture() const;
+
+        inline QString name() const { return "AddRectangle"; }
 };
 
 #endif // ADDRECTANGLE_HPP

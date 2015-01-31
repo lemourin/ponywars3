@@ -17,6 +17,7 @@ class AddCircle: public AddFixture {
         unsigned m_stateChange, m_state;
         QPointF m_position;
         float m_radius;
+        ActionObject m_object;
 
     protected:
         void mousePressEvent(QMouseEvent *event);
@@ -29,6 +30,8 @@ class AddCircle: public AddFixture {
 
         QFixture* fixture() const;
         void reset();
+
+        inline QString name() const { return "AddCircle"; }
 };
 
 #endif // ADDCIRCLE_HPP

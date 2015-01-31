@@ -47,7 +47,6 @@ void ColorMaterial::ColorShader::updateState(const Material* m,
     program()->setUniformValue(m_color, data->m_color);
 }
 
-
 void TextureMaterial::TextureShader::initialize() {
     Shader::initialize();
 
@@ -95,7 +94,8 @@ void TextureMaterial::TextureShader::updateState(const Material* material,
     program()->setUniformValue(m_matrix, state.matrix());
 
     assert(m->texture());
-    m->texture()->bind(0);
+    glActiveTexture(0);
+    glBindTexture(GL_TEXTURE_2D, m->texture()->textureId());
     program()->setUniformValue(m_texture, 0);
 }
 

@@ -6,7 +6,7 @@
 #include <sstream>
 
 BodyEdit::BodyEdit(MapEditor* p):
-    MapEditorAction(p),
+    SubAction(p),
     m_body(),
     m_density(),
     m_friction(),

@@ -21,7 +21,6 @@ class LightMaterial: public SceneGraph::Material {
 
                 GLint m_blendEquation;
                 GLint m_blendFunc[2];
-                GLint m_activeTexture;
 
                 void initialize();
                 void activate();

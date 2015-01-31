@@ -37,14 +37,12 @@ void LightBlender::Material::Shader::initialize() {
 void LightBlender::Material::Shader::activate() {
     glGetIntegerv(GL_BLEND_SRC_RGB, m_blend+0);
     glGetIntegerv(GL_BLEND_DST_RGB, m_blend+1);
-    glGetIntegerv(GL_ACTIVE_TEXTURE, &m_activeTexture);
 
     glBlendFunc(GL_DST_COLOR, GL_ZERO);
 }
 
 void LightBlender::Material::Shader::deactivate() {
     glBlendFunc(m_blend[0], m_blend[1]);
-    glActiveTexture(m_activeTexture);
 }
 
 const char* LightBlender::Material::Shader::vertexShader() const {
@@ -102,7 +100,6 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
     program()->setUniformValue(m_id_ambient, material->m_ambient);
     program()->setUniformValue(m_id_matrix, state.matrix());
     program()->setUniformValue(m_id_opacity, 1.0f);
-
 }
 
 std::vector<std::string> LightBlender::Material::Shader::attribute() const {

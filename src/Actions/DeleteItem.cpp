@@ -2,7 +2,7 @@
 #include "Entities/World.hpp"
 #include "QBox2D/QBody.hpp"
 
-DeleteItem::DeleteItem(MapEditor* p): MapEditorAction(p) {
+DeleteItem::DeleteItem(MapEditor* p): SubAction(p) {
     //setAcceptedMouseButtons(Qt::LeftButton);
 }
 

@@ -9,7 +9,7 @@
 #include <QQuickWindow>
 
 AddChain::AddChain(MapEditor* p):
-    MapEditorAction(p),
+    SubAction(p),
     m_state() {
 
     //setAcceptedMouseButtons(Qt::LeftButton);

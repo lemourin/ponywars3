@@ -74,7 +74,7 @@ void Player::mouseMoveEvent(QMouseEvent *e) {
     hand()->setHandPosition(mapFromScreen(e->pos()));
 }
 
-void Player::beginContact(QFixture* other, b2Contact*) {
+void Player::beginContact(QFixture*, b2Contact*) {
     //if (qobject_cast<Enemy*>(other->body())) {
     //    setHealth(health()-10);
     //}
@@ -104,7 +104,7 @@ World* Player::world() const {
 
 void Player::healthChanged() {
     if (world() && world()->player() == this)
-        world()->worldObject()->playerHealthChanged();
+        world()->object()->playerHealthChanged();
 
     if (health() <= 0) {
         //emit world()->gameOver();

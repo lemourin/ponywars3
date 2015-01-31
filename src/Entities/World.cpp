@@ -1,8 +1,7 @@
 #include "World.hpp"
-#include <QQuickWindow>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <fstream>
+#include <QDebug>
 #include <unordered_set>
 #include "QBox2D/QFixture.hpp"
 #include "QBox2D/QBody.hpp"
@@ -51,13 +50,6 @@ World::World(ViewWorld* viewWorld):
 
 World::~World() {
     delete m_player;
-}
-
-void World::mousePressEvent(QMouseEvent* event) {    
-    /*if (player() && !player()->hasActiveFocus() && !view()->flickable())
-        player()->forceActiveFocus();
-    else
-        event->ignore();*/
 }
 
 void World::geometryChanged(const QRectF& newGeometry,

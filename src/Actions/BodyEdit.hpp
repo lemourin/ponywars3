@@ -1,11 +1,11 @@
 #ifndef BODYEDIT_HPP
 #define BODYEDIT_HPP
-#include "MapEditorAction.hpp"
+#include "SubAction.hpp"
 
 class QBody;
 class QMouseEvent;
 
-class BodyEdit: public MapEditorAction {
+class BodyEdit: public SubAction {
     private:
         /*Q_PROPERTY(QBody* body READ body NOTIFY bodyChanged)
         Q_PROPERTY(qreal density READ density
@@ -63,6 +63,8 @@ class BodyEdit: public MapEditorAction {
 
         inline bool dynamic() const { return m_dynamic; }
         void setDynamic(bool);
+
+        inline QString name() const { return "BodyEdit"; }
 
         Q_INVOKABLE void applyChanges() const;
 

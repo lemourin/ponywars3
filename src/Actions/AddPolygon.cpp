@@ -7,7 +7,8 @@
 #include <QSGSimpleRectNode>
 
 AddPolygon::AddPolygon(AddBody* parent):
-    AddFixture(parent) {
+    AddFixture(parent),
+    m_object(this) {
     //setAcceptedMouseButtons(Qt::LeftButton);
     //setFlag(ItemHasContents);
 }

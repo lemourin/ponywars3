@@ -19,14 +19,14 @@ Item {
             id: actionName
             anchors.right: parent.right
             color: "#AAAAAA"
-            text: world.mapEditor.currentAction
+            text: mapEditor.currentAction
         }
 
         Text {
             id: subactionName
             anchors.right: parent.right
             color: "#AABBBB"
-            text: world.mapEditor.addBody.currentAction
+            text: addBody.currentAction
         }
     }
 

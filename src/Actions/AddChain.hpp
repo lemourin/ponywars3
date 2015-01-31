@@ -2,9 +2,9 @@
 #define ADDCHAIN_HPP
 #include <QQuickItem>
 #include <QSGTransformNode>
-#include "MapEditorAction.hpp"
+#include "SubAction.hpp"
 
-class AddChain: public MapEditorAction {
+class AddChain: public SubAction {
     private:
         class Node: public QSGGeometryNode {
             public:
@@ -38,6 +38,8 @@ class AddChain: public MapEditorAction {
         inline const std::vector<QPointF>& pts() const { return m_pts; }
 
         void reset();
+
+        inline QString name() const { return "AddChain"; }
 };
 
 #endif // ADDCHAIN_HPP

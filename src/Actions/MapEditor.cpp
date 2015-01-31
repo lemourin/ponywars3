@@ -5,30 +5,14 @@
 
 MapEditor::MapEditor(World* item):
     Action(item),
-    m_mapEditorObject(this),
     m_addChain(this),
     m_addBody(this),
     m_grabItem(this),
     m_deleteItem(this),
     m_bodyEdit(this),
-    m_action({ addChain(), addBody(), grabItem(), deleteItem(), bodyEdit() }) {
-    //setFlag(ItemIsFocusScope);
+    m_action({ addChain(), addBody(), grabItem(), deleteItem(), bodyEdit() }),
+    m_object(this) {
     setWorld(item);
-}
-
-void MapEditor::actionFocusChanged(MapEditorAction* action) {
-//    QString name = action->metaObject()->className();
-//    if (action->hasFocus())
-//        setCurrentAction(name);
-//    else if (currentAction() == name)
-//        setCurrentAction("");
-}
-
-void MapEditor::setCurrentAction(QString str) {
-    if (m_currentAction == str)
-        return;
-    m_currentAction = str;
-    //emit currentActionChanged();
 }
 
 void MapEditor::onInit() {
@@ -50,29 +34,7 @@ void MapEditor::reset() {
 
     ViewWorld* view = world()->view();
 
+    m_focusedObject->setFocus(true);
     view->setFocusedObject(m_focusedObject);
     view->setFlickable(false);
-}
-
-void MapEditor::geometryChanged(const QRectF& newGeometry,
-                                const QRectF& oldGeometry) {
-    /*Action::geometryChanged(newGeometry, oldGeometry);
-
-    for (Action* action: m_action) {
-        action->setWidth(width());
-        action->setHeight(height());
-    }*/
-}
-
-MapEditorObject::MapEditorObject(MapEditor* item):
-    m_mapEditor(item) {
-}
-
-bool MapEditorObject::focus() const {
-    return m_mapEditor->focus();
-}
-
-void MapEditorObject::toggleFocus() {
-    m_mapEditor->setFocus(!m_mapEditor->focus());
-    emit focusChanged();
 }

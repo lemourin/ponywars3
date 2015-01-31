@@ -29,7 +29,7 @@ void Weapon::setBulletCount(int count) {
     m_bulletCount = count;
 
     if (grabber() && grabber()->owner() && grabber()->owner()->world())
-        emit grabber()->owner()->world()->worldObject()->bulletCountChanged();
+        emit grabber()->owner()->world()->object()->bulletCountChanged();
 }
 
 void Weapon::setFlip(int f) {

@@ -1,33 +1,24 @@
 #ifndef ADDBODY_HPP
 #define ADDBODY_HPP
-#include "MapEditorAction.hpp"
+#include "SubAction.hpp"
 #include "AddPolygon.hpp"
 #include "AddCircle.hpp"
 #include "AddRectangle.hpp"
 
-class AddBody: public MapEditorAction {
+class AddBody: public SubAction {
     private:
         friend class AddFixture;
-
-        /*Q_PROPERTY(AddPolygon* addPolygon READ addPolygon CONSTANT)
-        Q_PROPERTY(AddCircle* addCircle READ addCircle CONSTANT)
-        Q_PROPERTY(AddRectangle* addRectangle READ addRectangle CONSTANT)
-        Q_PROPERTY(QString currentAction READ currentAction NOTIFY currentActionChanged)*/
 
         AddPolygon m_addPolygon;
         AddCircle m_addCircle;
         AddRectangle m_addRectangle;
-        QString m_currentAction;
+        AddFixture* m_currentAction;
         std::vector<QFixture*> m_fixtures;
         std::vector<Action*> m_action;
 
-        void finishedSubaction(AddFixture*);
-        void actionFocusChanged(AddFixture* action);
-        void setCurrentAction(QString);
+        ActionObject m_object;
 
-    protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
+        void subActionFinished(SubAction*);
 
     public:
         explicit AddBody(MapEditor*);
@@ -38,11 +29,9 @@ class AddBody: public MapEditorAction {
         inline AddPolygon* addPolygon() { return &m_addPolygon; }
         inline AddCircle* addCircle() { return &m_addCircle; }
         inline AddRectangle* addRectangle() { return &m_addRectangle; }
-        inline QString currentAction() const { return m_currentAction; }
+        inline AddFixture* currentAction() const { return m_currentAction; }
 
-
-    //signals:
-    //    void currentActionChanged();
+        inline QString name() const { return "AddBody"; }
 };
 
 #endif // ADDBODY_HPP

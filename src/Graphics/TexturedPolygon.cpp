@@ -35,11 +35,6 @@ TexturedPolygon::Node::Node(const std::vector<QPointF>& pts,
     for (size_t i=0; i<p.size(); i++)
         array[i] = QVector4D(p[i].x(), p[i].y(), p[i].x()*scale.x(), p[i].y()*scale.y());
     m_geometry.updateVertexData();
-
-    //m_material.setFiltering(QSGTexture::Linear);
-    //m_material.setMipmapFiltering(QSGTexture::Linear);
-    //m_material.setHorizontalWrapMode(QSGTexture::Repeat);
-    //m_material.setVerticalWrapMode(QSGTexture::Repeat);
 }
 
 

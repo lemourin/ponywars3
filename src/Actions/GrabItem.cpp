@@ -5,14 +5,22 @@
 #include "Geometry/Edge.hpp"
 #include "Geometry/Vector2d.hpp"
 #include "Geometry/Circle.hpp"
+#include "Entities/ViewWorld.hpp"
 #include <Box2D/Box2D.h>
 #include <QSGFlatColorMaterial>
 
 GrabItem::GrabItem(MapEditor* parent):
-    MapEditorAction(parent),
-    m_mouseJoint() {
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setFlag(ItemHasContents);
+    SubAction(parent),
+    m_mouseJoint(),
+    m_grabbedBody(),
+    m_pressed(),
+    m_image(),
+    m_object(this) {
+    setVisible(false);
+
+    m_image.translate(500, 500);
+    m_image.scale(100, 100);
+    m_image.setSource(":/resources/crate.jpg");
 }
 
 GrabItem::~GrabItem() {
@@ -31,12 +39,14 @@ bool GrabItem::pickItem(QPointF point) {
     m_mouseJoint->setMaxForce(1000*m_grabbedBody->body()->GetMass());
     m_mouseJoint->setTarget(point);
     m_mouseJoint->initialize();
+    setVisible(true);
 
     return true;
 }
 
 void GrabItem::releaseItem() {
     destroyJoint();
+    setVisible(false);
 }
 
 void GrabItem::setDirection(QPointF pos) {
@@ -45,6 +55,7 @@ void GrabItem::setDirection(QPointF pos) {
 }
 
 void GrabItem::reset() {
+    m_pressed = false;
     destroyJoint();
 }
 
@@ -55,71 +66,73 @@ void GrabItem::destroyJoint() {
     m_grabbedBody = nullptr;
 }
 
-/*QSGNode* GrabItem::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    ArrowNode* node = static_cast<ArrowNode*>(n);
+SceneGraph::Node *GrabItem::synchronize(SceneGraph::Node *old) {
+    ArrowNode* node = static_cast<ArrowNode*>(old);
 
     if (!node)
         node = new ArrowNode;
 
     if (m_mouseJoint && m_mouseJoint->joint()) {
-        setOpacity(1);
-
         node->setP2(m_mouseJoint->anchorA());
         node->setP1(m_mouseJoint->anchorB());
 
         node->updateGeometry();
     }
-    else {
-        setOpacity(0);
-    }
 
     update();
 
     return node;
-}*/
 
-void GrabItem::mousePressEvent(QMouseEvent* event) {
-    //if (!pickItem(event->localPos()))
-    //    return Action::mousePressEvent(event);
-
-    event->accept();
 }
 
-void GrabItem::mouseReleaseEvent(QMouseEvent*) {
-    releaseItem();
+void GrabItem::mousePressEvent(QMouseEvent* event) {
+    if (event->button() != Qt::LeftButton)
+        return;
+
+    if (!pickItem(mapFromScreen(event->pos())))
+        event->ignore();
+    else
+        m_pressed = true;
+}
+
+void GrabItem::mouseReleaseEvent(QMouseEvent* event) {
+    if (!m_pressed || event->button() != Qt::LeftButton)
+        event->ignore();
+    else {
+        m_pressed = false;
+        releaseItem();
+    }
 }
 
 void GrabItem::mouseMoveEvent(QMouseEvent* event) {
-    setDirection(event->localPos());
-    event->accept();
+    if (!m_pressed)
+        event->ignore();
+    else
+        setDirection(mapFromScreen(event->pos()));
 }
 
 ArrowNode::ArrowNode():
-    m_geometry(QSGGeometry::defaultAttributes_Point2D(), 5) {
+    m_geometry({ { 2, GL_FLOAT } }, 5, sizeof(QPointF)) {
     m_geometry.setDrawingMode(GL_LINE_STRIP);
     setGeometry(&m_geometry);
+    setMaterial(&m_material);
 
-    QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
-    material->setColor(Qt::red);
-    setMaterial(material);
-
-    setFlags(OwnsMaterial);
+    m_material.setColor(Qt::red);
 }
 
 void ArrowNode::updateGeometry() {
-    m_geometry.vertexDataAsPoint2D()[0].set(m_p1.x(), m_p1.y());
-    m_geometry.vertexDataAsPoint2D()[1].set(m_p2.x(), m_p2.y());
+    m_geometry.vertexData<QPointF>()[0] = m_p1;
+    m_geometry.vertexData<QPointF>()[1] = m_p2;
 
     Edge edge((Vector2d)m_p1, (Vector2d)m_p2);
 
     Vector2d v1 = edge.vector(M_PI/4, 5);
-    m_geometry.vertexDataAsPoint2D()[2].set(m_p2.x()+v1.x, m_p2.y()+v1.y);
+    m_geometry.vertexData<QPointF>()[2] = QPointF(m_p2.x()+v1.x, m_p2.y()+v1.y);
 
-    m_geometry.vertexDataAsPoint2D()[3].set(m_p2.x(), m_p2.y());
+    m_geometry.vertexData<QPointF>()[3] = m_p2;
 
     Vector2d v2 = edge.vector(-M_PI/4, 5);
-    m_geometry.vertexDataAsPoint2D()[4].set(m_p2.x()+v2.x, m_p2.y()+v2.y);
+    m_geometry.vertexData<QPointF>()[4] = QPointF(m_p2.x()+v2.x, m_p2.y()+v2.y);
 
-    m_geometry.markVertexDataDirty();
-    markDirty(DirtyGeometry);
+    m_geometry.updateVertexData();
 }

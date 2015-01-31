@@ -1,18 +1,23 @@
 #ifndef GRABITEM_HPP
 #define GRABITEM_HPP
-#include <QPointer>
-#include <QSGGeometryNode>
-#include <QSGGeometry>
-#include "MapEditorAction.hpp"
+#include "SceneGraph/Geometry.hpp"
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Material.hpp"
+#include "Graphics/TexturedRectangle.hpp"
+#include "SubAction.hpp"
 #include "QBox2D/QJoint.hpp"
 
 class QWorld;
 class QBody;
 class b2MouseJoint;
 
-class ArrowNode: public QSGGeometryNode {
+class ArrowNode: public SceneGraph::GeometryNode {
     private:
-        QSGGeometry m_geometry;
+        friend class GrabItem;
+
+        SceneGraph::Geometry m_geometry;
+        SceneGraph::ColorMaterial m_material;
+
         QPointF m_p1, m_p2;
 
     public:
@@ -24,15 +29,19 @@ class ArrowNode: public QSGGeometryNode {
         void updateGeometry();
 };
 
-class GrabItem: public MapEditorAction {
+class GrabItem: public SubAction {
     private:
         QMouseJoint* m_mouseJoint;
         QBody* m_grabbedBody;
+        bool m_pressed;
+        TexturedRectangle m_image;
+
+        ActionObject m_object;
 
         void destroyJoint();
 
     protected:
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node *old);
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
@@ -46,6 +55,8 @@ class GrabItem: public MapEditorAction {
         void setDirection(QPointF);
 
         void reset();
+
+        inline QString name() const { return "GrabItem"; }
 };
 
 #endif // GRABITEM_HPP

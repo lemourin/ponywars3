@@ -5,10 +5,10 @@ Item {
     visible: false
     anchors.fill: parent
 
-    Connections {
+    /*Connections {
         target: world
         onGameOver: gameOverScreen.visible = true
-    }
+    }*/
 
     Text {
         anchors.centerIn: parent

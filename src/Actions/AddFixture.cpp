@@ -1,19 +1,4 @@
 #include "AddFixture.hpp"
-#include "AddBody.hpp"
 
-AddFixture::AddFixture(AddBody* parent):
-    Action(parent),
-    m_addBody(parent) {
+AddFixture::AddFixture(Action* action): SubAction(action) {
 }
-
-void AddFixture::finished() {
-    m_addBody->finishedSubaction(this);
-}
-
-void AddFixture::focusChanged() {
-    Action::focusChanged();
-    m_addBody->actionFocusChanged(this);
-}
-
-
-

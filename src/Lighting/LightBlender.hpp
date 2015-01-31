@@ -28,7 +28,6 @@ class LightBlender: public SceneGraph::GeometryNode {
                         int m_id_lightTexture;
                         int m_id_ambient;
                         GLint m_blend[2];
-                        GLint m_activeTexture;
 
                     public:
                         void initialize();

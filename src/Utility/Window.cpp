@@ -61,8 +61,18 @@ Window::Window(QWindow* parent):
     rootContext()->setContextProperty("app", &m_environment);
 
     World* world = m_game.view()->world();
-    rootContext()->setContextProperty("world", world->worldObject());
-    rootContext()->setContextProperty("mapEditor", world->mapEditor()->mapEditorObject());
+    MapEditor* mapEditor = world->mapEditor();
+    AddBody* addBody = mapEditor->addBody();
+    rootContext()->setContextProperty("world", world->object());
+
+    rootContext()->setContextProperty("mapEditor", mapEditor->object());
+
+    rootContext()->setContextProperty("addBody", addBody->object());
+    rootContext()->setContextProperty("addPolygon", addBody->addPolygon()->object());
+    rootContext()->setContextProperty("addRectangle", addBody->addRectangle()->object());
+    rootContext()->setContextProperty("addCircle", addBody->addCircle()->object());
+
+    rootContext()->setContextProperty("grabItem", mapEditor->grabItem()->object());
 
     setSource(QUrl("qrc:/qml/main.qml"));
     setResizeMode(SizeRootObjectToView);

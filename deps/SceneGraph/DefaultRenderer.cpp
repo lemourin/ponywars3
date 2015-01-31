@@ -35,8 +35,6 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node, const RenderState& 
         glDrawArrays(g->drawingMode(), 0, g->vertexCount());
 
     shader->deactivate();
-
-
 }
 
 void DefaultRenderer::render() {
@@ -47,6 +45,8 @@ void DefaultRenderer::render() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     Renderer::render();
+
+    glActiveTexture(GL_TEXTURE0);
 }
 
 }

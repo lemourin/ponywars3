@@ -14,7 +14,7 @@ Row {
 
         Button {
             text: "MapEditor"
-            onClicked: mapEditor.toggleFocus()
+            onClicked: mapEditor.toggleEnabled()
         }
 
         Button {
@@ -56,82 +56,80 @@ Row {
         NetworkOptions { }
     }*/
 
-    Column {
-        Item { id: fileOptions; parent: world }
-        visible: fileOptions.focus
+    /*Column {
 
         SaveMap { }
         LoadMap { }
-    }
+    }*/
 
     Row {
-        visible: mapEditor ? mapEditor.focus : false
+        visible: mapEditor.enabled
 
         Column {
             Button {
                 width: parent.width
                 text: "AddChain"
-                onClicked: mapEditor.addChain.focus ^= 1
+                onClicked: addChain.toggleEnabled()
             }
 
             Button {
                 text: "DeleteItem"
-                onClicked: mapEditor.deleteItem.focus ^= 1
+                onClicked: deleteItem.toggleEnabled()
             }
 
             Button {
                 width: parent.width
                 text: "GrabItem"
-                onClicked: mapEditor.grabItem.focus ^= 1
+                onClicked: grabItem.toggleEnabled()
             }
 
             Button {
                 width: parent.width
                 text: "BodyEdit"
-                onClicked: mapEditor.bodyEdit.focus ^= 1
+                onClicked: bodyEdit.toggleEnabled()
             }
 
             Button {
                 width: parent.width
                 text: "AddBody"
-                onClicked: mapEditor.addBody.focus ^= 1
+                onClicked: addBody.toggleEnabled()
             }
         }
 
         Column {
-            visible: mapEditor ? mapEditor.addBody.focus : false
+            visible: addBody.enabled
 
             Button {
                 width: parent.width
                 text: "AddPolygon"
-                onClicked: mapEditor.addBody.addPolygon.focus ^= 1
+                onClicked: addPolygon.toggleEnabled()
             }
 
             Button {
                 width: parent.width
                 text: "AddCircle"
-                onClicked: mapEditor.addBody.addCircle.focus ^= 1
+                onClicked: addCircle.toggleEnabled()
             }
 
             Button {
                 text: "AddRectangle"
-                onClicked: mapEditor.addBody.addRectangle.focus ^= 1
+                onClicked: addRectangle.toggleEnabled()
             }
 
             Button {
                 width: parent.width
                 text: "FinishBody"
-                onClicked: mapEditor.addBody.finished()
+                onClicked: addBody.finished()
             }
         }
 
         Column {
             id: polygonOptions
-            visible: mapEditor ? mapEditor.addBody.addPolygon.focus : false
+            visible: addPolygon.enabled
 
             Button {
                 text: "Finish"
-                onClicked: mapEditor.addBody.addPolygon.finished()
+                onClicked: addPolygon.finished()
             }
         }
     }

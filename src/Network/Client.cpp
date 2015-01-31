@@ -161,6 +161,7 @@ Player* Client::loadPlayer(QString data) {
     player->setBodyType(QBody::Static);
 
     return player;*/
+    return 0;
 }
 
 void Client::sendNewPlayerInfo(Address address,

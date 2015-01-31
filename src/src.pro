@@ -69,14 +69,14 @@ SOURCES += \
     QBox2D/Fixture/Box2DChain.cpp \
     Graphics/SpriteSequence.cpp \
     Entities/PonyAnimation.cpp \
-    Actions/AddFixture.cpp \
     QBox2D/QJoint.cpp \
     Utility/BaseItem.cpp \
     Entities/ViewWorld.cpp \
     Entities/Pony.cpp \
-    Actions/MapEditorAction.cpp \
     Entities/Game.cpp \
-    Graphics/Primitives.cpp
+    Graphics/Primitives.cpp \
+    Actions/SubAction.cpp \
+    Actions/AddFixture.cpp
 
 HEADERS += \
     Actions/Action.hpp \
@@ -132,7 +132,6 @@ HEADERS += \
     QBox2D/Fixture/Box2DChain.hpp \
     Graphics/SpriteSequence.hpp \
     Entities/PonyAnimation.hpp \
-    Actions/AddFixture.hpp \
     QBox2D/QJoint.hpp \
     Utility/Factory.hpp \
     Utility/Pool.hpp \
@@ -140,7 +139,8 @@ HEADERS += \
     Utility/BaseItem.hpp \
     Entities/ViewWorld.hpp \
     Entities/Pony.hpp \
-    Actions/MapEditorAction.hpp \
     Entities/Game.hpp \
-    Graphics/Primitives.hpp
+    Graphics/Primitives.hpp \
+    Actions/SubAction.hpp \
+    Actions/AddFixture.hpp
 

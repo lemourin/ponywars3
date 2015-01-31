@@ -91,7 +91,6 @@ class World: public QWorld {
         WorldObject m_worldObject;
 
     protected:
-        void mousePressEvent(QMouseEvent*);
         void geometryChanged(const QRectF &newGeometry,
                              const QRectF &oldGeometry);
         void onBodyDestroyed(QBody*);
@@ -113,8 +112,8 @@ class World: public QWorld {
         inline MapEditor* mapEditor() { return &m_mapEditor; }
         inline const MapEditor* mapEditor() const { return &m_mapEditor; }
 
-        inline WorldObject* worldObject() { return &m_worldObject; }
-        inline const WorldObject* worldObject() const { return &m_worldObject; }
+        inline WorldObject* object() { return &m_worldObject; }
+        inline const WorldObject* object() const { return &m_worldObject; }
 
         void read(const QJsonObject&);
         void write(QJsonObject&) const;

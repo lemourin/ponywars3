@@ -10,7 +10,8 @@
 AddCircle::AddCircle(AddBody* parent):
     AddFixture(parent),
     m_stateChange(),
-    m_state() {
+    m_state(),
+    m_object(this) {
     //setAcceptedMouseButtons(Qt::LeftButton);
     //setAcceptHoverEvents(true);
     //setFlag(ItemHasContents);

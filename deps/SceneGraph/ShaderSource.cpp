@@ -70,15 +70,16 @@ void ShaderSource::ShaderNode::updateTexture() {
     m_fbo->bind();
 
     if (m_capturedNode) {
+        GLint view[4];
+        glGetIntegerv(GL_VIEWPORT, view);
+
+        glViewport(0, 0, m_fbo->width(), m_fbo->height());
+
         glClearColor(m_background.redF(),
                      m_background.greenF(),
                      m_background.blueF(),
                      m_background.alphaF());
         glClear(GL_COLOR_BUFFER_BIT);
-
-        GLint view[4];
-        glGetIntegerv(GL_VIEWPORT, view);
-        glViewport(0, 0, m_fbo->width(), m_fbo->height());
 
         QMatrix4x4 matrix;
         matrix.ortho(m_viewport.left(),

@@ -4,7 +4,8 @@
 #include <QSGSimpleRectNode>
 #include <QSGFlatColorMaterial>
 
-AddRectangle::AddRectangle(AddBody* p): AddFixture(p), m_state() {
+AddRectangle::AddRectangle(AddBody* p):
+    AddFixture(p), m_state(), m_object(this) {
     //setAcceptedMouseButtons(Qt::LeftButton);
     //setAcceptHoverEvents(true);
     //setFlag(ItemHasContents);

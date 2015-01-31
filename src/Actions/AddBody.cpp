@@ -5,15 +5,16 @@
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/QFixture.hpp"
 #include "Entities/World.hpp"
-#include <QSGTransformNode>
-#include <QSGFlatColorMaterial>
 
 AddBody::AddBody(MapEditor* p):
-    MapEditorAction(p),
+    SubAction(p),
     m_addPolygon(this),
     m_addCircle(this),
     m_addRectangle(this),
-    m_action({ addPolygon(), addCircle(), addRectangle() }){
+    m_currentAction(),
+    m_action({ addPolygon(), addCircle(), addRectangle() }),
+    m_object(this) {
+
     //setFlag(ItemIsFocusScope);
     //setAcceptedMouseButtons(Qt::LeftButton);
 }
@@ -28,8 +29,8 @@ void AddBody::finished() {
     m_fixtures.clear();
 }
 
-void AddBody::finishedSubaction(AddFixture* action) {
-    QFixture* fixture = action->fixture();
+void AddBody::subActionFinished(SubAction *action) {
+    QFixture* fixture = static_cast<AddFixture*>(action)->fixture();
     if (fixture) {
         //fixture->setParent(this);
         //fixture->setFlag(ItemHasContents);
@@ -39,31 +40,6 @@ void AddBody::finishedSubaction(AddFixture* action) {
     action->reset();
 }
 
-void AddBody::actionFocusChanged(AddFixture* action) {
-    //QString name = action->metaObject()->className();
-    /*if (action->hasFocus())
-        setCurrentAction(name);
-    else if (currentAction() == name)
-        setCurrentAction("");*/
-}
-
-void AddBody::setCurrentAction(QString name) {
-    if (m_currentAction == name)
-        return;
-    m_currentAction = name;
-    //emit currentActionChanged();
-}
-
-void AddBody::geometryChanged(const QRectF& newGeometry,
-                              const QRectF& oldGeometry) {
-    /*Action::geometryChanged(newGeometry, oldGeometry);
-
-    for (Action* action: m_action) {
-        action->setWidth(width());
-        action->setHeight(height());
-    }*/
-}
-
 void AddBody::reset() {
     Action::reset();
 
@@ -71,4 +47,3 @@ void AddBody::reset() {
         delete f;
     m_fixtures.clear();
 }
-

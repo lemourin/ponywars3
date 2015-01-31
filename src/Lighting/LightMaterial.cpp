@@ -28,8 +28,6 @@ void LightMaterial::Shader::activate() {
     glGetIntegerv(GL_BLEND_DST_RGB, m_blendFunc+1);
     glBlendFunc(GL_ONE, GL_ONE);
 #endif
-    glGetIntegerv(GL_ACTIVE_TEXTURE, &m_activeTexture);
-    glActiveTexture(GL_TEXTURE0);
 }
 
 void LightMaterial::Shader::deactivate() {
@@ -38,7 +36,6 @@ void LightMaterial::Shader::deactivate() {
 #else
     glBlendFunc(m_blendFunc[0], m_blendFunc[1]);
 #endif
-    glActiveTexture(m_activeTexture);
 }
 
 const char* LightMaterial::Shader::vertexShader() const {
