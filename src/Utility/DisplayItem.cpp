@@ -128,7 +128,6 @@ void DisplayItem::wheelEvent(QWheelEvent* event) {
 void DisplayItem::mousePressEvent(QMouseEvent* event) {
     if (event->button() != Qt::LeftButton || !flickable())
         return event->ignore();
-
     m_buttonDown = true;
     m_startPoint = mapFromScreen(event->pos());
 }

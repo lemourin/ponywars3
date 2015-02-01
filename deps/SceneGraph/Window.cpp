@@ -173,22 +173,49 @@ void Window::keyReleaseEvent(QKeyEvent* event) {
         event->ignore();
 }
 
-void Window::touchEvent(QTouchEvent* event) {
-    QQuickView::touchEvent(event);
-    if (event->isAccepted())
+void Window::touchEvent(QTouchEvent* e) {
+    QQuickView::touchEvent(e);
+    if (e->isAccepted())
         return;
 
     Item* item = focusItem();
     while (item) {
-        event->accept();
-        item->touchEvent(event);
-        if (event->isAccepted())
+        e->accept();
+        item->touchEvent(e);
+        if (e->isAccepted())
             break;
+        else {
+            bool accepted = false;
+            if (e->touchPoints().size() == 1) {
+                QTouchEvent::TouchPoint p = e->touchPoints().front();
+                if (e->touchPointStates() & Qt::TouchPointPressed) {
+                    QMouseEvent t(QEvent::MouseButtonPress, p.pos(),
+                                  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                    item->mousePressEvent(&t);
+                    accepted |= t.isAccepted();
+                }
+                if (e->touchPointStates() & Qt::TouchPointMoved) {
+                    QMouseEvent t(QEvent::MouseMove, p.pos(),
+                                  Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+                    item->mouseMoveEvent(&t);
+                    accepted |= t.isAccepted();
+                }
+                if (e->touchPointStates() & Qt::TouchPointReleased) {
+                    QMouseEvent t(QEvent::MouseButtonRelease, p.pos(),
+                                  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                    item->mouseReleaseEvent(&t);
+                    accepted |= t.isAccepted();
+                }
+            }
+
+            if (accepted)
+                break;
+        }
         item = item->parent();
     }
 
     if (!item)
-        event->ignore();
+        e->ignore();
 }
 
 void Window::mousePressEvent(QMouseEvent* event) {
@@ -284,28 +311,6 @@ Window::RootItem::RootItem(Window *w, QQuickItem* parent):
 
 void Window::RootItem::touchEvent(QTouchEvent *e) {
     m_window->touchEvent(e);
-
-    if (!e->isAccepted() && e->touchPoints().size() == 1) {
-        QTouchEvent::TouchPoint p = e->touchPoints().front();
-        if (e->touchPointStates() & Qt::TouchPointPressed) {
-            QMouseEvent t(QEvent::MouseButtonPress, p.pos(),
-                          Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-            m_window->mousePressEvent(&t);
-        }
-
-        if (e->touchPointStates() & Qt::TouchPointMoved) {
-            QMouseEvent t(QEvent::MouseMove, p.pos(),
-                          Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-            m_window->mouseMoveEvent(&t);
-        }
-
-        if (e->touchPointStates() & Qt::TouchPointReleased) {
-            QMouseEvent t(QEvent::MouseButtonRelease, p.pos(),
-                          Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-            m_window->mouseReleaseEvent(&t);
-        }
-    }
-
     e->accept();
 }
 
