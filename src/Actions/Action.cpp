@@ -41,16 +41,20 @@ void Action::subActionFinished(SubAction *) {
 
 void Action::subActionEnabledChanged(SubAction* action) {
     if (action->enabled()) {
-        if (m_currentSubAction && m_currentSubAction->object())
-            m_currentSubAction->object()->toggleEnabled();
+        if (m_currentSubAction)
+            m_currentSubAction->setEnabled(false);
         m_currentSubAction = action;
+        action->setFocus(true);
     }
     else {
         if (m_currentSubAction == action) {
             m_currentSubAction = nullptr;
-            setFocus(true);
+            setFocus(enabled());
         }
     }
+
+    if (m_object)
+        emit m_object->currentActionChanged();
 }
 
 ActionObject::ActionObject(Action* action): m_action(action) {
@@ -67,7 +71,6 @@ bool ActionObject::enabled() const {
 
 void ActionObject::toggleEnabled() {
     m_action->setEnabled(!m_action->enabled());
-    //emit enabledChanged();
 }
 
 void ActionObject::finished() {

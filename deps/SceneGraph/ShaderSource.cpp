@@ -63,9 +63,9 @@ ShaderSource::ShaderNode::~ShaderNode() {
 void ShaderSource::ShaderNode::updateTexture() {
     assert(renderer());
 
-    //if (m_lastUpdate == renderer()->frame())
-    //    return;
-    //m_lastUpdate = renderer()->frame();
+    if (m_lastUpdate == renderer()->frame())
+        return;
+    m_lastUpdate = renderer()->frame();
 
     m_fbo->bind();
 
