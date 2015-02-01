@@ -18,6 +18,7 @@ class ShaderSource: public SceneGraph::Item {
                 QOpenGLFramebufferObject* m_fbo;
                 TransformNode* m_capturedNode;
                 QColor m_background;
+                QSize m_size;
                 QRectF m_viewport;
                 uint m_lastUpdate;
 

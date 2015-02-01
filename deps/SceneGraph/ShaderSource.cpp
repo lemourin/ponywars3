@@ -1,5 +1,6 @@
 #include "ShaderSource.hpp"
 #include "Renderer.hpp"
+#include "Window.hpp"
 #include <cassert>
 #include <QTime>
 
@@ -50,8 +51,9 @@ Node* ShaderSource::synchronize(Node *old) {
 
 ShaderSource::ShaderNode::ShaderNode(QSize size, Node* parent):
     Node(parent),
-    m_fbo(new QOpenGLFramebufferObject(size)),
+    m_fbo(),
     m_capturedNode(),
+    m_size(size),
     m_lastUpdate(-1) {
     initializeOpenGLFunctions();
 }
@@ -66,6 +68,11 @@ void ShaderSource::ShaderNode::updateTexture() {
     if (m_lastUpdate == renderer()->frame())
         return;
     m_lastUpdate = renderer()->frame();
+
+    if (!m_fbo || m_fbo->size() != m_size) {
+        delete m_fbo;
+        m_fbo = new QOpenGLFramebufferObject(m_size);
+    }
 
     m_fbo->bind();
 
@@ -99,11 +106,7 @@ void ShaderSource::ShaderNode::update(ShaderSource *i) {
     m_capturedNode = i->m_sourceItem.m_itemNode;
     m_background = i->m_background;
     m_viewport = i->m_sourceRect;
-
-    if (m_fbo->size() != i->m_textureSize) {
-        delete m_fbo;
-        m_fbo = new QOpenGLFramebufferObject(i->m_textureSize);
-    }
+    m_size = i->m_textureSize;
 }
 
 }

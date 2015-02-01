@@ -75,7 +75,7 @@ const char* TextureMaterial::TextureShader::fragmentShader() const {
         varying vec2 texcoord;
 
         void main() {
-            gl_FragColor = texture2D(texture, texcoord);
+            gl_FragColor = max(texture2D(texture, texcoord), vec4(0));
         }
     );
 }
@@ -90,13 +90,12 @@ std::vector<std::string> TextureMaterial::TextureShader::attribute() const {
 void TextureMaterial::TextureShader::updateState(const Material* material,
                                                  const RenderState& state) {
     const TextureMaterial* m = static_cast<const TextureMaterial*>(material);
-
-    program()->setUniformValue(m_matrix, state.matrix());
-
     assert(m->texture());
-    glActiveTexture(0);
+
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m->texture()->textureId());
     program()->setUniformValue(m_texture, 0);
+    program()->setUniformValue(m_matrix, state.matrix());
 }
 
 void VertexColorMaterial::VertexColorShader::initialize() {

@@ -12,7 +12,6 @@ ShadowNode::ShadowNode(QPointF p1, QPointF p2):
     setGeometry(&m_geometry);
     setMaterial(&m_material);
 
-    //m_geometry.setVertexDataPattern(QSGGeometry::DynamicPattern);
     m_geometry.setDrawingMode(GL_TRIANGLE_FAN);
 
     setVertices(p1, p2);
@@ -66,7 +65,6 @@ void DynamicLight::bindLight(StaticLight* light) {
 
     light->m_dynamicLight = this;
 }
-
 
 bool DynamicLight::castingShadow(QPointF p1, QPointF p2) const {
     return p1.x()*p2.y()-p1.y()*p2.x() > 0;

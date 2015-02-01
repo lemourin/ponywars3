@@ -53,9 +53,6 @@ class Renderer {
         Renderer();
         virtual ~Renderer();
 
-        void initialize();
-        void destroy();
-
         virtual void render();
         void render(Node*, RenderState);
 

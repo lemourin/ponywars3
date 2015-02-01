@@ -3,7 +3,6 @@
 #include "SceneGraph/Geometry.hpp"
 #include "SceneGraph/Node.hpp"
 #include "SceneGraph/Material.hpp"
-#include "Graphics/TexturedRectangle.hpp"
 #include "SubAction.hpp"
 #include "QBox2D/QJoint.hpp"
 
@@ -34,7 +33,6 @@ class GrabItem: public SubAction {
         QMouseJoint* m_mouseJoint;
         QBody* m_grabbedBody;
         bool m_pressed;
-        TexturedRectangle m_image;
 
         ActionObject m_object;
 

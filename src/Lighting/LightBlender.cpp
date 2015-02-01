@@ -48,12 +48,12 @@ void LightBlender::Material::Shader::deactivate() {
 const char* LightBlender::Material::Shader::vertexShader() const {
     return GLSL(
         attribute vec4 vertex;
-        attribute vec4 texcoord;
+        attribute vec2 texcoord;
         uniform mat4 matrix;
         varying vec2 coord;
 
         void main() {
-           coord = texcoord.xy;
+           coord = texcoord;
            gl_Position = matrix*vertex;
         }
     );
@@ -84,16 +84,16 @@ void LightBlender::Material::Shader::updateState(const SceneGraph::Material* mat
                                                  const SceneGraph::RenderState& state) {
     const Material* material = static_cast<const Material*>(mat);
 
-    GLint array[DYNAMIC_LIGHTS_COUNT];
-    for (uint i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
+    GLuint array[DYNAMIC_LIGHTS_COUNT];
+    for (int i=0; i<DYNAMIC_LIGHTS_COUNT; i++) {
         glActiveTexture(GL_TEXTURE0+i);
-        glBindTexture(GL_TEXTURE_2D, material->m_light[i]->shaderNode()->texture()->handle());
+        glBindTexture(GL_TEXTURE_2D, material->m_light[i]->shaderNode()->texture()->texture());
         array[i] = i;
     }
 
     assert(material->m_lightTexture);
     glActiveTexture(GL_TEXTURE0+DYNAMIC_LIGHTS_COUNT);
-    glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->shaderNode()->texture()->handle());
+    glBindTexture(GL_TEXTURE_2D, material->m_lightTexture->shaderNode()->texture()->texture());
 
     program()->setUniformValueArray(m_id_light, array, DYNAMIC_LIGHTS_COUNT);
     program()->setUniformValue(m_id_lightTexture, DYNAMIC_LIGHTS_COUNT);

@@ -13,13 +13,8 @@ GrabItem::GrabItem(MapEditor* parent):
     m_mouseJoint(),
     m_grabbedBody(),
     m_pressed(),
-    m_image(),
     m_object(this) {
     setVisible(false);
-
-    m_image.translate(500, 500);
-    m_image.scale(100, 100);
-    m_image.setSource(":/resources/crate.jpg");
 }
 
 GrabItem::~GrabItem() {

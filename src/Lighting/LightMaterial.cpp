@@ -96,7 +96,7 @@ void LightMaterial::Shader::updateState(const SceneGraph::Material *mat,
     assert(material->normalMap());
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, material->normalMap()->texture()->handle());
+    glBindTexture(GL_TEXTURE_2D, material->normalMap()->texture()->texture());
     program()->setUniformValue(m_id_normalMap, 0);
     program()->setUniformValue(m_id_lightPosition, material->lightPosition());
     program()->setUniformValue(m_id_attenuation, material->attenuation());
