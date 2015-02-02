@@ -131,7 +131,7 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
         }
     }
     else {
-        if (light-visible() && light->dynamicShadows() && !m_unusedLight.empty()) {
+        if (light->visible() && light->dynamicShadows() && !m_unusedLight.empty()) {
             DynamicLight* p = m_unusedLight.back();
             m_unusedLight.pop_back();
 
