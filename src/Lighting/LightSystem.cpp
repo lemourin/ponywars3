@@ -114,10 +114,8 @@ void LightSystem::removeLight(StaticLight* light) {
 }
 
 void LightSystem::lightVisibilityChanged(StaticLight* light) {
-    if (light->visible()) {
+    if (light->visible())
         m_visibleLights.insert(light);
-        light->setParent(lightTexture()->sourceItem());
-    }
     else
         m_visibleLights.erase(m_visibleLights.find(light));
 
@@ -140,6 +138,8 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 
             light->setParent(nullptr);
         }
+        else if (light->visible())
+            light->setParent(lightTexture()->sourceItem());
     }
 }
 
