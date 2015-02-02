@@ -21,9 +21,6 @@ class LightSystem: public SceneGraph::Item {
         friend class World;
         friend class ViewWorld;
 
-//        Q_PROPERTY(World* world READ world CONSTANT)
-//        Q_PROPERTY(QQuickItem* normalMap READ normalMapItem CONSTANT)
-
         Game* m_game;
         QSizeF m_size;
         QSize m_resolution;

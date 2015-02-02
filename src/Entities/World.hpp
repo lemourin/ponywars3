@@ -16,20 +16,6 @@ class Player;
 class LightSystem;
 class ViewWorld;
 
-class Boundary: public QBody {
-    private:
-        Box2DBox m_left;
-        Box2DBox m_right;
-        Box2DBox m_top;
-        Box2DBox m_bottom;
-
-    public:
-        Boundary(qreal width,
-                 qreal height,
-                 qreal thickness,
-                 SceneGraph::Item* = nullptr);
-};
-
 class WorldObject: public QObject {
     private:
         Q_OBJECT
@@ -83,16 +69,12 @@ class World: public QWorld {
 
         Player* m_player;
 
-        Boundary* m_boundary;
-
         ItemSet m_itemSet;
         MapEditor m_mapEditor;
 
         WorldObject m_worldObject;
 
     protected:
-        void geometryChanged(const QRectF &newGeometry,
-                             const QRectF &oldGeometry);
         void onBodyDestroyed(QBody*);
         void onBodyAdded(QBody*);
 

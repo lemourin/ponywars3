@@ -14,60 +14,18 @@
 #include "Utility/Factory.hpp"
 #include "SceneGraph/Window.hpp"
 
-Boundary::Boundary(qreal width,
-                   qreal height,
-                   qreal thickness,
-                   Item* p):
-    QBody(p),
-    m_left(this),
-    m_right(this),
-    m_top(this),
-    m_bottom(this) {
-
-    m_left.translate(0, 0);
-    m_left.setSize(QSizeF(thickness, height));
-    m_right.translate(width-thickness, 0);
-    m_right.setSize(QSizeF(thickness, height));
-
-    m_top.translate(0, 0);
-    m_top.setSize(QSizeF(width, thickness));
-    m_bottom.translate(0, height-thickness);
-    m_bottom.setSize(QSizeF(width, thickness));
-}
-
 World::World(ViewWorld* viewWorld):
     QWorld(viewWorld),
     m_viewWorld(viewWorld),
     m_player(),
-    m_boundary(),
     m_itemSet(this),
     m_mapEditor(this),
     m_worldObject(this) {
-
-    //setAcceptedMouseButtons(Qt::LeftButton);
 
 }
 
 World::~World() {
     delete m_player;
-}
-
-void World::geometryChanged(const QRectF& newGeometry,
-                            const QRectF& oldGeometry) {
-    /*QWorld::geometryChanged(newGeometry, oldGeometry);
-
-    delete m_boundary;
-    m_boundary = nullptr;
-
-    if (!qIsNull(width()) && !qIsNull(height())) {
-        m_boundary = new Boundary(width(), height(), 0.1, this);
-        m_boundary->setOpacity(0);
-        m_boundary->initialize();
-    }
-
-    m_mapEditor.setSize(newGeometry.size());
-
-    lightSystem()->worldSizeChanged();*/
 }
 
 void World::onBodyDestroyed(QBody* body) {
@@ -94,8 +52,6 @@ void World::setPlayer(Player* player) {
         player->setFocus(true);
         view()->setFocusedObject(player);
     }
-
-    //emit playerChanged();
 }
 
 LightSystem* World::lightSystem() const {
@@ -107,7 +63,6 @@ void World::setPaused(bool p) {
         return;
     setRunning(!p);
     setFocus(!p);
-    //emit pausedChanged();
 }
 
 void World::read(const QJsonObject& obj) {
