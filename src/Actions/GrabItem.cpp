@@ -107,7 +107,7 @@ void GrabItem::mouseMoveEvent(QMouseEvent* event) {
 }
 
 ArrowNode::ArrowNode():
-    m_geometry({ { 2, GL_FLOAT } }, 5, sizeof(QPointF)) {
+    m_geometry({ { 2, GL_FLOAT } }, 5, sizeof(QVector2D)) {
     m_geometry.setDrawingMode(GL_LINE_STRIP);
     setGeometry(&m_geometry);
     setMaterial(&m_material);
@@ -116,18 +116,20 @@ ArrowNode::ArrowNode():
 }
 
 void ArrowNode::updateGeometry() {
-    m_geometry.vertexData<QPointF>()[0] = m_p1;
-    m_geometry.vertexData<QPointF>()[1] = m_p2;
+    QVector2D* array = m_geometry.vertexData<QVector2D>();
+
+    array[0] = QVector2D(m_p1.x(), m_p1.y());
+    array[1] = QVector2D(m_p2.x(), m_p2.y());
 
     Edge edge((Vector2d)m_p1, (Vector2d)m_p2);
 
     Vector2d v1 = edge.vector(M_PI/4, 5);
-    m_geometry.vertexData<QPointF>()[2] = QPointF(m_p2.x()+v1.x, m_p2.y()+v1.y);
+    array[2] = QVector2D(m_p2.x()+v1.x, m_p2.y()+v1.y);
 
-    m_geometry.vertexData<QPointF>()[3] = m_p2;
+    array[3] = QVector2D(m_p2.x(), m_p2.y());
 
     Vector2d v2 = edge.vector(-M_PI/4, 5);
-    m_geometry.vertexData<QPointF>()[4] = QPointF(m_p2.x()+v2.x, m_p2.y()+v2.y);
+    array[4] = QVector2D(m_p2.x()+v2.x, m_p2.y()+v2.y);
 
     m_geometry.updateVertexData();
 }
