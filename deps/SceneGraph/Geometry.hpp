@@ -34,6 +34,7 @@ class Geometry: public QOpenGLFunctions {
 
         void updateVertexData();
         void bind(const int* attributeLocation);
+        void release();
 
         inline const std::vector<Attribute>& attribute() const { return m_attribute; }
 

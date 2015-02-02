@@ -22,6 +22,8 @@ Geometry::Geometry(std::vector<Attribute> set,
 }
 
 Geometry::~Geometry() {
+    glDeleteBuffers(1, &m_vbo);
+
     free(m_vertexData);
     free(m_indexData);
 }
@@ -30,6 +32,7 @@ void Geometry::updateVertexData() {
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, vertexCount()*vertexSize(),
                  vertexData(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Geometry::bind(const int* attributeLocation) {
@@ -45,6 +48,10 @@ void Geometry::bind(const int* attributeLocation) {
         id++;
         offset += attribute.tupleSize*sizeOfType(attribute.primitiveType);
     }
+}
+
+void Geometry::release() {
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 uint Geometry::sizeOfType(GLuint type) {

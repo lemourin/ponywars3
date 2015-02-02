@@ -33,6 +33,7 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node, const RenderState& 
         glDrawElements(g->drawingMode(), g->indexCount(), g->indexType(), g->indexData());
     else
         glDrawArrays(g->drawingMode(), 0, g->vertexCount());
+    g->release();
 
     shader->deactivate();
 }
@@ -47,6 +48,7 @@ void DefaultRenderer::render() {
     Renderer::render();
 
     glActiveTexture(GL_TEXTURE0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 }
