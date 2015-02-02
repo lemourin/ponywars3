@@ -60,7 +60,7 @@ void Item::removeChild(Item* item) {
     item->m_state |= ParentChanged;
     item->update();
 
-    item->setWindow(nullptr);
+    //item->setWindow(nullptr);
     BaseObject::removeChild(item);
 }
 

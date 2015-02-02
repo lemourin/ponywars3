@@ -56,7 +56,7 @@ void Renderer::updateItem(Item* item) {
             delete item->m_node;
             item->m_node = node;
 
-            if (node)
+            if (node && node->parent() == nullptr)
                 item->m_itemNode->appendChild(node);
         }
     }
