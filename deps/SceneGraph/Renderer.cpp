@@ -70,6 +70,8 @@ void Renderer::updateNodes(Window* window) {
         if (item->m_itemNode == nullptr) {
             item->m_itemNode = new TransformNode;
             item->m_itemNode->setRenderer(this);
+
+            item->m_state |= Item::ModelMatrixChanged;
         }
     }
 
