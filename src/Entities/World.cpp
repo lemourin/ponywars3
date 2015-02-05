@@ -100,12 +100,12 @@ WorldObject::WorldObject(World *world):
 void WorldObject::updateFps() {
     qreal t = m_fpscounter.restart();
 
-    if (!qIsNull(t))
+    if (!qFuzzyIsNull(t))
         setFps(1000.0/t);
 }
 
 void WorldObject::setFps(qreal f) {
-    if (qIsNull(m_fps-f))
+    if (qFuzzyIsNull(m_fps-f))
         return;
     m_fps = f;
     emit fpsChanged();

@@ -55,42 +55,42 @@ void BodyEdit::setBody(QBody* body) {
 }
 
 void BodyEdit::setDensity(qreal d) {
-    if (qIsNull(m_density-d))
+    if (qFuzzyIsNull(m_density-d))
         return;
     m_density = d;
     //emit densityChanged();
 }
 
 void BodyEdit::setFriction(qreal f) {
-    if (qIsNull(m_friction-f))
+    if (qFuzzyIsNull(m_friction-f))
         return;
     m_friction = f;
     //emit frictionChanged();
 }
 
 void BodyEdit::setRestitution(qreal r) {
-    if (qIsNull(m_restitution-r))
+    if (qFuzzyIsNull(m_restitution-r))
         return;
     m_restitution = r;
     //emit restitutionChanged();
 }
 
 void BodyEdit::setGravityScale(qreal g) {
-    if (qIsNull(m_gravityScale-g))
+    if (qFuzzyIsNull(m_gravityScale-g))
         return;
     m_gravityScale = g;
     //emit gravityScaleChanged();
 }
 
 void BodyEdit::setLinearDamping(qreal l) {
-    if (qIsNull(m_linearDamping-l))
+    if (qFuzzyIsNull(m_linearDamping-l))
         return;
     m_linearDamping = l;
     //emit linearDampingChanged();
 }
 
 void BodyEdit::setAngularDamping(qreal a) {
-    if (qIsNull(m_angularDamping-a))
+    if (qFuzzyIsNull(m_angularDamping-a))
         return;
     m_angularDamping = a;
     //emit angularDampingChanged();

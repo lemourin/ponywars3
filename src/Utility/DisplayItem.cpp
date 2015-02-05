@@ -29,7 +29,7 @@ void DisplayItem::setSize(QSizeF size) {
 }
 
 void DisplayItem::setFactor(qreal f) {
-    if (f != m_factor) {
+    if (!qFuzzyIsNull(m_factor-f)) {
         m_factor = f;
         updateVisibleArea();
     }
@@ -113,8 +113,9 @@ void DisplayItem::returnLookAtToBounds() {
 void DisplayItem::returnScaleToBounds() {
     qreal w = size().width();
     qreal h = size().height();
-    volatile qreal aspect = std::max(m_frame->size().width()/w,
-                                     m_frame->size().height()/h);
+    qreal aspect = std::max(m_frame->size().width()/w,
+                            m_frame->size().height()/h);
+
     setFactor(std::max(factor(), (qreal)aspect));
 }
 
