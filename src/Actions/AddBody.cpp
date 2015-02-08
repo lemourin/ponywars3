@@ -14,9 +14,6 @@ AddBody::AddBody(MapEditor* p):
     m_currentAction(),
     m_action({ addPolygon(), addCircle(), addRectangle() }),
     m_object(this) {
-
-    //setFlag(ItemIsFocusScope);
-    //setAcceptedMouseButtons(Qt::LeftButton);
 }
 
 void AddBody::finished() {
@@ -32,8 +29,7 @@ void AddBody::finished() {
 void AddBody::subActionFinished(SubAction *action) {
     QFixture* fixture = static_cast<AddFixture*>(action)->fixture();
     if (fixture) {
-        //fixture->setParent(this);
-        //fixture->setFlag(ItemHasContents);
+        fixture->setParent(this);
         m_fixtures.push_back(fixture);
     }
 

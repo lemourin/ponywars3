@@ -1,14 +1,10 @@
 #include "AddRectangle.hpp"
 #include "AddBody.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
-#include <QSGSimpleRectNode>
-#include <QSGFlatColorMaterial>
+#include "Graphics/Primitives.hpp"
 
 AddRectangle::AddRectangle(AddBody* p):
     AddFixture(p), m_state(), m_object(this) {
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setAcceptHoverEvents(true);
-    //setFlag(ItemHasContents);
 }
 
 void AddRectangle::reset() {
@@ -26,6 +22,8 @@ QFixture* AddRectangle::fixture() const {
     box->setSize(QSizeF(std::abs(m_p1.x()-m_p2.x()),
                         std::abs(m_p1.y()-m_p2.y())));
 
+    box->setTextureSource(":/resources/crate.jpg");
+
     return box;
 }
 
@@ -34,44 +32,54 @@ void AddRectangle::mousePressEvent(QMouseEvent *) {
 
 void AddRectangle::mouseReleaseEvent(QMouseEvent *event) {
     if (!(m_state & SetFirst)) {
-        m_p1 = event->localPos();
+        m_p1 = mapFromScreen(event->pos());
         m_state |= SetFirst;
     }
     else if (!(m_state & SetSecond)) {
-        m_p2 = event->localPos();
+        m_p2 = mapFromScreen(event->pos());
         m_state |= SetSecond;
-        emit finished();
+        finished();
     }
 }
 
-/*void AddRectangle::hoverMoveEvent(QHoverEvent *event) {
+void AddRectangle::mouseMoveEvent(QMouseEvent *event) {
     if ((m_state & SetFirst) && !(m_state & SetSecond)) {
-        m_cursor = event->posF();
+        m_cursor = mapFromScreen(event->pos());
         m_state |= MovedCursor;
+
         update();
     }
-}*/
+}
 
-/*QSGNode* AddRectangle::updatePaintNode(QSGNode* n, UpdatePaintNodeData *) {
-    QSGSimpleRectNode* node = static_cast<QSGSimpleRectNode*>(n);
+SceneGraph::Node *AddRectangle::synchronize(SceneGraph::Node *old) {
+    SceneGraph::TransformNode* node = static_cast<SceneGraph::TransformNode*>(old);
 
     if (!node) {
-        node = new QSGSimpleRectNode;
-        node->setMaterial(new QSGFlatColorMaterial);
-        node->setFlag(QSGNode::OwnsMaterial);
+        node = new Rectangle;
     }
 
     if (m_state & MovedCursor) {
         m_state ^= MovedCursor;
-        node->setRect(QRectF(m_p1, m_cursor));
+        QMatrix4x4 matrix;
+        matrix.translate(m_p1.x(), m_p1.y());
+        matrix.scale(m_cursor.x()-m_p1.x(), m_cursor.y()-m_p1.y());
+
+        node->setMatrix(matrix);
     }
 
     if (m_state & Reset) {
         m_state ^= Reset;
+
         delete node;
         node = nullptr;
     }
 
     return node;
-}*/
+}
 
+AddRectangle::Rectangle::Rectangle():
+    m_geometryNode({ QPointF(0, 0), QPointF(0, 1), QPointF(1, 1), QPointF(1, 0) }) {
+    appendChild(&m_geometryNode);
+    m_geometryNode.setColor(Qt::red);
+
+}

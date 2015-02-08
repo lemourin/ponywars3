@@ -1,6 +1,8 @@
 #ifndef ADDRECTANGLE_HPP
 #define ADDRECTANGLE_HPP
 #include "AddFixture.hpp"
+#include "SceneGraph/Node.hpp"
+#include "Graphics/Primitives.hpp"
 
 class AddBody;
 
@@ -15,13 +17,22 @@ class AddRectangle: public AddFixture {
 
         unsigned m_state;
         QPointF m_p1, m_p2, m_cursor;
-
         ActionObject m_object;
+
+        class Rectangle: public SceneGraph::TransformNode {
+            private:
+                ConvexPolygonNode m_geometryNode;
+
+            public:
+                Rectangle();
+        };
 
     protected:
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
-        //void hoverMoveEvent(QHoverEvent *event);
+        void mouseMoveEvent(QMouseEvent*);
+
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
         //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:

@@ -50,14 +50,6 @@ bool Box2DBox::write(QJsonObject& obj) const {
     return true;
 }
 
-/*QSGNode* Box2DBox::createNode() const {
-    QSGSimpleRectNode* node = new QSGSimpleRectNode;
-    node->setRect(0, 0, width(), height());
-    node->setColor(QColor(255, 0, 0));
-
-    return node;
-}*/
-
 b2Shape* Box2DBox::createShape() const {
     b2Vec2 vertices[4];
     vertices[0].Set(position().x(), position().y());

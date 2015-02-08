@@ -54,7 +54,6 @@ void StaticLight::synchronize() {
     setTransform(position(), rotation());
     if (dynamicLight()) {
         dynamicLight()->setPosition(position());
-        //qDebug() << position();
     }
 }
 
