@@ -18,6 +18,8 @@ class ActionObject: public QObject {
     public:
         ActionObject(Action*);
 
+        inline Action* action() const { return m_action; }
+
         QString currentAction() const;
 
         bool enabled() const;

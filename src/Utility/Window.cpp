@@ -73,6 +73,9 @@ Window::Window(QWindow* parent):
     rootContext()->setContextProperty("addCircle", addBody->addCircle()->object());
 
     rootContext()->setContextProperty("grabItem", mapEditor->grabItem()->object());
+    rootContext()->setContextProperty("deleteItem", mapEditor->deleteItem()->object());
+    rootContext()->setContextProperty("bodyEdit", mapEditor->bodyEdit()->object());
+    rootContext()->setContextProperty("addChain", mapEditor->addChain()->object());
 
     setSource(QUrl("qrc:/qml/main.qml"));
     setResizeMode(SizeRootObjectToView);

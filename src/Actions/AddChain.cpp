@@ -10,12 +10,8 @@
 
 AddChain::AddChain(MapEditor* p):
     SubAction(p),
-    m_state() {
-
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setAcceptHoverEvents(true);
-
-    //setFlag(ItemHasContents);
+    m_state(),
+    m_object(this) {
 }
 
 void AddChain::reset() {
@@ -28,19 +24,17 @@ void AddChain::mousePressEvent(QMouseEvent*) {
 }
 
 void AddChain::mouseReleaseEvent(QMouseEvent *event) {
-    m_pts.push_back(event->localPos());
+    m_pts.push_back(mapFromScreen(event->pos()));
     m_state |= DirtyState::Points;
     update();
 }
 
-/*void AddChain::hoverMoveEvent(QHoverEvent* event) {
-    m_mousePos = event->posF();
+void AddChain::mouseMoveEvent(QMouseEvent *event) {
+    m_mousePos = mapFromScreen(event->pos());
 
     m_state |= DirtyState::MousePos;
     update();
-
-    Action::hoverMoveEvent(event);
-}*/
+}
 
 void AddChain::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Return) {
@@ -52,52 +46,28 @@ void AddChain::keyPressEvent(QKeyEvent* event) {
         m_state |= DirtyState::Finished;
         update();
 
-        emit finished();
+        finished();
     }
 }
 
-/*QSGNode* AddChain::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
+SceneGraph::Node *AddChain::synchronize(SceneGraph::Node *n) {
     if (pts().size() == 0) {
-        delete n;
         return nullptr;
     }
 
     Node* node = static_cast<Node*>(n);
-    if (!node)
-        node = new Node;
 
     if (m_state & DirtyState::Points) {
-        node->setGeometry(node->createGeometry(pts()));
+        node = new Node(pts());
         m_state ^= DirtyState::Points;
     }
 
     if (m_state & DirtyState::MousePos) {
-        QSGGeometryNode* line = (QSGGeometryNode*)(node->firstChild());
-
-        if (!line) {
-            line = new QSGGeometryNode;
-            line->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
-            line->setFlag(QSGNode::OwnedByParent);
-            line->setMaterial(new QSGFlatColorMaterial);
-        }
-
-        QSGGeometry* geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 2);
-        geometry->setDrawingMode(GL_LINES);
-        geometry->vertexDataAsPoint2D()[0].set(pts().back().x(),
-                                               pts().back().y());
-
-        geometry->vertexDataAsPoint2D()[1].set(m_mousePos.x(),
-                                               m_mousePos.y());
-        line->setGeometry(geometry);
-
-        if (!line->parent())
-            node->appendChildNode(line);
-
+        node->setLastPoint(m_mousePos);
         m_state ^= DirtyState::MousePos;
     }
 
     if (m_state & DirtyState::Finished) {
-        delete node;
         node = nullptr;
 
         m_pts.clear();
@@ -105,21 +75,23 @@ void AddChain::keyPressEvent(QKeyEvent* event) {
     }
 
     return node;
-}*/
-
-AddChain::Node::Node() {
-    setFlags(OwnsGeometry | OwnsMaterial);
-    setMaterial(new QSGFlatColorMaterial);
 }
 
-QSGGeometry* AddChain::Node::createGeometry(const std::vector<QPointF>& pts) {
-    QSGGeometry* geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(),
-                                            pts.size());
-    geometry->setDrawingMode(GL_LINE_STRIP);
-    geometry->setLineWidth(2);
+AddChain::Node::Node(std::vector<QPointF> pts):
+    m_geometry({ { 2, GL_FLOAT } }, pts.size()+1, sizeof(QVector2D)) {
+    setMaterial(&m_material);
+    setGeometry(&m_geometry);
 
-    for (size_t i = 0; i < pts.size(); i++)
-        geometry->vertexDataAsPoint2D()[i].set(pts[i].x(), pts[i].y());
+    m_geometry.setDrawingMode(GL_LINE_STRIP);
+    QVector2D* array = m_geometry.vertexData<QVector2D>();
+    for (size_t i=0; i<pts.size(); i++)
+        array[i] = QVector2D(pts[i].x(), pts[i].y());
+    array[pts.size()] = array[pts.size()-1];
+    m_geometry.updateVertexData();
+}
 
-    return geometry;
+void AddChain::Node::setLastPoint(QPointF p) {
+    QVector2D* array = m_geometry.vertexData<QVector2D>();
+    array[m_geometry.vertexCount()-1] = QVector2D(p.x(), p.y());
+    m_geometry.updateVertexData();
 }

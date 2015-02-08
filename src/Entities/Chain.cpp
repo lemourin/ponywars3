@@ -20,8 +20,6 @@ static b2Vec2 tob2Vec2(QPointF p) {
 }
 
 Chain::Chain(Item* parent): QBody(parent) {
-    //setFlag(ItemHasContents);
-    //setZ(1);
 }
 
 Chain::~Chain() {
@@ -115,20 +113,19 @@ void Chain::createChain() {
     Box2DChain* chain = new Box2DChain;
     chain->setVertices(pts);
     chain->setSensor(true);
-    //chain->setFlag(ItemHasContents);
 
     addFixture(chain);
 }
 
-void Chain::beginContact(QFixture* other, b2Contact*) {
+void Chain::beginContact(QFixture*, b2Contact*) {
     //if (!qobject_cast<Bullet*>(other->body()))
     //    return;
 
-    cutCircle(Circle(Vector2d(other->body()->worldCenter()), 5));
+    //cutCircle(Circle(Vector2d(other->body()->worldCenter()), 5));
 }
 
 /*QSGNode* Chain::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    if (n)
+    if (n)dddddddddddd
         return n;
 
     PolygonNode* node = new PolygonNode(m_vertices);

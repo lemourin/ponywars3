@@ -12,9 +12,6 @@ class ViewWorld: public DisplayItem {
         Game* m_game;
 
     protected:
-        /*void mouseMoved(QPointF);
-        void mousePressed(QPointF);
-        void mouseReleased(QPointF);*/
         void visibleAreaChanged();
 
     public:

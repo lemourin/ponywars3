@@ -2,8 +2,6 @@
 #include "Entities/World.hpp"
 #include "QBox2D/QBody.hpp"
 #include "Utility/Utility.hpp"
-#include <QQuickWindow>
-#include <sstream>
 
 BodyEdit::BodyEdit(MapEditor* p):
     SubAction(p),
@@ -14,112 +12,129 @@ BodyEdit::BodyEdit(MapEditor* p):
     m_gravityScale(),
     m_linearDamping(),
     m_angularDamping(),
-    m_dynamic() {
-    //setFlag(ItemIsFocusScope);
-    //setAcceptedMouseButtons(Qt::LeftButton);
+    m_dynamic(),
+    m_object(this) {
 }
 
 void BodyEdit::mousePressEvent(QMouseEvent*) {
 }
 
 void BodyEdit::mouseReleaseEvent(QMouseEvent* event) {
-    QBody* body = world()->bodyUnderPoint(event->localPos());
+    QBody* body = world()->bodyUnderPoint(mapFromScreen(event->pos()));
 
     if (body) {
         b2Fixture* fixture = body->body()->GetFixtureList();
-        setDensity(fixture->GetDensity());
-        setFriction(fixture->GetFriction());
-        setRestitution(fixture->GetRestitution());
-        setGravityScale(body->gravityScale());
-        setLinearDamping(body->linearDamping());
-        setAngularDamping(body->angularDamping());
-        setDynamic(body->bodyType() == QBody::Dynamic);
+        m_density = fixture->GetDensity();
+        m_friction = fixture->GetFriction();
+        m_restitution = fixture->GetRestitution();
+        m_gravityScale = body->gravityScale();
+        m_linearDamping = body->linearDamping();
+        m_angularDamping = body->angularDamping();
+        m_dynamic = body->bodyType() == QBody::Dynamic;
+        emit m_object.update();
     }
 
-    setBody(body);
+    if (body != m_body) {
+        m_body = body;
+        emit m_object.bodyChanged();
+    }
 
 }
 
 void BodyEdit::reset() {
     Action::reset();
 
-    //window()->contentItem()->setFocus(true);
-    setBody(nullptr);
-}
-
-void BodyEdit::setBody(QBody* body) {
-    if (m_body == body)
-        return;
-    m_body = body;
-    //emit bodyChanged();
-}
-
-void BodyEdit::setDensity(qreal d) {
-    if (qFuzzyIsNull(m_density-d))
-        return;
-    m_density = d;
-    //emit densityChanged();
-}
-
-void BodyEdit::setFriction(qreal f) {
-    if (qFuzzyIsNull(m_friction-f))
-        return;
-    m_friction = f;
-    //emit frictionChanged();
-}
-
-void BodyEdit::setRestitution(qreal r) {
-    if (qFuzzyIsNull(m_restitution-r))
-        return;
-    m_restitution = r;
-    //emit restitutionChanged();
-}
-
-void BodyEdit::setGravityScale(qreal g) {
-    if (qFuzzyIsNull(m_gravityScale-g))
-        return;
-    m_gravityScale = g;
-    //emit gravityScaleChanged();
-}
-
-void BodyEdit::setLinearDamping(qreal l) {
-    if (qFuzzyIsNull(m_linearDamping-l))
-        return;
-    m_linearDamping = l;
-    //emit linearDampingChanged();
-}
-
-void BodyEdit::setAngularDamping(qreal a) {
-    if (qFuzzyIsNull(m_angularDamping-a))
-        return;
-    m_angularDamping = a;
-    //emit angularDampingChanged();
-}
-
-void BodyEdit::setDynamic(bool d) {
-    if (m_dynamic == d)
-        return;
-    m_dynamic = d;
-    //emit dynamicChanged();
+    m_body = nullptr;
+    emit m_object.bodyChanged();
 }
 
 void BodyEdit::applyChanges() const {
-    if (!body())
+    if (!m_body)
         return;
 
     for (b2Fixture* f = m_body->body()->GetFixtureList(); f; f = f->GetNext()) {
-        f->SetDensity(density());
-        f->SetFriction(friction());
-        f->SetRestitution(restitution());
+        f->SetDensity(m_density);
+        f->SetFriction(m_friction);
+        f->SetRestitution(m_restitution);
     }
 
-    body()->setGravityScale(gravityScale());
-    body()->setLinearDamping(linearDamping());
-    body()->setAngularDamping(angularDamping());
+    m_body->setGravityScale(m_gravityScale);
+    m_body->setLinearDamping(m_linearDamping);
+    m_body->setAngularDamping(m_angularDamping);
 
-    if (dynamic())
-        body()->setBodyType(QBody::Dynamic);
+    if (m_dynamic)
+        m_body->setBodyType(QBody::Dynamic);
     else
-        body()->setBodyType(QBody::Static);
+        m_body->setBodyType(QBody::Static);
 }
 
+BodyEditObject::BodyEditObject(BodyEdit *action): ActionObject(action) {
+}
+
+BodyEdit *BodyEditObject::action() const {
+    return static_cast<BodyEdit*>(ActionObject::action());
+}
+
+bool BodyEditObject::body() const {
+    return action()->m_body != nullptr;
+}
+
+qreal BodyEditObject::density() const {
+    return action()->m_density;
+}
+
+void BodyEditObject::setDensity(qreal x) {
+    action()->m_density = x;
+}
+
+qreal BodyEditObject::friction() const {
+    return action()->m_friction;
+}
+
+void BodyEditObject::setFriction(qreal x) {
+    action()->m_friction = x;
+}
+
+qreal BodyEditObject::restitution() const {
+    return action()->m_restitution;
+}
+
+void BodyEditObject::setRestitution(qreal x) {
+    action()->m_restitution = x;
+}
+
+qreal BodyEditObject::gravityScale() const {
+    return action()->m_gravityScale;
+}
+
+void BodyEditObject::setGravityScale(qreal x) {
+    action()->m_gravityScale = x;
+}
+
+qreal BodyEditObject::linearDamping() const {
+    return action()->m_linearDamping;
+}
+
+void BodyEditObject::setLinearDamping(qreal x) {
+    action()->m_linearDamping = x;
+}
+
+qreal BodyEditObject::angularDamping() const {
+    return action()->m_angularDamping;
+}
+
+void BodyEditObject::setAngularDamping(qreal x) {
+    action()->m_angularDamping = x;
+}
+
+bool BodyEditObject::dynamic() const {
+    return action()->m_dynamic;
+}
+
+void BodyEditObject::setDynamic(bool x) {
+    action()->m_dynamic = x;
+}
+
+void BodyEditObject::applyChanges() {
+    action()->applyChanges();
+}

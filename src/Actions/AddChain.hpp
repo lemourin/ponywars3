@@ -1,16 +1,22 @@
 #ifndef ADDCHAIN_HPP
 #define ADDCHAIN_HPP
-#include <QQuickItem>
-#include <QSGTransformNode>
 #include "SubAction.hpp"
+#include "SceneGraph/Node.hpp"
+#include "SceneGraph/Material.hpp"
+#include "SceneGraph/Geometry.hpp"
 
 class AddChain: public SubAction {
     private:
-        class Node: public QSGGeometryNode {
-            public:
-                Node();
+        class Node: public SceneGraph::GeometryNode {
+            private:
+                SceneGraph::ColorMaterial m_material;
+                SceneGraph::Geometry m_geometry;
 
-                QSGGeometry* createGeometry(const std::vector<QPointF>& pts);
+            public:
+                Node(std::vector<QPointF> pts);
+
+                void setLastPoint(QPointF);
+
         };
 
         enum DirtyState {
@@ -24,13 +30,14 @@ class AddChain: public SubAction {
         std::vector<QPointF> m_pts;
         QPointF m_mousePos;
         State m_state;
+        ActionObject m_object;
 
     protected:
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
-        void hoverMoveEvent(QHoverEvent *event);
+        void mouseMoveEvent(QMouseEvent*);
         void keyPressEvent(QKeyEvent *event);
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        SceneGraph::Node* synchronize(SceneGraph::Node*);
 
     public:
         AddChain(MapEditor* = nullptr);

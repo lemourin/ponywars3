@@ -148,7 +148,7 @@ void Client::onPlayerPositionChanged() {
     emit sendToAll(message.str().c_str());
 }
 
-Player* Client::loadPlayer(QString data) {
+Player* Client::loadPlayer(QString) {
     /*QQmlComponent* component = new QQmlComponent(qmlEngine(this), this);
     component->setData(data.toLocal8Bit(), QUrl("qrc:/qml/Entities/"));
 

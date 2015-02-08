@@ -39,7 +39,7 @@ void Enemy::timerEvent(QTimerEvent*) {
     }
 }
 
-void Enemy::beginContact(QFixture* other, b2Contact*) {
+void Enemy::beginContact(QFixture*, b2Contact*) {
     //if (qobject_cast<Bullet*>(other->body())) {
     //    setHealth(health()-5);
     //}

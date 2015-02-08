@@ -3,7 +3,6 @@ import QtQuick.Controls 1.1
 
 MouseArea {
     property int margin: 5
-    property Item bodyEdit: world.mapEditor.bodyEdit
 
     id: options
     x: anchors.leftMargin
@@ -12,7 +11,7 @@ MouseArea {
     width: column.width+2*margin
     height: column.height+2*margin
     visible: false
-    state: bodyEdit ? (bodyEdit.body ? "enabled" : "disabled") : ""
+    state: bodyEdit.body ? "enabled" : "disabled"
 
     TextField {
         anchors.fill: parent
@@ -89,7 +88,7 @@ MouseArea {
     Connections {
         property int acc: 2
 
-        target: world.mapEditor.bodyEdit
+        target: bodyEdit
         onBodyChanged: {
             if (target.body) {
                 density.text = target.density.toFixed(acc)

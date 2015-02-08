@@ -7,6 +7,8 @@ class DeleteItem: public SubAction {
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
 
+        ActionObject m_object;
+
     public:
         DeleteItem(MapEditor*);
 
