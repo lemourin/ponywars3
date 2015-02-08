@@ -14,9 +14,6 @@ Player::Player(Item* parent):
     m_hand(this) {
 }
 
-Player::~Player() {
-}
-
 void Player::keyPressEvent(QKeyEvent* event) {
     if (event->isAutoRepeat()) {
         event->ignore();
@@ -96,6 +93,13 @@ void Player::initialize(QWorld* w) {
 
     m_light.setLightSystem(world()->lightSystem());
     m_light.initialize(world());
+}
+
+void Player::destroyBody() {
+    m_light.destroyBody();
+    m_hand.dropWeapon();
+
+    Pony::destroyBody();
 }
 
 World* Player::world() const {

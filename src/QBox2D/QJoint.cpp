@@ -24,13 +24,15 @@ void QJoint::initialize() {
 }
 
 void QJoint::destroyJoint() {
-    m_world->world()->DestroyJoint(m_joint);
+    if (m_joint) {
+        m_world->world()->DestroyJoint(m_joint);
 
-    m_joint = nullptr;
-    m_jointDef = nullptr;
-    m_world = nullptr;
-    m_bodyA = nullptr;
-    m_bodyB = nullptr;
+        m_joint = nullptr;
+        m_jointDef = nullptr;
+        m_world = nullptr;
+        m_bodyA = nullptr;
+        m_bodyB = nullptr;
+    }
 }
 
 QPointF QJoint::anchorA() const {

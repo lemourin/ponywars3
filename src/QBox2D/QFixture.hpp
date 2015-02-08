@@ -17,6 +17,7 @@ class LightSystem;
 class QFixture: public SceneGraph::Item {
     private:
         friend class QBody;
+        friend class QDestructionListener;
 
         QBody* m_body;
         b2Fixture* m_fixture;

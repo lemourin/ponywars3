@@ -52,7 +52,7 @@ class QBody: public BaseItem {
         ~QBody();
 
         virtual void initialize(QWorld*);
-        void destroyBody();
+        virtual void destroyBody();
 
         QPointF position() const;
         void setPosition(QPointF);

@@ -8,6 +8,8 @@ class QBody;
 
 class QJoint {
     private:
+        friend class QDestructionListener;
+
         b2Joint* m_joint;
         b2JointDef* m_jointDef;
         QWorld* m_world;

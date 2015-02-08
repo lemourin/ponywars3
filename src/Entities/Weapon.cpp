@@ -18,11 +18,6 @@ Weapon::Weapon(Item* parent):
     m_texture(this) {
 }
 
-Weapon::~Weapon() {
-    if (grabber())
-        grabber()->dropWeapon();
-}
-
 void Weapon::setBulletCount(int count) {
     if (m_bulletCount == count)
         return;
@@ -68,6 +63,13 @@ void Weapon::initialize(QWorld* w) {
 
     for (QFixture* f = firstFixture(); f; f = f->next())
         f->setGroupIndex(-1);
+}
+
+void Weapon::destroyBody() {
+    if (grabber())
+        grabber()->dropWeapon();
+
+    QBody::destroyBody();
 }
 
 void Weapon::setSize(QSizeF s) {

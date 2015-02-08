@@ -35,6 +35,8 @@ void QBody::destroyBody() {
 
     m_world = nullptr;
     m_body = nullptr;
+
+    setVisible(false);
 }
 
 QPointF QBody::position() const {

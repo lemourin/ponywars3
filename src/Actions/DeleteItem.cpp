@@ -9,11 +9,10 @@ void DeleteItem::mousePressEvent(QMouseEvent*) {
 }
 
 void DeleteItem::mouseReleaseEvent(QMouseEvent *event) {
-
     QBody* body = world()->bodyUnderPoint(mapFromScreen(event->pos()));
     if (!body)
         event->ignore();
-
-    body->destroyBody();
+    else
+        body->destroyBody();
 }
 

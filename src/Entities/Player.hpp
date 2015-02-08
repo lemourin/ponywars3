@@ -13,10 +13,6 @@ class Player: public Pony {
         Hand m_hand;
         StaticLight m_light;
 
-        //void mouseMoved(QPointF pos);
-        //void mousePressed(QPointF pos);
-        //void mouseReleased(QPointF pos);
-
     protected:
         void healthChanged();
         void focusChanged();
@@ -30,9 +26,9 @@ class Player: public Pony {
 
     public:
         Player(SceneGraph::Item* parent = nullptr);
-        ~Player();
 
         void initialize(QWorld*);
+        void destroyBody();
 
         inline Hand* hand() { return &m_hand; }
         World* world() const;

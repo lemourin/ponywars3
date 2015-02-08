@@ -28,9 +28,9 @@ class Weapon: public QBody {
 
     public:
         Weapon(SceneGraph::Item *parent = nullptr);
-        ~Weapon();
 
         void initialize(QWorld*);
+        void destroyBody();
 
         virtual void shoot() = 0;
 

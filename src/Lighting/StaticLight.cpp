@@ -18,15 +18,6 @@ StaticLight::StaticLight(Item* parent):
     m_fixture.setShadowCaster(false);
 }
 
-StaticLight::~StaticLight() {
-    if (dynamicLight()) {
-        dynamicLight()->bindLight(nullptr);
-    }
-
-    if (lightSystem())
-        lightSystem()->removeLight(this);
-}
-
 void StaticLight::initialize(QWorld* w) {
     m_fixture.setPosition(QPointF(-radius(), -radius()));
     m_fixture.setSize(QSizeF(2*radius(), 2*radius()));
@@ -34,6 +25,15 @@ void StaticLight::initialize(QWorld* w) {
     lightSystem()->addLight(this);
 
     QBody::initialize(w);
+}
+
+void StaticLight::destroyBody() {
+    Light::destroyBody();
+    if (dynamicLight())
+        dynamicLight()->bindLight(nullptr);
+
+    if (lightSystem())
+        lightSystem()->removeLight(this);
 }
 
 bool StaticLight::read(const QJsonObject& obj) {
@@ -58,6 +58,7 @@ void StaticLight::synchronize() {
 }
 
 void StaticLight::visibleChanged() {
-    lightSystem()->lightVisibilityChanged(this);
+    if (lightSystem())
+        lightSystem()->lightVisibilityChanged(this);
 }
 

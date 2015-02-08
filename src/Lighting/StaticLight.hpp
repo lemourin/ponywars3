@@ -20,9 +20,9 @@ class StaticLight: public Light {
 
     public:
         StaticLight(SceneGraph::Item* = nullptr);
-        ~StaticLight();
 
         void initialize(QWorld*);
+        void destroyBody();
 
         inline bool dynamicShadows() const { return m_dynamicShadows; }
         inline void setDynamicShadows(bool d) { m_dynamicShadows = d; }

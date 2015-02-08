@@ -55,14 +55,26 @@ void QContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* imp
 
 void QDestructionListener::SayGoodbye(b2Joint* j) {
     QJoint* joint = QJoint::toQJoint(j);
-    if (joint)
+    if (joint) {
+        if (joint->m_joint) {
+            joint->m_joint->SetUserData(nullptr);
+            joint->m_joint = nullptr;
+        }
+
         joint->destroyJoint();
+    }
 }
 
 void QDestructionListener::SayGoodbye(b2Fixture* f) {
     QFixture* fixture = QFixture::toQFixture(f);
-    if (fixture)
+    if (fixture) {
+        if (fixture->m_fixture) {
+            fixture->m_fixture->SetUserData(nullptr);
+            fixture->m_fixture = nullptr;
+        }
+
         fixture->destroyFixture();
+    }
 }
 
 QWorld::QWorld(SceneGraph::Item* parent):
