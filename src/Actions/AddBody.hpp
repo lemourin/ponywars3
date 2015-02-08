@@ -4,6 +4,8 @@
 #include "AddPolygon.hpp"
 #include "AddCircle.hpp"
 #include "AddRectangle.hpp"
+#include "QBox2D/QBody.hpp"
+#include <unordered_set>
 
 class AddBody: public SubAction {
     private:
@@ -15,6 +17,7 @@ class AddBody: public SubAction {
         AddFixture* m_currentAction;
         std::vector<QFixture*> m_fixtures;
         std::vector<Action*> m_action;
+        std::vector<QBody*> m_body;
 
         ActionObject m_object;
 
@@ -22,6 +25,8 @@ class AddBody: public SubAction {
 
     public:
         explicit AddBody(MapEditor*);
+        ~AddBody();
+
         void reset();
 
         void finished();

@@ -16,7 +16,7 @@ AddCircle::AddCircle(AddBody* parent):
 
 QFixture* AddCircle::fixture() const {
     Box2DCircle* circle = new Box2DCircle;
-    circle->translate(m_position.x(), m_position.y());
+    circle->setPosition(m_position);
     circle->setRadius(m_radius);
 
     return circle;
@@ -35,7 +35,7 @@ void AddCircle::mousePressEvent(QMouseEvent*) {
 void AddCircle::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         if (!(m_state & PositionSet)) {
-            m_position = event->localPos();
+            m_position = mapFromScreen(event->pos());
             m_stateChange |= PositionSet;
             m_state |= PositionSet;
         }
@@ -49,34 +49,38 @@ void AddCircle::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-/*void AddCircle::hoverMoveEvent(QHoverEvent* event) {
+void AddCircle::mouseMoveEvent(QMouseEvent* event) {
     if ((m_state & PositionSet) && !(m_state & RadiusSet)) {
-        m_radius = Vector2d(m_position-event->posF()).length();
+        m_radius = Vector2d(m_position-mapFromScreen(event->pos())).length();
         m_stateChange |= RadiusChanged;
         update();
     }
+}
 
-    Action::hoverMoveEvent(event);
-}*/
-
-/*QSGNode* AddCircle::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    CircleNode* node = static_cast<CircleNode*>(n);
+SceneGraph::Node *AddCircle::synchronize(SceneGraph::Node *old) {
+    Circle* node = static_cast<Circle*>(old);
 
     if (m_stateChange & ResetAction) {
         m_stateChange ^= ResetAction;
-        delete node;
         node = nullptr;
     }
     else if (m_stateChange) {
         m_stateChange = 0;
 
-        delete node;
-        node = new CircleNode(m_position, m_radius);
+        QMatrix4x4 matrix;
+        matrix.translate(m_position.x(), m_position.y());
+        matrix.scale(m_radius);
 
-        QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
-        material->setColor("yellow");
-        node->setMaterial(material);
+        node = new Circle;
+        node->setMatrix(matrix);
+        node->m_circleNode.setColor(Qt::yellow);
     }
 
     return node;
-}*/
+
+}
+
+AddCircle::Circle::Circle():
+    m_circleNode(QPointF(0, 0), 1) {
+    appendChild(&m_circleNode);
+}

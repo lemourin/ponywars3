@@ -4,13 +4,10 @@
 #include "Graphics/Primitives.hpp"
 #include "QBox2D/Fixture/Box2DPolygon.hpp"
 #include "AddBody.hpp"
-#include <QSGSimpleRectNode>
 
 AddPolygon::AddPolygon(AddBody* parent):
     AddFixture(parent),
     m_object(this) {
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setFlag(ItemHasContents);
 }
 
 void AddPolygon::reset() {
@@ -31,9 +28,7 @@ void AddPolygon::mousePressEvent(QMouseEvent*) {
 }
 
 void AddPolygon::mouseReleaseEvent(QMouseEvent* event) {
-    event->accept();
-
-    m_pts.push_back(event->localPos());
+    m_pts.push_back(mapFromScreen(event->pos()));
 
     if (m_pts.size() >= 3) {
         std::vector<Vector2d> vec;
@@ -50,28 +45,35 @@ void AddPolygon::mouseReleaseEvent(QMouseEvent* event) {
     update();
 }
 
-/*QSGNode* AddPolygon::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    if (n)
-        delete n;
-
+SceneGraph::Node *AddPolygon::synchronize(SceneGraph::Node *) {
     if (m_pts.size() < 3) {
-        QSGNode* node = new QSGNode;
-
-        for (QPointF p: m_pts) {
-            QSGSimpleRectNode* rect = new QSGSimpleRectNode;
-            rect->setFlag(QSGNode::OwnedByParent);
-            rect->setRect(QRectF(p, QSizeF(1, 1)));
-            node->appendChildNode(rect);
-        }
-
-        return node;
+        return new Node(m_pts, QSizeF(1, 1));
     }
 
     ConvexPolygonNode* node = new ConvexPolygonNode(m_pts);
-    QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
-    material->setColor("yellow");
-    node->setMaterial(material);
+    node->setColor(Qt::yellow);
 
     return node;
-}*/
+}
 
+AddPolygon::Node::Node(std::vector<QPointF> pts, QSizeF size) {
+    qreal w = size.width(), h = size.height();
+    for (QPointF p: pts) {
+        std::vector<QPointF> vertex = {
+            QPointF(-0.5*w+p.x(), -0.5*h+p.y()),
+            QPointF( 0.5*w+p.x(), -0.5*h+p.y()),
+            QPointF( 0.5*w+p.x(),  0.5*h+p.y()),
+            QPointF(-0.5*w+p.x(),  0.5*h+p.y())
+        };
+
+        ConvexPolygonNode* node = new ConvexPolygonNode(vertex);
+        appendChild(node);
+
+        m_node.push_back(node);
+    }
+}
+
+AddPolygon::Node::~Node() {
+    for (SceneGraph::Node* node: m_node)
+        delete node;
+}

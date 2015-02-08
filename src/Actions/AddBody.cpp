@@ -16,6 +16,12 @@ AddBody::AddBody(MapEditor* p):
     m_object(this) {
 }
 
+AddBody::~AddBody() {
+    for (QBody* body: m_body)
+        delete body;
+    m_body.clear();
+}
+
 void AddBody::finished() {
     QBody* body = new QBody(world());
 
@@ -25,6 +31,8 @@ void AddBody::finished() {
     body->initialize(world());
 
     m_fixtures.clear();
+
+    m_body.push_back(body);
 }
 
 void AddBody::subActionFinished(SubAction *action) {

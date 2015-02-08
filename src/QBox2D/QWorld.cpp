@@ -78,8 +78,6 @@ QWorld::QWorld(SceneGraph::Item* parent):
     m_timer(-1),
     m_glinitialized() {
 
-    //setFlag(ItemIsFocusScope);
-
     world()->SetContactListener(&m_contactListener);
     world()->SetDestructionListener(&m_destructionListener);
 

@@ -1,7 +1,8 @@
 #ifndef ADDCIRCLE_HPP
 #define ADDCIRCLE_HPP
 #include "AddFixture.hpp"
-#include <QPointF>
+#include "Graphics/Primitives.hpp"
+#include "SceneGraph/Node.hpp"
 
 class AddBody;
 
@@ -14,6 +15,13 @@ class AddCircle: public AddFixture {
             ResetAction = 1 << 3
         };
 
+        class Circle: public SceneGraph::TransformNode {
+            public:
+                CircleNode m_circleNode;
+
+                Circle();
+        };
+
         unsigned m_stateChange, m_state;
         QPointF m_position;
         float m_radius;
@@ -22,8 +30,8 @@ class AddCircle: public AddFixture {
     protected:
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
-        //void hoverMoveEvent(QHoverEvent *event);
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+        void mouseMoveEvent(QMouseEvent*);
+        SceneGraph::Node* synchronize(SceneGraph::Node *old);
 
     public:
         AddCircle(AddBody*);
