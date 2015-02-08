@@ -19,8 +19,9 @@ AddBody::AddBody(MapEditor* p):
 void AddBody::finished() {
     QBody* body = new QBody(world());
 
-    for (QFixture* f: m_fixtures)
+    for (QFixture* f: m_fixtures) {
         body->addFixture(f);
+    }
     body->initialize(world());
 
     m_fixtures.clear();

@@ -33,7 +33,6 @@ class AddRectangle: public AddFixture {
         void mouseMoveEvent(QMouseEvent*);
 
         SceneGraph::Node* synchronize(SceneGraph::Node*);
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:
         AddRectangle(AddBody*);

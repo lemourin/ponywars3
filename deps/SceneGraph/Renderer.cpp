@@ -72,6 +72,7 @@ void Renderer::updateNodes(Window* window) {
             item->m_itemNode->setRenderer(this);
 
             item->m_state |= Item::ModelMatrixChanged;
+            item->m_state |= Item::ParentChanged;
         }
     }
 

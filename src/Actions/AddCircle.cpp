@@ -12,9 +12,6 @@ AddCircle::AddCircle(AddBody* parent):
     m_stateChange(),
     m_state(),
     m_object(this) {
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setAcceptHoverEvents(true);
-    //setFlag(ItemHasContents);
 }
 
 QFixture* AddCircle::fixture() const {
@@ -45,7 +42,7 @@ void AddCircle::mouseReleaseEvent(QMouseEvent *event) {
         else {
             m_stateChange |= RadiusSet;
             m_state |= RadiusSet;
-            emit finished();
+            finished();
         }
 
         update();
