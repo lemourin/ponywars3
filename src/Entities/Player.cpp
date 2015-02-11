@@ -125,6 +125,9 @@ void Player::healthChanged() {
 void Player::focusChanged() {
     if (!focus())
         disableState(GoingLeft | GoingRight);
+
+    if (world()->player() == this)
+        emit world()->object()->playerChanged();
 }
 
 bool Player::read(const QJsonObject& obj) {

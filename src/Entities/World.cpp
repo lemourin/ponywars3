@@ -57,6 +57,8 @@ void World::setPlayer(Player* player) {
         setFocus(true);
 
     view()->setFocusedObject(player);
+
+    emit object()->playerChanged();
 }
 
 LightSystem* World::lightSystem() const {
@@ -102,6 +104,10 @@ WorldObject::WorldObject(World *world):
             this, &WorldObject::updateFps);
 }
 
+bool WorldObject::player() {
+    return m_world->player() ? m_world->player()->focus() : false;
+}
+
 void WorldObject::updateFps() {
     qreal t = m_fpscounter.restart();
 
@@ -110,8 +116,6 @@ void WorldObject::updateFps() {
 }
 
 void WorldObject::setFps(qreal f) {
-    if (qFuzzyIsNull(m_fps-f))
-        return;
     m_fps = f;
     emit fpsChanged();
 }

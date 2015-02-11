@@ -18,7 +18,7 @@ Item {
         property int textMargin: 20
 
         id: playerOptions
-        //visible: world.player ? world.player.activeFocus : false
+        visible: world.player
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -69,7 +69,6 @@ Item {
                 anchors.fill: parent
 
                 onPressed: {
-                    //view.pinchArea.enabled = false
                     var p = mapToItem(left, point.x, point.y)
 
                     if (left.contains(Qt.point(p.x, p.y))) {
@@ -103,7 +102,6 @@ Item {
                 }
 
                 onReleased: {
-                    //view.pinchArea.enabled = true
                     world.playerDisableGoLeft()
                     world.playerDisableGoRight()
                 }

@@ -20,6 +20,7 @@ class WorldObject: public QObject {
     private:
         Q_OBJECT
 
+        Q_PROPERTY(bool player READ player NOTIFY playerChanged)
         Q_PROPERTY(uint playerHealth READ playerHealth NOTIFY playerHealthChanged)
         Q_PROPERTY(bool equippedWeapon READ equippedWeapon NOTIFY equippedWeaponChanged)
         Q_PROPERTY(uint bulletCount READ bulletCount NOTIFY bulletCountChanged)
@@ -35,6 +36,8 @@ class WorldObject: public QObject {
 
     public:
         WorldObject(World *);
+
+        bool player();
 
         uint playerHealth() const;
         bool equippedWeapon() const;
@@ -54,6 +57,7 @@ class WorldObject: public QObject {
         Q_INVOKABLE void playerDropWeapon();
 
     signals:
+        void playerChanged();
         void playerHealthChanged();
         void equippedWeaponChanged();
         void bulletCountChanged();
