@@ -4,7 +4,6 @@
 
 class DeleteItem: public SubAction {
     protected:
-        void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
 
         ActionObject m_object;

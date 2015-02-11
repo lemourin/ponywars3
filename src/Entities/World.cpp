@@ -53,8 +53,6 @@ void World::setPlayer(Player* player) {
 
     if (player)
         player->setFocus(true);
-    else
-        setFocus(true);
 
     view()->setFocusedObject(player);
 
