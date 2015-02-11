@@ -30,6 +30,8 @@ class ArrowNode: public SceneGraph::GeometryNode {
 
 class GrabItem: public SubAction {
     private:
+        friend class World;
+
         QMouseJoint* m_mouseJoint;
         QBody* m_grabbedBody;
         bool m_pressed;

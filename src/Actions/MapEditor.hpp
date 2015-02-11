@@ -16,6 +16,7 @@ class MapEditor: public Action {
     private:
         friend class SubAction;
         friend class MapEditorObject;
+        friend class World;
 
         AddChain m_addChain;
         AddBody m_addBody;
@@ -31,6 +32,8 @@ class MapEditor: public Action {
     protected:
         void onInit();
         void reset();
+
+        void focusedObjectDestroyed();
 
     public:
         MapEditor(World*);

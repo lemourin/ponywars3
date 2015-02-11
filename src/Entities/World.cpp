@@ -21,7 +21,6 @@ World::World(ViewWorld* viewWorld):
     m_itemSet(this),
     m_mapEditor(this),
     m_worldObject(this) {
-
 }
 
 World::~World() {
@@ -29,9 +28,12 @@ World::~World() {
 }
 
 void World::onBodyDestroyed(QBody* body) {
-    if (player() == body) {
+    if (player() == body)
         setPlayer(nullptr);
-    }
+    if (mapEditor()->m_focusedObject == body)
+        mapEditor()->focusedObjectDestroyed();
+    if (mapEditor()->grabItem()->m_grabbedBody == body)
+        mapEditor()->grabItem()->releaseItem();
 
     QWorld::onBodyDestroyed(body);
 }
@@ -51,6 +53,8 @@ void World::setPlayer(Player* player) {
 
     if (player)
         player->setFocus(true);
+    else
+        setFocus(true);
 
     view()->setFocusedObject(player);
 }

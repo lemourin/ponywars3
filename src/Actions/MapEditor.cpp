@@ -34,7 +34,15 @@ void MapEditor::reset() {
 
     ViewWorld* view = world()->view();
 
-    m_focusedObject->setFocus(true);
+    if (m_focusedObject)
+        m_focusedObject->setFocus(true);
+    else
+        world()->setFocus(true);
+
     view->setFocusedObject(m_focusedObject);
     view->setFlickable(false);
+}
+
+void MapEditor::focusedObjectDestroyed() {
+    m_focusedObject = nullptr;
 }
