@@ -68,8 +68,6 @@ SceneGraph::Node *AddRectangle::synchronize(SceneGraph::Node *old) {
 
     if (m_state & Reset) {
         m_state ^= Reset;
-
-        delete node;
         node = nullptr;
     }
 

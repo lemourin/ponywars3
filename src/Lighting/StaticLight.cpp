@@ -28,12 +28,15 @@ void StaticLight::initialize(QWorld* w) {
 }
 
 void StaticLight::destroyBody() {
-    Light::destroyBody();
+    m_fixture.destroyFixture();
+
     if (dynamicLight())
         dynamicLight()->bindLight(nullptr);
 
     if (lightSystem())
         lightSystem()->removeLight(this);
+
+    Light::destroyBody();
 }
 
 bool StaticLight::read(const QJsonObject& obj) {

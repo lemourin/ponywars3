@@ -29,8 +29,9 @@ World::~World() {
 }
 
 void World::onBodyDestroyed(QBody* body) {
-    if (player() == body)
+    if (player() == body) {
         setPlayer(nullptr);
+    }
 
     QWorld::onBodyDestroyed(body);
 }
@@ -48,10 +49,10 @@ void World::setPlayer(Player* player) {
 
     m_player = player;
 
-    if (player) {
+    if (player)
         player->setFocus(true);
-        view()->setFocusedObject(player);
-    }
+
+    view()->setFocusedObject(player);
 }
 
 LightSystem* World::lightSystem() const {
