@@ -39,6 +39,6 @@ void Bullet::beginContact(QFixture* other, b2Contact*) {
     if (other->isSensor())
         return;
 
-    //deleteLater();
+    destroyLater();
     //emit static_cast<World*>(world())->explosion(worldCenter());
 }

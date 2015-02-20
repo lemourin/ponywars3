@@ -165,13 +165,6 @@ void QBody::initialize(QWorld* w) {
     w->onBodyAdded(this);
 }
 
-void QBody::initializeLater(QWorld* w) {
-    if (body())
-        return;
-
-    enqueueFunction(std::bind(&QBody::initialize, this, w));
-}
-
 void QBody::enqueueFunction(std::function<void ()> f) {
     assert(world());
 
@@ -179,6 +172,21 @@ void QBody::enqueueFunction(std::function<void ()> f) {
         world()->m_enqueued.push_back(this);
 
     m_work.push(f);
+}
+
+void QBody::initializeLater(QWorld* w) {
+    if (body())
+        return;
+
+    enqueueFunction(std::bind(&QBody::initialize, this, w));
+}
+
+void QBody::destroyLater() {
+    if (!body())
+        return;
+
+    assert(world());
+    world()->m_destroyed.push_back(this);
 }
 
 bool QBody::read(const QJsonObject& obj) {

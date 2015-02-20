@@ -45,6 +45,7 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         int m_timer;
         QRectF m_visibleRect;
         std::vector<QBody*> m_visibleBodies;
+        std::vector<QBody*> m_destroyed;
         std::vector<QBody*> m_enqueued;
         bool m_glinitialized;
 

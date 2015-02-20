@@ -114,8 +114,10 @@ class QBody: public BaseItem {
         bool testOverlap(const QRectF& rect) const;
         bool testOverlap(const QBody* other) const;
 
-        void initializeLater(QWorld*);
         void enqueueFunction(std::function<void()>);
+
+        void initializeLater(QWorld*);
+        void destroyLater();
 
         virtual bool read(const QJsonObject&);
         virtual bool write(QJsonObject&) const;

@@ -154,6 +154,9 @@ std::vector<const QBody*> QWorld::bodies() const {
 }
 
 void QWorld::step() {
+    while (!m_destroyed.empty())
+        m_destroyed.back()->destroyBody();
+
     m_locked = true;
 
     world()->Step(timeStep(), velocityIterations(), positionIterations());
@@ -267,6 +270,9 @@ void QWorld::onBodyDestroyed(QBody* body) {
     if (it != m_enqueued.end())
         m_enqueued.erase(it);
 
+    it = std::find(m_destroyed.begin(), m_destroyed.end(), body);
+    if (it != m_destroyed.end())
+        m_destroyed.erase(it);
 }
 
 void QWorld::onBodyAdded(QBody *) {
