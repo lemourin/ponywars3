@@ -101,6 +101,9 @@ class World: public QWorld {
         inline WorldObject* object() { return &m_worldObject; }
         inline const WorldObject* object() const { return &m_worldObject; }
 
+        ItemSet* itemSet() { return &m_itemSet; }
+        const ItemSet* itemSet() const { return &m_itemSet; }
+
         void read(const QJsonObject&);
         void write(QJsonObject&) const;
 };

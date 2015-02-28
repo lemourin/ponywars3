@@ -46,6 +46,8 @@ void AddChain::keyPressEvent(QKeyEvent* event) {
         m_state |= DirtyState::Finished;
         update();
 
+        world()->itemSet()->addBody(chain);
+
         finished();
     }
 }

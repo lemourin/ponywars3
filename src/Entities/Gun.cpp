@@ -16,6 +16,8 @@ void Gun::shoot() {
     Bullet* bullet = new Bullet(circle, world());
     bullet->initialize(world());
 
+    static_cast<World*>(world())->itemSet()->addBody(bullet);
+
     float angle = body()->GetAngle();
     bullet->applyForce(QPointF(cos(angle)*5000, sin(angle)*5000));
 }

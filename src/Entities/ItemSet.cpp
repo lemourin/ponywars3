@@ -17,11 +17,12 @@ ItemSet::~ItemSet() {
 }
 
 void ItemSet::destroy() {
-    for (QBody* body: m_body) {
+    while (!m_body.empty()) {
+        QBody* body = *m_body.begin();
+
         body->destroyBody();
         delete body;
     }
-    m_body.clear();
 }
 
 bool ItemSet::contains(QBody* body) {

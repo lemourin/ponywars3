@@ -40,8 +40,8 @@ void Enemy::timerEvent(QTimerEvent*) {
 }
 
 void Enemy::beginContact(QFixture*, b2Contact*) {
-    //if (qobject_cast<Bullet*>(other->body())) {
-    //    setHealth(health()-5);
-    //}
+    /*if (other->body()->type() == Bullet::type()) {
+        setHealth(health()-5);
+    }*/
 }
 
