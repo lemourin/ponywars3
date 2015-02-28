@@ -13,12 +13,23 @@ ItemSet::ItemSet(World* world):
 }
 
 ItemSet::~ItemSet() {
-    for (QBody* body: m_body)
+    destroy();
+}
+
+void ItemSet::destroy() {
+    for (QBody* body: m_body) {
+        body->destroyBody();
         delete body;
+    }
+    m_body.clear();
+}
+
+bool ItemSet::contains(QBody* body) {
+    return m_body.find(body) != m_body.end();
 }
 
 void ItemSet::addBody(QBody* body) {
-    m_body.push_back(body);
+    m_body.insert(body);
 }
 
 void ItemSet::removeBody(QBody* body) {

@@ -154,8 +154,12 @@ std::vector<const QBody*> QWorld::bodies() const {
 }
 
 void QWorld::step() {
-    while (!m_destroyed.empty())
-        m_destroyed.back()->destroyBody();
+    while (!m_destroyed.empty()) {
+        QBody* body = m_destroyed.back();
+
+        body->destroyBody();
+        delete body;
+    }
 
     m_locked = true;
 

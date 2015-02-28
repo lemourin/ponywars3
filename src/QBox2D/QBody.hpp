@@ -24,8 +24,8 @@ class QBody: public BaseItem {
         QWorld* m_world;
 
         SceneGraph::Item m_content;
-
         std::queue< std::function<void()> > m_work;
+        bool m_pendingDestroy;
 
         void removeFixture(QFixture*);
 

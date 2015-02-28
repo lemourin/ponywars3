@@ -11,7 +11,8 @@
 QBody::QBody(SceneGraph::Item* parent):
     BaseItem(parent),
     m_body(),
-    m_world() {
+    m_world(),
+    m_pendingDestroy() {
 
     m_bodyDef.userData = this;
     setVisible(false);
@@ -35,6 +36,7 @@ void QBody::destroyBody() {
 
     m_world = nullptr;
     m_body = nullptr;
+    m_pendingDestroy = false;
 
     setVisible(false);
 }
@@ -182,8 +184,9 @@ void QBody::initializeLater(QWorld* w) {
 }
 
 void QBody::destroyLater() {
-    if (!body())
+    if (m_pendingDestroy || !body())
         return;
+    m_pendingDestroy = true;
 
     assert(world());
     world()->m_destroyed.push_back(this);

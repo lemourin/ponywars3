@@ -1,6 +1,5 @@
 #include "Gun.hpp"
 #include "World.hpp"
-#include "QBox2D/Fixture/Box2DCircle.hpp"
 #include <QJsonObject>
 
 Gun::Gun(SceneGraph::Item* parent):
@@ -21,18 +20,22 @@ void Gun::shoot() {
     bullet->applyForce(QPointF(cos(angle)*5000, sin(angle)*5000));
 }
 
-Bullet::Bullet(Circle circle, Item* p): QBody(p) {
+Bullet::Bullet(Circle circle, Item* p): QBody(p), m_circle(this) {
     setPosition(QPointF(circle.pos()));
     setLinearDamping(0);
     setBullet(true);
     setBodyType(Dynamic);
 
-    Box2DCircle* f = new Box2DCircle(this);
-    f->setShadowCaster(false);
-    f->setRadius(circle.radius());
-    f->setGroupIndex(-1);
+    m_circle.setShadowCaster(false);
+    m_circle.setRadius(circle.radius());
+    m_circle.setGroupIndex(-1);
 
-    addFixture(f);
+    addFixture(&m_circle);
+}
+
+void Bullet::destroyBody() {
+    m_circle.destroyFixture();
+    QBody::destroyBody();
 }
 
 void Bullet::beginContact(QFixture* other, b2Contact*) {

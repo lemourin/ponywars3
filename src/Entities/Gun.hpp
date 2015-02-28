@@ -3,6 +3,7 @@
 #include "Weapon.hpp"
 #include "Geometry/Circle.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
+#include "QBox2D/Fixture/Box2DCircle.hpp"
 
 class Box2DBox;
 
@@ -16,10 +17,14 @@ class Gun: public Weapon {
 
 class Bullet: public QBody {
     protected:
+        Box2DCircle m_circle;
+
         void beginContact(QFixture* other, b2Contact *);
 
     public:
         Bullet(Circle circle, SceneGraph::Item* = nullptr);
+
+        void destroyBody();
 };
 
 #endif // GUN_HPP
