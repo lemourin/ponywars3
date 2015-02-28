@@ -13,8 +13,18 @@ ItemSet::ItemSet(World* world):
 }
 
 ItemSet::~ItemSet() {
-    while (firstChild())
-        delete firstChild();
+    for (QBody* body: m_body)
+        delete body;
+}
+
+void ItemSet::addBody(QBody* body) {
+    m_body.push_back(body);
+}
+
+void ItemSet::removeBody(QBody* body) {
+    auto it = std::find(m_body.begin(), m_body.end(), body);
+    assert(it != m_body.end());
+    m_body.erase(it);
 }
 
 void ItemSet::dump(QString /*fileName*/) {
@@ -42,13 +52,11 @@ void ItemSet::load(QString fileName) {
 
 void ItemSet::write(QJsonObject& obj) const {
     QJsonArray array;
-    /*for (QQuickItem* item: childItems()) {
-        if (QBody* body = qobject_cast<QBody*>(item)) {
-            QJsonObject object;
-            if (body->write(object))
-                array.append(object);
-        }
-    }*/
+    for (QBody* body: m_body) {
+        QJsonObject object;
+        if (body->write(object))
+            array.append(object);
+    }
 
     obj["bodies"] = array;
 }
@@ -65,6 +73,8 @@ void ItemSet::read(const QJsonObject& obj) {
         body->setParent(this);
         body->read(obj);
         body->initialize(m_world);
+
+        addBody(body);
     }
 }
 
