@@ -9,6 +9,8 @@
 
 #include "Actions/MapEditor.hpp"
 
+#include "Graphics/ParticleSystem.hpp"
+
 #include "ItemSet.hpp"
 
 class Game;
@@ -75,6 +77,7 @@ class World: public QWorld {
 
         ItemSet m_itemSet;
         MapEditor m_mapEditor;
+        ParticleSystem m_particleSystem;
 
         WorldObject m_worldObject;
 

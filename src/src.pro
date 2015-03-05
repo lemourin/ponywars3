@@ -76,7 +76,8 @@ SOURCES += \
     Entities/Game.cpp \
     Graphics/Primitives.cpp \
     Actions/SubAction.cpp \
-    Actions/AddFixture.cpp
+    Actions/AddFixture.cpp \
+    Graphics/ParticleSystem.cpp
 
 HEADERS += \
     Actions/Action.hpp \
@@ -142,5 +143,6 @@ HEADERS += \
     Entities/Game.hpp \
     Graphics/Primitives.hpp \
     Actions/SubAction.hpp \
-    Actions/AddFixture.hpp
+    Actions/AddFixture.hpp \
+    Graphics/ParticleSystem.hpp
 

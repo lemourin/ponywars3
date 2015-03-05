@@ -20,6 +20,7 @@ World::World(ViewWorld* viewWorld):
     m_player(),
     m_itemSet(this),
     m_mapEditor(this),
+    m_particleSystem(this),
     m_worldObject(this) {
 }
 

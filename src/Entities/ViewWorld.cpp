@@ -1,7 +1,6 @@
 #include "ViewWorld.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
-#include <QQuickWindow>
 #include <QJsonObject>
 
 ViewWorld::ViewWorld(Game* game):
@@ -14,7 +13,6 @@ void ViewWorld::initialize() {
     m_world.initialize();
 
     m_world.setFocus(true);
-    setFocus(true);
 }
 
 bool ViewWorld::read(const QJsonObject& obj) {
