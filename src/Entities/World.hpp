@@ -81,6 +81,7 @@ class World: public QWorld {
     protected:
         void onBodyDestroyed(QBody*);
         void onBodyAdded(QBody*);
+        void releaseResource(QBody*);
 
     public:
         explicit World(ViewWorld*);

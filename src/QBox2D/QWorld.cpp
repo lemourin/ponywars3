@@ -109,7 +109,7 @@ void QWorld::destroyBodies() {
         QBody* qbody = QBody::toQBody(body);
         assert(qbody);
 
-        qbody->destroyBody();
+        destroyBody(qbody);
     }
 }
 
@@ -137,6 +137,14 @@ void QWorld::setGravity(const QPointF &gravity) {
     world()->SetGravity(b2Vec2(gravity.x(), gravity.y()));
 }
 
+void QWorld::destroyBody(QBody* body) {
+    body->destroyBody();
+    releaseResource(body);
+}
+
+void QWorld::releaseResource(QBody*) {
+}
+
 std::vector<QBody*> QWorld::bodies() {
     std::vector<QBody*> result;
     for (b2Body* body = world()->GetBodyList(); body; body = body->GetNext())
@@ -154,12 +162,8 @@ std::vector<const QBody*> QWorld::bodies() const {
 }
 
 void QWorld::step() {
-    while (!m_destroyed.empty()) {
-        QBody* body = m_destroyed.back();
-
-        body->destroyBody();
-        delete body;
-    }
+    while (!m_destroyed.empty())
+        destroyBody(m_destroyed.back());
 
     m_locked = true;
 
@@ -280,7 +284,6 @@ void QWorld::onBodyDestroyed(QBody* body) {
 }
 
 void QWorld::onBodyAdded(QBody *) {
-
 }
 
 bool QWorld::BodyFinder::ReportFixture(b2Fixture* fixture) {

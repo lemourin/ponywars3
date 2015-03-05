@@ -38,9 +38,6 @@ void World::onBodyDestroyed(QBody* body) {
     if (mapEditor()->grabItem()->m_grabbedBody == body)
         mapEditor()->grabItem()->releaseItem();
 
-    if (m_itemSet.contains(body))
-        m_itemSet.removeBody(body);
-
     QWorld::onBodyDestroyed(body);
 }
 
@@ -49,6 +46,11 @@ void World::onBodyAdded(QBody* body) {
 
     assert(lightSystem());
     lightSystem()->addBody(body);
+}
+
+void World::releaseResource(QBody* body) {
+    if (m_itemSet.contains(body))
+        m_itemSet.removeBody(body);
 }
 
 void World::setPlayer(Player* player) {

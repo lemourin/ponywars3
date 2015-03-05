@@ -72,6 +72,8 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         inline bool isRunning() const { return m_running; }
         void setRunning(bool running);
 
+        virtual void releaseResource(QBody*);
+
     public:
         explicit QWorld(SceneGraph::Item *parent = 0);
         ~QWorld();
@@ -101,6 +103,8 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
 
         inline b2World* world() { return &m_world; }
         inline const b2World* world() const { return &m_world; }
+
+        void destroyBody(QBody*);
 
         std::vector<QBody*> bodies();
         std::vector<const QBody*> bodies() const;

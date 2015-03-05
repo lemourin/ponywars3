@@ -19,9 +19,7 @@ ItemSet::~ItemSet() {
 void ItemSet::destroy() {
     while (!m_body.empty()) {
         QBody* body = *m_body.begin();
-
-        body->destroyBody();
-        delete body;
+        body->world()->destroyBody(body);
     }
 }
 
@@ -37,6 +35,8 @@ void ItemSet::removeBody(QBody* body) {
     auto it = std::find(m_body.begin(), m_body.end(), body);
     assert(it != m_body.end());
     m_body.erase(it);
+
+    delete body;
 }
 
 void ItemSet::dump(QString /*fileName*/) {
