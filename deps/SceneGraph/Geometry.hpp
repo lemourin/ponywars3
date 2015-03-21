@@ -19,9 +19,11 @@ class Geometry: public QOpenGLFunctions {
         uint m_vertexCount;
         uint m_vertexSize;
         void* m_vertexData;
+        uint m_vertexDataSize;
         uint m_indexCount;
         uint m_indexType;
         void* m_indexData;
+        uint m_indexDataSize;
         uint m_drawingMode;
 
     public:
@@ -32,16 +34,24 @@ class Geometry: public QOpenGLFunctions {
                  uint indexType = GL_UNSIGNED_INT);
         virtual ~Geometry();
 
+        void allocate(uint vertexCount, uint indexCount);
         void updateVertexData();
+
         void bind(const int* attributeLocation);
         void release();
 
         inline const std::vector<Attribute>& attribute() const { return m_attribute; }
 
+        inline uint vertexDataSize() const { return m_vertexDataSize; }
+        inline uint indexDataSize() const { return m_indexDataSize; }
+
         inline uint vertexCount() const { return m_vertexCount; }
-        inline uint vertexSize() const { return m_vertexSize; }
+        inline void setVertexCount(int t) { m_vertexCount = t; }
 
         inline uint indexCount() const { return m_indexCount; }
+        inline void setIndexCount(int t) { m_indexCount = t; }
+
+        inline uint vertexSize() const { return m_vertexSize; }
         inline uint indexType() const { return m_indexType; }
 
         inline uint drawingMode() const { return m_drawingMode; }

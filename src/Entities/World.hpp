@@ -90,6 +90,8 @@ class World: public QWorld {
         explicit World(ViewWorld*);
         ~World();
 
+        void step();
+
         inline Player* player() const { return m_player; }
         void setPlayer(Player* p);
 
@@ -98,6 +100,9 @@ class World: public QWorld {
 
         inline bool paused() const { return !isRunning(); }
         void setPaused(bool);
+
+        inline ParticleSystem* particleSystem() { return &m_particleSystem; }
+        inline const ParticleSystem* particleSystem() const { return &m_particleSystem; }
 
         inline MapEditor* mapEditor() { return &m_mapEditor; }
         inline const MapEditor* mapEditor() const { return &m_mapEditor; }

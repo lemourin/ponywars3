@@ -77,7 +77,6 @@ void EdgeNode::setP2(QPointF p2) {
 
 void EdgeNode::setColor(QColor color) {
     m_material.setColor(color);
-
 }
 
 CircleNode::CircleNode(QPointF pos, float radius, int accuracy) {
@@ -88,7 +87,7 @@ CircleNode::CircleNode(QPointF pos, float radius, int accuracy) {
         qreal x = cos(angle)*radius+pos.x();
         qreal y = sin(angle)*radius+pos.y();
 
-        points[i] = {x, y};
+        points[i] = { x, y };
     }
 
     setGeometry(m_geometry = new ConvexPolygonGeometry(points));

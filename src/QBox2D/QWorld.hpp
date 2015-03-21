@@ -50,7 +50,6 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         bool m_glinitialized;
 
         void updateVisibleBodies();
-        void step();
         void destroyBodies();
 
     protected:
@@ -79,6 +78,7 @@ class QWorld: public SceneGraph::Item, public QOpenGLFunctions {
         ~QWorld();
 
         virtual void initialize();
+        virtual void step();
 
         inline QBody* groundBody() { return &m_groundBody; }
         inline bool locked() const { return m_locked; }

@@ -1,7 +1,6 @@
 #ifndef LIGHTSYSTEM_HPP
 #define LIGHTSYSTEM_HPP
 
-#include <QQuickItem>
 #include <unordered_set>
 #include "SceneGraph/ShaderSource.hpp"
 #include "EnlightedItems.hpp"
@@ -10,7 +9,6 @@
 
 class StaticLight;
 class DisplayItem;
-class QSGDynamicTexture;
 class World;
 class Game;
 

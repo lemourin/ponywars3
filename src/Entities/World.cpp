@@ -31,6 +31,12 @@ World::~World() {
     m_player = nullptr;
 }
 
+void World::step() {
+    QWorld::step();
+
+    particleSystem()->step();
+}
+
 void World::onBodyDestroyed(QBody* body) {
     if (player() == body)
         setPlayer(nullptr);

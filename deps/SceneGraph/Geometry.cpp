@@ -1,5 +1,6 @@
 #include "Geometry.hpp"
 #include <cassert>
+#include <QDebug>
 
 namespace SceneGraph {
 
@@ -9,22 +10,44 @@ Geometry::Geometry(std::vector<Attribute> set,
                    uint indexCount,
                    uint indexType):
     m_attribute(set),
-    m_vertexCount(vertexCount),
+    m_vertexCount(),
     m_vertexSize(vertexSize),
-    m_vertexData(malloc(vertexCount*vertexSize)),
-    m_indexCount(indexCount),
+    m_vertexData(),
+    m_vertexDataSize(),
+    m_indexCount(),
     m_indexType(indexType),
-    m_indexData(indexCount ? malloc(indexCount*sizeOfType(indexType)) : nullptr),
+    m_indexData(),
+    m_indexDataSize(),
     m_drawingMode(GL_TRIANGLE_STRIP) {
     initializeOpenGLFunctions();
+
     glGenBuffers(1, &m_vbo);
+    allocate(vertexCount, indexCount);
 }
 
 Geometry::~Geometry() {
     glDeleteBuffers(1, &m_vbo);
 
-    free(m_vertexData);
-    free(m_indexData);
+    if (m_vertexData)
+        free(m_vertexData);
+    if (m_indexData)
+        free(m_indexData);
+}
+
+void Geometry::allocate(uint vertexCount, uint indexCount) {
+    if (m_vertexDataSize != vertexCount) {
+        m_vertexDataSize = m_vertexCount = vertexCount;
+
+        uint size = vertexCount*vertexSize();
+        m_vertexData = vertexCount ? realloc(m_vertexData, size) : 0;
+    }
+
+    if (m_indexDataSize != indexCount) {
+        m_indexDataSize = m_indexCount = indexCount;
+
+        uint size = indexCount*sizeOfType(indexType());
+        m_indexData = indexCount ? realloc(m_indexData, size) : 0;
+    }
 }
 
 void Geometry::updateVertexData() {
