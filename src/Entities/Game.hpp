@@ -8,6 +8,7 @@ class Game: public DisplayItemFrame {
     private:
         ViewWorld m_viewWorld;
         LightSystem m_lightSystem;
+        ParticleSystem m_particleSystem;
 
     protected:
         void sizeChanged();
@@ -21,6 +22,9 @@ class Game: public DisplayItemFrame {
 
         inline LightSystem* lightSystem() { return &m_lightSystem; }
         inline const LightSystem* lightSystem() const { return &m_lightSystem; }
+
+        inline ParticleSystem* particleSystem() { return &m_particleSystem; }
+        inline const ParticleSystem* particleSystem() const { return &m_particleSystem; }
 
         bool read(const QJsonObject& obj);
         bool write(QJsonObject& obj) const;

@@ -77,7 +77,6 @@ class World: public QWorld {
 
         ItemSet m_itemSet;
         MapEditor m_mapEditor;
-        ParticleSystem m_particleSystem;
 
         WorldObject m_worldObject;
 
@@ -96,13 +95,12 @@ class World: public QWorld {
         void setPlayer(Player* p);
 
         inline ViewWorld* view() const { return m_viewWorld; }
+
         LightSystem* lightSystem() const;
+        ParticleSystem* particleSystem() const;
 
         inline bool paused() const { return !isRunning(); }
         void setPaused(bool);
-
-        inline ParticleSystem* particleSystem() { return &m_particleSystem; }
-        inline const ParticleSystem* particleSystem() const { return &m_particleSystem; }
 
         inline MapEditor* mapEditor() { return &m_mapEditor; }
         inline const MapEditor* mapEditor() const { return &m_mapEditor; }

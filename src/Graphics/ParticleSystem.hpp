@@ -45,7 +45,11 @@ class ParticleMaterial: public SceneGraph::Material {
 
 class ParticleSystem: public SceneGraph::Item {
     private:
+        friend class ViewWorld;
+
         std::vector<Particle> m_particle;
+        QSizeF m_size;
+        QRectF m_visibleRect;
 
         class Node: public SceneGraph::GeometryNode {
             private:
@@ -66,6 +70,9 @@ class ParticleSystem: public SceneGraph::Item {
                 void update(const std::vector<Particle>& p);
         };
 
+        void visibleAreaChanged(QRectF);
+        void updateMatrix(QSizeF size, QRectF rect);
+
     protected:
         SceneGraph::Node* synchronize(SceneGraph::Node*);
 
@@ -77,6 +84,10 @@ class ParticleSystem: public SceneGraph::Item {
         void step();
 
         void addExplosion(QPointF p, qreal r, qreal v, uint particleCount);
+
+        void setSize(QSizeF s);
+        inline QSizeF size() const { return m_size; }
+
 };
 
 #endif // PARTICLESYSTEM_HPP

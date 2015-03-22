@@ -40,7 +40,7 @@ class LightSystem: public SceneGraph::Item {
         void initializeDynamicLights();
 
         void lightVisibilityChanged(StaticLight*);
-        void visibleAreaChanged();
+        void visibleAreaChanged(QRectF);
 
         void addBody(QBody*);
 

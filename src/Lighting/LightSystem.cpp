@@ -71,7 +71,7 @@ void LightSystem::initialize() {
     color.setRgbF(0.5, 0.5, 1.0);
     m_normalMap.setBackground(color);
 
-    visibleAreaChanged();
+    visibleAreaChanged(world()->visibleRect());
 }
 
 void LightSystem::setSize(QSizeF s) {
@@ -142,9 +142,7 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
     }
 }
 
-void LightSystem::visibleAreaChanged() {
-    QRectF rect = world()->view()->visibleArea();
-
+void LightSystem::visibleAreaChanged(QRectF rect) {
     for (SceneGraph::ShaderSource& i: m_framebuffer)
         i.setSourceRect(rect);
 

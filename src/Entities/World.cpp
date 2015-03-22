@@ -20,7 +20,6 @@ World::World(ViewWorld* viewWorld):
     m_player(),
     m_itemSet(this),
     m_mapEditor(this),
-    m_particleSystem(this),
     m_worldObject(this) {
 }
 
@@ -76,6 +75,10 @@ void World::setPlayer(Player* player) {
 
 LightSystem* World::lightSystem() const {
     return view()->game()->lightSystem();
+}
+
+ParticleSystem *World::particleSystem() const {
+    return view()->game()->particleSystem();
 }
 
 void World::setPaused(bool p) {

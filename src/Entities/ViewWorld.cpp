@@ -11,7 +11,6 @@ ViewWorld::ViewWorld(Game* game):
 
 void ViewWorld::initialize() {
     m_world.initialize();
-
     m_world.setFocus(true);
 }
 
@@ -39,7 +38,9 @@ bool ViewWorld::write(QJsonObject& obj) const {
 void ViewWorld::visibleAreaChanged() {
     DisplayItem::visibleAreaChanged();
 
-    game()->lightSystem()->visibleAreaChanged();
+    game()->lightSystem()->visibleAreaChanged(visibleArea());
+    game()->particleSystem()->visibleAreaChanged(visibleArea());
+
     world()->setVisibleRect(visibleArea());
 }
 

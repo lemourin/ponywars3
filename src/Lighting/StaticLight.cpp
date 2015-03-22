@@ -22,6 +22,7 @@ void StaticLight::initialize(QWorld* w) {
     m_fixture.setPosition(QPointF(-radius(), -radius()));
     m_fixture.setSize(QSizeF(2*radius(), 2*radius()));
 
+    assert(lightSystem());
     lightSystem()->addLight(this);
 
     QBody::initialize(w);
@@ -61,7 +62,8 @@ void StaticLight::synchronize() {
 }
 
 void StaticLight::visibleChanged() {
-    if (lightSystem())
+    if (lightSystem()) {
         lightSystem()->lightVisibilityChanged(this);
+    }
 }
 

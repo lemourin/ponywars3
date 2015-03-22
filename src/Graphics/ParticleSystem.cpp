@@ -35,6 +35,26 @@ void ParticleSystem::addExplosion(QPointF p, qreal r, qreal v, uint particleCoun
     }
 }
 
+void ParticleSystem::setSize(QSizeF s) {
+    m_size = s;
+    updateMatrix(m_size, m_visibleRect);
+
+}
+
+void ParticleSystem::visibleAreaChanged(QRectF rect) {
+    m_visibleRect = rect;
+    updateMatrix(m_size, m_visibleRect);
+}
+
+void ParticleSystem::updateMatrix(QSizeF size, QRectF rect) {
+    QMatrix4x4 m;
+    m.scale(0.5*size.width(), 0.5*size.height());
+    m.translate(1, 1);
+    m.ortho(rect.left(), rect.right(), rect.top(), rect.bottom(), -1, 1);
+
+    setMatrix(m);
+}
+
 SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
     Node* node = static_cast<Node*>(old);
     if (!node) {
@@ -43,6 +63,7 @@ SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
         QOpenGLTexture* t = window()->texture(":/resources/fireball.png");
         node->material()->setParticleTexture(t);
     }
+
     node->update(m_particle);
 
     return node;
@@ -78,7 +99,7 @@ void ParticleSystem::Node::update(const std::vector<Particle>& set) {
 void ParticleMaterial::ParticleShader::activate() {
     glGetIntegerv(GL_BLEND_SRC_RGB, m_blendFunc+0);
     glGetIntegerv(GL_BLEND_DST_RGB, m_blendFunc+1);
-    glBlendFunc(GL_ONE, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 }
 
 void ParticleMaterial::ParticleShader::deactivate() {

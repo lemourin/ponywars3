@@ -5,7 +5,8 @@
 Game::Game(Item* parent):
     DisplayItemFrame(parent),
     m_viewWorld(this),
-    m_lightSystem(this) {
+    m_lightSystem(this),
+    m_particleSystem(this) {
 
     view()->initialize();
     lightSystem()->initialize();
@@ -30,6 +31,8 @@ void Game::sizeChanged() {
 
     lightSystem()->setResolution(resolution);
     lightSystem()->setSize(size());
+
+    particleSystem()->setSize(size());
 }
 
 bool Game::read(const QJsonObject& obj) {
