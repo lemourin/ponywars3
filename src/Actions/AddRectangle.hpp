@@ -25,6 +25,7 @@ class AddRectangle: public AddFixture {
 
             public:
                 Rectangle();
+                ~Rectangle();
         };
 
     protected:

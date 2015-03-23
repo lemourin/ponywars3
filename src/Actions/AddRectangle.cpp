@@ -53,8 +53,9 @@ void AddRectangle::mouseMoveEvent(QMouseEvent *event) {
 SceneGraph::Node *AddRectangle::synchronize(SceneGraph::Node *old) {
     SceneGraph::TransformNode* node = static_cast<SceneGraph::TransformNode*>(old);
 
-    if (!node) {
-        node = new Rectangle;
+    if (m_state & Reset) {
+        m_state ^= Reset;
+        node = nullptr;
     }
 
     if (m_state & MovedCursor) {
@@ -63,12 +64,9 @@ SceneGraph::Node *AddRectangle::synchronize(SceneGraph::Node *old) {
         matrix.translate(m_p1.x(), m_p1.y());
         matrix.scale(m_cursor.x()-m_p1.x(), m_cursor.y()-m_p1.y());
 
+        if (!node)
+            node = new Rectangle;
         node->setMatrix(matrix);
-    }
-
-    if (m_state & Reset) {
-        m_state ^= Reset;
-        node = nullptr;
     }
 
     return node;
@@ -79,4 +77,7 @@ AddRectangle::Rectangle::Rectangle():
     appendChild(&m_geometryNode);
     m_geometryNode.setColor(Qt::red);
 
+}
+
+AddRectangle::Rectangle::~Rectangle() {
 }

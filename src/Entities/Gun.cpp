@@ -47,5 +47,5 @@ void Bullet::beginContact(QFixture* other, b2Contact*) {
     destroyLater();
 
     ParticleSystem* p = static_cast<World*>(world())->particleSystem();
-    p->addExplosion(worldCenter(), 2, 0.2, 50);
+    p->addExplosion(worldCenter(), 20, 0.2, 50);
 }

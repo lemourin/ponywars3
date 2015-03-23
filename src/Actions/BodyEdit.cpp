@@ -16,7 +16,8 @@ BodyEdit::BodyEdit(MapEditor* p):
     m_object(this) {
 }
 
-void BodyEdit::mousePressEvent(QMouseEvent*) {
+void BodyEdit::mousePressEvent(QMouseEvent* e) {
+    e->ignore();
 }
 
 void BodyEdit::mouseReleaseEvent(QMouseEvent* event) {
@@ -39,6 +40,7 @@ void BodyEdit::mouseReleaseEvent(QMouseEvent* event) {
         emit m_object.bodyChanged();
     }
 
+    event->ignore();
 }
 
 void BodyEdit::reset() {

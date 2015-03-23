@@ -11,6 +11,7 @@ MapEditor::MapEditor(World* item):
     m_deleteItem(this),
     m_bodyEdit(this),
     m_action({ addChain(), addBody(), grabItem(), deleteItem(), bodyEdit() }),
+    m_focusedObject(),
     m_object(this) {
     setWorld(item);
 }
