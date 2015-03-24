@@ -4,7 +4,9 @@
 #include "Utility/Window.hpp"
 #include <cassert>
 
-ParticleSystem::ParticleSystem(Item *parent): SceneGraph::Item(parent) {
+ParticleSystem::ParticleSystem(Item *parent):
+    SceneGraph::Item(parent),
+    m_time() {
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -20,6 +22,7 @@ void ParticleSystem::step() {
         p.x += p.dx;
         p.y += p.dy;
     }
+    m_time++;
 
     update();
 
@@ -69,17 +72,35 @@ SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
     return node;
 }
 
+void ParticleSystem::Node::generateTriangleStrip(GLuint *index, uint size) {
+    uint it = 0;
+    for (uint i=0; i<std::min(5u, size); i++) {
+        index[i] = it;
+        if (i != 3)
+            it++;
+    }
+
+    for (uint i=5; i<size; i++) {
+        index[i] = it;
+        if (i%6 != 5 && i%6 != 3)
+            it++;
+    }
+}
+
 ParticleSystem::Node::Node():
     m_geometry({ { 2, GL_FLOAT }, { 2, GL_FLOAT } }, 0, sizeof(Vertex)) {
     setMaterial(&m_material);
     setGeometry(&m_geometry);
 
-    m_geometry.setDrawingMode(GL_QUADS);
+    m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
 }
 
 void ParticleSystem::Node::update(const std::vector<Particle>& set) {
-    if (m_geometry.vertexDataSize() < 4*set.size())
-        m_geometry.allocate(set.size()*4*2, 0);
+    if (m_geometry.vertexDataSize() < 4*set.size()) {
+        m_geometry.allocate(set.size()*4*2, (set.size()*6-2)*2);
+        generateTriangleStrip(m_geometry.indexData<GLuint>(),
+                              m_geometry.indexDataSize());
+    }
 
     Vertex* array = m_geometry.vertexData<Vertex>();
 
@@ -87,12 +108,13 @@ void ParticleSystem::Node::update(const std::vector<Particle>& set) {
     for (const Particle& p: set) {
         array[4*it+0] = Vertex(QPointF(p.x-p.r, p.y-p.r), QPointF(0, 0));
         array[4*it+1] = Vertex(QPointF(p.x-p.r, p.y+p.r), QPointF(0, 1));
-        array[4*it+2] = Vertex(QPointF(p.x+p.r, p.y+p.r), QPointF(1, 1));
-        array[4*it+3] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0));
+        array[4*it+2] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0));
+        array[4*it+3] = Vertex(QPointF(p.x+p.r, p.y+p.r), QPointF(1, 1));
         it++;
     }
 
     m_geometry.setVertexCount(set.size()*4);
+    m_geometry.setIndexCount(set.size()*6-2);
     m_geometry.updateVertexData();
 }
 

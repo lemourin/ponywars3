@@ -50,6 +50,7 @@ class ParticleSystem: public SceneGraph::Item {
         std::vector<Particle> m_particle;
         QSizeF m_size;
         QRectF m_visibleRect;
+        uint m_time;
 
         class Node: public SceneGraph::GeometryNode {
             private:
@@ -61,6 +62,8 @@ class ParticleSystem: public SceneGraph::Item {
 
                 SceneGraph::Geometry m_geometry;
                 ParticleMaterial m_material;
+
+                void generateTriangleStrip(GLuint* index, uint size);
 
             public:
                 Node();
@@ -84,6 +87,8 @@ class ParticleSystem: public SceneGraph::Item {
         void step();
 
         void addExplosion(QPointF p, qreal r, qreal v, uint particleCount);
+
+        inline uint time() const { return m_time; }
 
         void setSize(QSizeF s);
         inline QSizeF size() const { return m_size; }
