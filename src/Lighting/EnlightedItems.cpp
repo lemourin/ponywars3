@@ -14,6 +14,7 @@
 EnlightedItems::EnlightedItems(LightSystem* system, SceneGraph::Item* parent):
     SceneGraph::Item(parent),
     m_lightSystem(system) {
+    //setVisible(false);
 }
 
 World *EnlightedItems::world() const {
@@ -80,7 +81,7 @@ void EnlightedNode::updateMaterial(Light* light) {
 }
 
 void EnlightedNode::updateMatrix(QFixture* fixture) {
-    setMatrix(fixture->matrix()*fixture->body()->matrix());
+    setMatrix(fixture->body()->matrix()*fixture->matrix());
 }
 
 EnlightedItems::Node::Node() {
