@@ -6,7 +6,8 @@
 
 ParticleSystem::ParticleSystem(Item *parent):
     SceneGraph::Item(parent),
-    m_time() {
+    m_time(),
+    m_lightSystem() {
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -34,7 +35,7 @@ void ParticleSystem::addExplosion(QPointF p, qreal r, qreal v, uint particleCoun
         qreal dx = cos(angle);
         qreal dy = sin(angle);
 
-        addParticle({ p.x(), p.y(), r,  dx*v, dy*v });
+        addParticle({ p.x(), p.y(), r,  dx*v, dy*v, 0, time() });
     }
 }
 
@@ -62,12 +63,16 @@ SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
     Node* node = static_cast<Node*>(old);
     if (!node) {
         node = new Node;
+        node->material()->setColor(QColor(255, 0, 0, 255));
+        node->material()->setLightPosition(QVector3D(0.5, 0.5, 0.1));
 
-        QOpenGLTexture* t = window()->texture(":/resources/fireball.png");
-        node->material()->setParticleTexture(t);
+        assert(lightSystem());
+        assert(lightSystem()->normalMap());
+        node->material()->setNormalMap(lightSystem()->normalMap()->shaderNode());
     }
 
     node->update(m_particle);
+    node->material()->setTime(time());
 
     return node;
 }
@@ -93,11 +98,16 @@ ParticleSystem::Node::Node():
     setGeometry(&m_geometry);
 
     m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
+    setFlag(UsePreprocess);
+}
+
+void ParticleSystem::Node::preprocess() {
+    m_material.update();
 }
 
 void ParticleSystem::Node::update(const std::vector<Particle>& set) {
     if (m_geometry.vertexDataSize() < 4*set.size()) {
-        m_geometry.allocate(set.size()*4*2, (set.size()*6-2)*2);
+        m_geometry.allocate(set.size()*4*2, set.size()*6*2-2);
         generateTriangleStrip(m_geometry.indexData<GLuint>(),
                               m_geometry.indexDataSize());
     }
@@ -107,8 +117,8 @@ void ParticleSystem::Node::update(const std::vector<Particle>& set) {
     int it = 0;
     for (const Particle& p: set) {
         array[4*it+0] = Vertex(QPointF(p.x-p.r, p.y-p.r), QPointF(0, 0));
-        array[4*it+1] = Vertex(QPointF(p.x-p.r, p.y+p.r), QPointF(0, 1));
-        array[4*it+2] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0));
+        array[4*it+1] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0));
+        array[4*it+2] = Vertex(QPointF(p.x-p.r, p.y+p.r), QPointF(0, 1));
         array[4*it+3] = Vertex(QPointF(p.x+p.r, p.y+p.r), QPointF(1, 1));
         it++;
     }
@@ -121,7 +131,7 @@ void ParticleSystem::Node::update(const std::vector<Particle>& set) {
 void ParticleMaterial::ParticleShader::activate() {
     glGetIntegerv(GL_BLEND_SRC_RGB, m_blendFunc+0);
     glGetIntegerv(GL_BLEND_DST_RGB, m_blendFunc+1);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_ONE, GL_ONE);
 }
 
 void ParticleMaterial::ParticleShader::deactivate() {
@@ -134,31 +144,53 @@ void ParticleMaterial::ParticleShader::initialize() {
     initializeOpenGLFunctions();
 
     m_matrix = program()->uniformLocation("matrix");
-    m_texture = program()->uniformLocation("texcoord");
+    m_normalmap = program()->uniformLocation("normalmap");
+    m_color = program()->uniformLocation("color");
+    m_lightposition = program()->uniformLocation("lightposition");
 }
 
 const char *ParticleMaterial::ParticleShader::vertexShader() const {
     return GLSL(
         attribute vec4 position;
-        attribute vec2 texcoord;
+        attribute vec2 tcoord;
         uniform mat4 matrix;
 
-        varying vec2 tcoord;
+        varying vec2 texcoord;
+        varying vec2 normalcoord;
+        varying float opacity;
 
         void main() {
-            tcoord = texcoord;
+            texcoord = tcoord;
             gl_Position = matrix*position;
+
+            normalcoord.x = 0.5*(gl_Position.x+1.0);
+            normalcoord.y = 1.0-0.5*(gl_Position.y+1.0);
+
+            opacity = 1.0;
         }
     );
 }
 
 const char *ParticleMaterial::ParticleShader::fragmentShader() const {
     return GLSL(
-        uniform sampler2D texture;
-        varying vec2 tcoord;
+        uniform sampler2D normalmap;
+        uniform vec4 color;
+        uniform vec3 lightposition;
+
+        varying vec2 texcoord;
+        varying vec2 normalcoord;
+        varying float opacity;
 
         void main() {
-            gl_FragColor = texture2D(texture, tcoord);
+            vec3 normalcolor = texture2D(normalmap, normalcoord).rgb;
+            vec3 lightdir = lightposition-vec3(texcoord, 0.0);
+            float d = length(lightdir);
+
+            vec3 n = normalize(normalcolor*2.0-1.0);
+            vec3 l = normalize(lightdir);
+            vec3 diffuse = color.rgb*color.a*max(dot(n, l), 0.0);
+
+            gl_FragColor = 2.0*opacity*(color-2.0*d)*vec4(diffuse, 0.0);
         }
     );
 }
@@ -168,17 +200,18 @@ void ParticleMaterial::ParticleShader::updateState(const SceneGraph::Material* t
     const ParticleMaterial* m = static_cast<const ParticleMaterial*>(t);
     program()->setUniformValue(m_matrix, state.matrix());
 
-    assert(m->particleTexture());
-
     glActiveTexture(GL_TEXTURE0);
-    m->particleTexture()->bind();
-    program()->setUniformValue(m_texture, 0);
+    glBindTexture(GL_TEXTURE_2D, m->normalMap()->texture()->texture());
+    program()->setUniformValue(m_normalmap, 0);
+
+    program()->setUniformValue(m_color, m->color());
+    program()->setUniformValue(m_lightposition, m->lightPosition());
 }
 
 std::vector<std::string> ParticleMaterial::ParticleShader::attribute() const {
     return {
         "position",
-        "texcoord"
+        "tcoord"
     };
 }
 
@@ -186,5 +219,12 @@ ParticleSystem::Node::Vertex::Vertex(QPointF pos, QPointF tcoord):
     x(pos.x()), y(pos.y()), tx(tcoord.x()), ty(tcoord.y()) {
 }
 
-ParticleMaterial::ParticleMaterial(): m_particleTexture() {
+ParticleMaterial::ParticleMaterial():
+    m_normalMap(),
+    m_time() {
+}
+
+void ParticleMaterial::update() {
+    assert(m_normalMap);
+    m_normalMap->updateTexture();
 }

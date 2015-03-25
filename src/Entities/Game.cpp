@@ -11,6 +11,8 @@ Game::Game(Item* parent):
     view()->initialize();
     lightSystem()->initialize();
 
+    particleSystem()->setLightSystem(lightSystem());
+
     load(":/json/map00.json");
 }
 
