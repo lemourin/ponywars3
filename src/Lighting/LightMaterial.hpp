@@ -6,8 +6,6 @@
 #include <QOpenGLFunctions>
 #include <QColor>
 
-class QSGDynamicTexture;
-
 class LightMaterial: public SceneGraph::Material {
     private:
         class Shader: public SceneGraph::Shader, public QOpenGLFunctions {

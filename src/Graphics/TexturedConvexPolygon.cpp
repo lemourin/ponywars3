@@ -33,11 +33,6 @@ TexturedConvexPolygon::Node::Node(const std::vector<QPointF>& pts,
         array[i] = QVector4D(pts[i].x(), pts[i].y(),
                              pts[i].x()*scale.x(), pts[i].y()*scale.y());
     m_geometry.updateVertexData();
-
-//    m_material.setFiltering(QSGTexture::Linear);
-//    m_material.setMipmapFiltering(QSGTexture::Linear);
-//    m_material.setHorizontalWrapMode(QSGTexture::Repeat);
-//    m_material.setVerticalWrapMode(QSGTexture::Repeat);
 }
 
 void TexturedConvexPolygon::Node::setTexture(QOpenGLTexture *t) {

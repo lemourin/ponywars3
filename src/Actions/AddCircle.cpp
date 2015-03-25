@@ -5,7 +5,6 @@
 #include "QBox2D/Fixture/Box2DCircle.hpp"
 #include "QBox2D/QWorld.hpp"
 #include <QMouseEvent>
-#include <QSGFlatColorMaterial>
 
 AddCircle::AddCircle(AddBody* parent):
     AddFixture(parent),

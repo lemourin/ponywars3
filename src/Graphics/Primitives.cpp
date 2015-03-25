@@ -1,8 +1,6 @@
 #include "Primitives.hpp"
 #include "Geometry/Triangle.hpp"
 #include "Geometry/Circle.hpp"
-#include <QSGGeometry>
-#include <QSGFlatColorMaterial>
 
 ConvexPolygonGeometry::ConvexPolygonGeometry(const std::vector<QPointF>& pts):
     SceneGraph::Geometry({ { 2, GL_FLOAT } }, pts.size(), sizeof(QVector2D)) {

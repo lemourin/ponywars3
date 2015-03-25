@@ -30,8 +30,6 @@ namespace Json {
 
 }
 
-void clearFocus(QQuickItem* obj);
-
 }
 
 namespace std {

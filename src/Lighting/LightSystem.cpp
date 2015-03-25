@@ -2,9 +2,6 @@
 #include "StaticLight.hpp"
 #include "Entities/Game.hpp"
 #include "Utility/Utility.hpp"
-#include <QSGTextureProvider>
-#include <QSGDynamicTexture>
-#include <QQmlEngine>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <cassert>

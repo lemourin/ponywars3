@@ -1,7 +1,5 @@
 #include "Light.hpp"
 #include "LightSystem.hpp"
-#include <QSGDynamicTexture>
-#include <QQuickWindow>
 #include <QJsonObject>
 
 Light::Light(SceneGraph::Item* parent):

@@ -14,8 +14,4 @@
         <file>qml/GUI/BodyEdit/BodyEditControl.qml</file>
         <file>qml/GUI/BodyEdit/Option.qml</file>
     </qresource>
-    <qresource prefix="/lighting">
-        <file>qml/Lighting/LightParticle.qml</file>
-        <file>qml/Lighting/ParticleSystem.qml</file>
-    </qresource>
 </RCC>

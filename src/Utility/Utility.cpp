@@ -1,13 +1,6 @@
 #include "Utility.hpp"
-#include <QQuickItem>
-#include <QSGGeometry>
 #include <QJsonObject>
-
-void Utility::clearFocus(QQuickItem *obj) {
-    obj->setFocus(false);
-    for (QQuickItem* item: obj->childItems())
-        clearFocus(item);
-}
+#include <QRectF>
 
 QJsonObject Utility::Json::toObject(QRectF rect) {
     QJsonObject obj;

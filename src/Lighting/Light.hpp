@@ -7,7 +7,6 @@
 #include "SceneGraph/Geometry.hpp"
 
 class LightSystem;
-class QSGTexture;
 
 class Light: public QBody {
     private:

@@ -1,6 +1,5 @@
 #include "TexturedItem.hpp"
 #include "Utility/Window.hpp"
-#include <QSGTexture>
 
 TexturedItem::TexturedItem(Item* parent):
     SceneGraph::Item(parent) {

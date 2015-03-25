@@ -3,8 +3,6 @@
 #include "Entities/World.hpp"
 #include "Entities/Chain.hpp"
 #include "Utility/Utility.hpp"
-#include <QSGSimpleRectNode>
-#include <QSGFlatColorMaterial>
 #include <QCursor>
 #include <QQuickWindow>
 

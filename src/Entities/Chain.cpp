@@ -10,7 +10,6 @@
 #include "Player.hpp"
 #include "QBox2D/QWorld.hpp"
 #include "Entities/Gun.hpp"
-#include <QSGFlatColorMaterial>
 #include <QPainterPath>
 #include <QPolygonF>
 #include <QQuickWindow>
@@ -125,7 +124,7 @@ void Chain::beginContact(QFixture*, b2Contact*) {
 }
 
 /*QSGNode* Chain::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    if (n)dddddddddddd
+    if (n)
         return n;
 
     PolygonNode* node = new PolygonNode(m_vertices);

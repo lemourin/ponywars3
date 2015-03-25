@@ -9,7 +9,6 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLFramebufferObject>
 
-class QSGDynamicTexture;
 class LightSystem;
 
 const int DYNAMIC_LIGHTS_COUNT = 1;

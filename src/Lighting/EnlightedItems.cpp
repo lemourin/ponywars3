@@ -7,9 +7,6 @@
 #include "StaticLight.hpp"
 #include "Entities/Game.hpp"
 #include <cassert>
-#include <QSGGeometryNode>
-#include <QSGFlatColorMaterial>
-#include <QSGDynamicTexture>
 
 EnlightedItems::EnlightedItems(LightSystem* system, SceneGraph::Item* parent):
     SceneGraph::Item(parent),

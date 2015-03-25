@@ -19,12 +19,17 @@ void ParticleSystem::addParticle(Particle p) {
 }
 
 void ParticleSystem::step() {
+    std::vector<Particle> particle;
     for (Particle& p: m_particle) {
         p.x += p.dx;
         p.y += p.dy;
-    }
-    m_time++;
 
+        if (m_time-p.time < p.lifespan)
+            particle.push_back(p);
+    }
+
+    m_time++;
+    m_particle = particle;
     update();
 
 }
@@ -35,7 +40,7 @@ void ParticleSystem::addExplosion(QPointF p, qreal r, qreal v, uint particleCoun
         qreal dx = cos(angle);
         qreal dy = sin(angle);
 
-        addParticle({ p.x(), p.y(), r,  dx*v, dy*v, 0, time() });
+        addParticle({ p.x(), p.y(), r,  dx*v, dy*v, 60, time() });
     }
 }
 
@@ -63,7 +68,10 @@ SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
     Node* node = static_cast<Node*>(old);
     if (!node) {
         node = new Node;
-        node->material()->setColor(QColor(255, 0, 0, 255));
+
+        QColor color;
+        color.setRgbF(1.0, 0.5, 0.5, 1.0);
+        node->material()->setColor(color);
         node->material()->setLightPosition(QVector3D(0.5, 0.5, 0.1));
 
         assert(lightSystem());
@@ -75,6 +83,24 @@ SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
     node->material()->setTime(time());
 
     return node;
+}
+
+ParticleSystem::Node::Node():
+    m_geometry(attribute(), 0, sizeof(Vertex)) {
+    setMaterial(&m_material);
+    setGeometry(&m_geometry);
+
+    m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
+    setFlag(UsePreprocess);
+}
+
+std::vector<SceneGraph::Attribute> ParticleSystem::Node::attribute() {
+    return {
+        { 2, GL_FLOAT },
+        { 2, GL_FLOAT },
+        { 1, GL_FLOAT },
+        { 1, GL_FLOAT }
+    };
 }
 
 void ParticleSystem::Node::generateTriangleStrip(GLuint *index, uint size) {
@@ -92,15 +118,6 @@ void ParticleSystem::Node::generateTriangleStrip(GLuint *index, uint size) {
     }
 }
 
-ParticleSystem::Node::Node():
-    m_geometry({ { 2, GL_FLOAT }, { 2, GL_FLOAT } }, 0, sizeof(Vertex)) {
-    setMaterial(&m_material);
-    setGeometry(&m_geometry);
-
-    m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
-    setFlag(UsePreprocess);
-}
-
 void ParticleSystem::Node::preprocess() {
     m_material.update();
 }
@@ -116,10 +133,10 @@ void ParticleSystem::Node::update(const std::vector<Particle>& set) {
 
     int it = 0;
     for (const Particle& p: set) {
-        array[4*it+0] = Vertex(QPointF(p.x-p.r, p.y-p.r), QPointF(0, 0));
-        array[4*it+1] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0));
-        array[4*it+2] = Vertex(QPointF(p.x-p.r, p.y+p.r), QPointF(0, 1));
-        array[4*it+3] = Vertex(QPointF(p.x+p.r, p.y+p.r), QPointF(1, 1));
+        array[4*it+0] = Vertex(QPointF(p.x-p.r, p.y-p.r), QPointF(0, 0), p);
+        array[4*it+1] = Vertex(QPointF(p.x+p.r, p.y-p.r), QPointF(1, 0), p);
+        array[4*it+2] = Vertex(QPointF(p.x-p.r, p.y+p.r), QPointF(0, 1), p);
+        array[4*it+3] = Vertex(QPointF(p.x+p.r, p.y+p.r), QPointF(1, 1), p);
         it++;
     }
 
@@ -145,6 +162,7 @@ void ParticleMaterial::ParticleShader::initialize() {
 
     m_matrix = program()->uniformLocation("matrix");
     m_normalmap = program()->uniformLocation("normalmap");
+    m_timestamp = program()->uniformLocation("timestamp");
     m_color = program()->uniformLocation("color");
     m_lightposition = program()->uniformLocation("lightposition");
 }
@@ -153,7 +171,11 @@ const char *ParticleMaterial::ParticleShader::vertexShader() const {
     return GLSL(
         attribute vec4 position;
         attribute vec2 tcoord;
+        attribute float lifespan;
+        attribute float time;
+
         uniform mat4 matrix;
+        uniform float timestamp;
 
         varying vec2 texcoord;
         varying vec2 normalcoord;
@@ -166,7 +188,8 @@ const char *ParticleMaterial::ParticleShader::vertexShader() const {
             normalcoord.x = 0.5*(gl_Position.x+1.0);
             normalcoord.y = 1.0-0.5*(gl_Position.y+1.0);
 
-            opacity = 1.0;
+            float t = (timestamp-time)/lifespan;
+            opacity = 1.0-t*t;
         }
     );
 }
@@ -204,6 +227,7 @@ void ParticleMaterial::ParticleShader::updateState(const SceneGraph::Material* t
     glBindTexture(GL_TEXTURE_2D, m->normalMap()->texture()->texture());
     program()->setUniformValue(m_normalmap, 0);
 
+    program()->setUniformValue(m_timestamp, (float)m->time());
     program()->setUniformValue(m_color, m->color());
     program()->setUniformValue(m_lightposition, m->lightPosition());
 }
@@ -211,12 +235,21 @@ void ParticleMaterial::ParticleShader::updateState(const SceneGraph::Material* t
 std::vector<std::string> ParticleMaterial::ParticleShader::attribute() const {
     return {
         "position",
-        "tcoord"
+        "tcoord",
+        "lifespan",
+        "time"
     };
 }
 
-ParticleSystem::Node::Vertex::Vertex(QPointF pos, QPointF tcoord):
-    x(pos.x()), y(pos.y()), tx(tcoord.x()), ty(tcoord.y()) {
+ParticleSystem::Node::Vertex::Vertex(QPointF pos,
+                                     QPointF tcoord,
+                                     const Particle &p):
+    x(pos.x()),
+    y(pos.y()),
+    tx(tcoord.x()),
+    ty(tcoord.y()),
+    lifespan(p.lifespan),
+    time(p.time) {
 }
 
 ParticleMaterial::ParticleMaterial():

@@ -18,7 +18,6 @@ class TexturedConvexPolygon: public TexturedPolygon {
         };
 
         SceneGraph::Node* synchronize(SceneGraph::Node *);
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
     public:
         explicit TexturedConvexPolygon(Item* = nullptr);

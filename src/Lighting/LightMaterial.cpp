@@ -1,5 +1,4 @@
 #include "LightMaterial.hpp"
-#include <QSGTexture>
 #include <cassert>
 #define GLSL(shader) #shader
 

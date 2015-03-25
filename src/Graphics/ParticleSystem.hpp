@@ -78,13 +78,15 @@ class ParticleSystem: public SceneGraph::Item {
             private:
                 struct Vertex {
                     float x, y, tx, ty;
+                    float lifespan, time;
 
-                    Vertex(QPointF pos, QPointF tcoord);
+                    Vertex(QPointF pos, QPointF tcoord, const Particle& p);
                 };
 
                 SceneGraph::Geometry m_geometry;
                 ParticleMaterial m_material;
 
+                static std::vector<SceneGraph::Attribute> attribute();
                 void generateTriangleStrip(GLuint* index, uint size);
 
             protected:
