@@ -1,9 +1,7 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 #include <QObject>
-#include <QQmlEngine>
-
-class QQuickItem;
+#include <random>
 
 namespace Utility {
 
@@ -29,6 +27,19 @@ namespace Json {
     QPointF toPoint(const QJsonObject&);
 
 }
+
+class Random {
+    private:
+        std::random_device m_device;
+        std::mt19937 m_rng;
+
+        Random();
+
+    public:
+        static Random& instance();
+
+        static qreal real(qreal a, qreal b);
+};
 
 }
 

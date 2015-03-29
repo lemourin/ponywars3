@@ -82,6 +82,20 @@ void Player::synchronize() {
 
     m_light.setPosition(position());
     m_hand.updateGrabbedWeapon();
+
+    QPointF position = matrix()*m_hand.position();
+    Particle particle;
+    particle.x = position.x();
+    particle.y = position.y();
+    particle.dx = 0.0;
+    particle.dy = 0.0;
+    particle.r = 2.0;
+    particle.xvariantion = 0.1;
+    particle.yvariation = 0.1;
+    particle.lifespan = 50;
+    particle.time = world()->particleSystem()->time();
+
+    world()->particleSystem()->addParticle(particle);
 }
 
 void Player::initialize(QWorld* w) {

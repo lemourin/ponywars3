@@ -33,3 +33,17 @@ QJsonObject Utility::Json::toObject(QPointF point) {
 QPointF Utility::Json::toPoint(const QJsonObject& obj) {
     return QPointF(obj["x"].toDouble(), obj["y"].toDouble());
 }
+
+
+Utility::Random::Random(): m_rng(m_device()) {
+}
+
+Utility::Random &Utility::Random::instance() {
+    static Random random;
+    return random;
+}
+
+qreal Utility::Random::real(qreal a, qreal b) {
+    std::uniform_real_distribution<qreal> distribution(a, b);
+    return distribution(instance().m_rng);
+}

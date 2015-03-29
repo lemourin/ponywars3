@@ -87,8 +87,7 @@ void Creature::updateOnGround() {
     QRectF box = boundingRect();
 
     const qreal offset = 1;
-    box.translate(offset, offset);
-    box.setSize(box.size()-QSizeF(2*offset, 2*offset));
+    box.setSize(box.size()+QSizeF(2*offset, 2*offset));
     box.translate(0, 2*offset);
 
     bool success = false;

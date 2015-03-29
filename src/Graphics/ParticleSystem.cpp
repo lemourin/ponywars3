@@ -2,6 +2,7 @@
 #include "Geometry/Circle.hpp"
 #include "SceneGraph/Renderer.hpp"
 #include "Utility/Window.hpp"
+#include "Utility/Utility.hpp"
 #include <cassert>
 
 ParticleSystem::ParticleSystem(Item *parent):
@@ -21,8 +22,8 @@ void ParticleSystem::addParticle(Particle p) {
 void ParticleSystem::step() {
     std::vector<Particle> particle;
     for (Particle& p: m_particle) {
-        p.x += p.dx;
-        p.y += p.dy;
+        p.x += Utility::Random::real(p.dx-p.xvariantion, p.dx+p.xvariantion);
+        p.y += Utility::Random::real(p.dy-p.yvariation, p.dy+p.yvariation);
 
         if (m_time-p.time < p.lifespan)
             particle.push_back(p);
@@ -40,7 +41,7 @@ void ParticleSystem::addExplosion(QPointF p, qreal r, qreal v, uint particleCoun
         qreal dx = cos(angle);
         qreal dy = sin(angle);
 
-        addParticle({ p.x(), p.y(), r,  dx*v, dy*v, 60, time() });
+        addParticle({ p.x(), p.y(), r,  dx*v, dy*v, 0.0, 0.0, 60, time() });
     }
 }
 
