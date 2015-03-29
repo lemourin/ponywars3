@@ -80,7 +80,7 @@ void Player::beginContact(QFixture*, b2Contact*) {
 void Player::synchronize() {
     Pony::synchronize();
 
-    m_light.setPosition(position());
+    //m_light.setPosition(position());
     m_hand.updateGrabbedWeapon();
 
     QPointF position = matrix()*m_hand.position();

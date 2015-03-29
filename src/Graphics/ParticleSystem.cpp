@@ -57,12 +57,12 @@ void ParticleSystem::visibleAreaChanged(QRectF rect) {
 }
 
 void ParticleSystem::updateMatrix(QSizeF size, QRectF rect) {
-    QMatrix4x4 m;
+    /*QMatrix4x4 m;
     m.scale(0.5*size.width(), 0.5*size.height());
     m.translate(1, 1);
     m.ortho(rect.left(), rect.right(), rect.top(), rect.bottom(), -1, 1);
 
-    setMatrix(m);
+    setMatrix(m);*/
 }
 
 SceneGraph::Node *ParticleSystem::synchronize(SceneGraph::Node* old) {
@@ -186,8 +186,7 @@ const char *ParticleMaterial::ParticleShader::vertexShader() const {
             texcoord = tcoord;
             gl_Position = matrix*position;
 
-            normalcoord.x = 0.5*(gl_Position.x+1.0);
-            normalcoord.y = 1.0-0.5*(gl_Position.y+1.0);
+            normalcoord = 0.5*(gl_Position+vec2(1.0, 1.0));
 
             float t = (timestamp-time)/lifespan;
             opacity = 1.0-t*t;

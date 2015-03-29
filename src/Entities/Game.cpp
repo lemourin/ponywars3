@@ -6,7 +6,7 @@ Game::Game(Item* parent):
     DisplayItemFrame(parent),
     m_viewWorld(this),
     m_lightSystem(this),
-    m_particleSystem(this) {
+    m_particleSystem(m_lightSystem.lightTexture()->sourceItem()) {
 
     view()->initialize();
     lightSystem()->initialize();
