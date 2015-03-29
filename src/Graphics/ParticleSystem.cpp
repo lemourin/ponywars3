@@ -166,7 +166,7 @@ const char *ParticleMaterial::ParticleShader::vertexShader() const {
             texcoord = tcoord;
             gl_Position = matrix*position;
 
-            normalcoord = 0.5*(gl_Position+vec2(1.0, 1.0));
+            normalcoord = 0.5*(gl_Position.xy+vec2(1.0, 1.0));
 
             float t = (timestamp-time)/lifespan;
             opacity = 1.0-t*t;
