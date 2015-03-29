@@ -39,8 +39,6 @@ void ViewWorld::visibleAreaChanged() {
     DisplayItem::visibleAreaChanged();
 
     game()->lightSystem()->visibleAreaChanged(visibleArea());
-    game()->particleSystem()->visibleAreaChanged(visibleArea());
-
     world()->setVisibleRect(visibleArea());
 }
 

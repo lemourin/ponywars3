@@ -33,8 +33,6 @@ void Game::sizeChanged() {
 
     lightSystem()->setResolution(resolution);
     lightSystem()->setSize(size());
-
-    particleSystem()->setSize(size());
 }
 
 bool Game::read(const QJsonObject& obj) {
