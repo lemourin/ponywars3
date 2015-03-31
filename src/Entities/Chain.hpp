@@ -11,9 +11,6 @@ class Chain: public QBody {
         void createChain();
         void beginContact(QFixture* other, b2Contact*);
 
-    protected:
-        //QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
-
     public:
         Chain(SceneGraph::Item* = nullptr);
         ~Chain();

@@ -23,8 +23,10 @@ class Bullet: public QBody {
 
     public:
         Bullet(Circle circle, SceneGraph::Item* = nullptr);
-
         void destroyBody();
+
+        inline static Type* key() { static Type t; return &t; }
+        inline Type* type() const { return key(); }
 };
 
 #endif // GUN_HPP

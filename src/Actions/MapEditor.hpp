@@ -20,6 +20,8 @@ class MapEditor: public SubAction {
         std::vector<Action*> m_action;
         ActionObject m_object;
 
+    protected:
+
     public:
         MapEditor(MainAction*);
 

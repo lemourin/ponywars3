@@ -29,8 +29,10 @@ void QBody::destroyBody() {
 
     world()->onBodyDestroyed(this);
 
-    while (firstFixture())
-        delete firstFixture();
+    while (QFixture* f = firstFixture()) {
+        f->destroyFixture();
+        releaseResource(f);
+    }
 
     body()->SetUserData(nullptr);
     body()->GetWorld()->DestroyBody(body());
@@ -181,7 +183,10 @@ void QBody::initializeLater(QWorld* w) {
     if (body())
         return;
 
-    enqueueFunction(std::bind(&QBody::initialize, this, w));
+    if (m_work.empty())
+        w->m_enqueued.push_back(this);
+
+    m_work.push(std::bind(&QBody::initialize, this, w));
 }
 
 void QBody::destroyLater() {
@@ -250,6 +255,10 @@ void QBody::synchronize() {
     m_content.resetTransform();
     m_content.translate(position().x(), position().y());
     m_content.rotate(rotation(), 0, 0, 1);
+}
+
+void QBody::releaseResource(QFixture* f) {
+    delete f;
 }
 
 QBody* QBody::toQBody(b2Body* body) {

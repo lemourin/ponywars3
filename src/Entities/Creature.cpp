@@ -86,7 +86,7 @@ bool Creature::canSee(QBody* body) {
 void Creature::updateOnGround() {
     QRectF box = boundingRect();
 
-    const qreal offset = 1;
+    const qreal offset = 0.5;
     box.translate(0, offset);
 
     box = box.intersected(boundingRect());

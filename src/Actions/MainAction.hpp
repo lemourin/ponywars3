@@ -16,8 +16,7 @@ class MainAction: public Action {
         FileAction m_fileAction;
 
     protected:
-        void onInit();
-        void reset();
+        void subActionEnabledChanged(SubAction *);
 
         void focusedObjectDestroyed();
 

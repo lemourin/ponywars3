@@ -3,16 +3,15 @@
 #include "QBox2D/Fixture/Box2DEdge.hpp"
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/QFixture.hpp"
+#include "QBox2D/QWorld.hpp"
 #include "Graphics/Primitives.hpp"
 #include "Geometry/Circle.hpp"
 #include "Geometry/Vector2d.hpp"
 #include "Geometry/Functions.hpp"
-#include "Player.hpp"
-#include "QBox2D/QWorld.hpp"
 #include "Entities/Gun.hpp"
+#include "Entities/World.hpp"
 #include <QPainterPath>
 #include <QPolygonF>
-#include <QQuickWindow>
 
 static b2Vec2 tob2Vec2(QPointF p) {
     return b2Vec2(p.x(), p.y());
@@ -53,9 +52,6 @@ void Chain::cutCircle(Circle circle) {
         std::vector<Vector2d> pts(poly.begin(), poly.end()-1);
         pts = Geometry::simplifyPolygon(pts, 0.2);
 
-        //for (Vector2d& p: pts)
-        //    p = Vector2d(mapFromItem(parentItem(), QPointF(p)));
-
         if (std::fabs(Geometry::area(pts.begin(), pts.end())) > 5.f) {
             std::vector<QPointF> list;
             for (Vector2d p: pts)
@@ -64,11 +60,13 @@ void Chain::cutCircle(Circle circle) {
             Chain* chain = new Chain(world());
             chain->setVertices(list);
             chain->initializeLater(world());
+
+            static_cast<World*>(world())->itemSet()->addBody(chain);
         }
     }
 
     m_vertices.clear();
-    //deleteLater();
+    destroyLater();
 }
 
 bool Chain::testPoint(const QPointF &point) const {
@@ -111,24 +109,15 @@ void Chain::createChain() {
     }
     Box2DChain* chain = new Box2DChain;
     chain->setVertices(pts);
+    chain->setShadowCaster(false);
     chain->setSensor(true);
 
     addFixture(chain);
 }
 
-void Chain::beginContact(QFixture*, b2Contact*) {
-    //if (!qobject_cast<Bullet*>(other->body()))
-    //    return;
+void Chain::beginContact(QFixture* f, b2Contact*) {
+    if (f->body()->type() != Bullet::key())
+        return;
 
-    //cutCircle(Circle(Vector2d(other->body()->worldCenter()), 5));
+    cutCircle(Circle(Vector2d(f->body()->worldCenter()), 5));
 }
-
-/*QSGNode* Chain::updatePaintNode(QSGNode* n, UpdatePaintNodeData*) {
-    if (n)
-        return n;
-
-    PolygonNode* node = new PolygonNode(m_vertices);
-    node->setColor(Qt::red);
-
-    return node;
-}*/
