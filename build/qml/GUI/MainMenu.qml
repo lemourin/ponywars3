@@ -19,13 +19,13 @@ Row {
 
         Button {
             text: "File"
-            onClicked: fileOptions.focus ^= 1
+            onClicked: fileAction.toggleEnabled()
         }
 
-        Button {
+        /*Button {
             text: "Network"
             onClicked: networkOptions.focus ^= 1
-        }
+        }*/
 
         Button {
             text: "Pause"
@@ -56,11 +56,12 @@ Row {
         NetworkOptions { }
     }*/
 
-    /*Column {
+    Column {
+        visible: fileAction.enabled
 
         SaveMap { }
         LoadMap { }
-    }*/
+    }
 
     Row {
         visible: mapEditor.enabled

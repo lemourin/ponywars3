@@ -6,7 +6,7 @@
 #include "Geometry/Vector2d.hpp"
 #include "Geometry/Circle.hpp"
 #include "Entities/ViewWorld.hpp"
-#include <Box2D/Box2D.h>
+#include "MapEditor.hpp"
 
 GrabItem::GrabItem(MapEditor* parent):
     SubAction(parent),

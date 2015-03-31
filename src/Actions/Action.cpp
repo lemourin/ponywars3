@@ -2,12 +2,12 @@
 #include "Utility/Utility.hpp"
 #include "SubAction.hpp"
 
-Action::Action(SceneGraph::Item* parent):
+Action::Action(SceneGraph::Item* parent, World *w):
     SceneGraph::Item(parent),
     m_currentSubAction(),
     m_enabled(),
     m_object(),
-    m_world() {
+    m_world(w) {
 }
 
 void Action::reset() {

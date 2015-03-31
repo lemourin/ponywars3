@@ -3,8 +3,7 @@
 #include "Entities/World.hpp"
 #include "Entities/Chain.hpp"
 #include "Utility/Utility.hpp"
-#include <QCursor>
-#include <QQuickWindow>
+#include "MapEditor.hpp"
 
 AddChain::AddChain(MapEditor* p):
     SubAction(p),

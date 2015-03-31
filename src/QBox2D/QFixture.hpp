@@ -102,6 +102,8 @@ class QFixture: public SceneGraph::Item {
 
         QFixture* next() const;
 
+        bool testOverlap(QFixture*);
+
         static QFixture* toQFixture(b2Fixture *fixture);
         static const QFixture* toQFixture(const b2Fixture *fixture);
 };

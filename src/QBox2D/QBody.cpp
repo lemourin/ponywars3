@@ -12,6 +12,7 @@ QBody::QBody(SceneGraph::Item* parent):
     BaseItem(parent),
     m_body(),
     m_world(),
+    m_id(),
     m_pendingDestroy() {
 
     m_bodyDef.userData = this;
@@ -215,8 +216,6 @@ bool QBody::read(const QJsonObject& obj) {
 }
 
 bool QBody::write(QJsonObject& obj) const {
-    //obj["class"] = QString(metaObject()->className());
-
     obj["x"] = position().x();
     obj["y"] = position().y();
     obj["rotation"] = rotation();

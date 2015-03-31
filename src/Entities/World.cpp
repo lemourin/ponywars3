@@ -19,7 +19,7 @@ World::World(ViewWorld* viewWorld):
     m_viewWorld(viewWorld),
     m_player(),
     m_itemSet(this),
-    m_mapEditor(this),
+    m_mainAction(this),
     m_worldObject(this) {
 }
 
@@ -39,10 +39,10 @@ void World::step() {
 void World::onBodyDestroyed(QBody* body) {
     if (player() == body)
         setPlayer(nullptr);
-    if (mapEditor()->m_focusedObject == body)
-        mapEditor()->focusedObjectDestroyed();
-    if (mapEditor()->grabItem()->m_grabbedBody == body)
-        mapEditor()->grabItem()->releaseItem();
+    if (mainAction()->m_focusedObject == body)
+        mainAction()->focusedObjectDestroyed();
+    if (mainAction()->mapEditor()->grabItem()->m_grabbedBody == body)
+        mainAction()->mapEditor()->grabItem()->releaseItem();
 
     QWorld::onBodyDestroyed(body);
 }

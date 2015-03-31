@@ -105,6 +105,13 @@ QFixture* QFixture::next() const {
     return m_node.next() ? m_node.next()->data() : nullptr;
 }
 
+bool QFixture::testOverlap(QFixture* f) {
+    return b2TestOverlap(fixture()->GetShape(), 0,
+                         f->fixture()->GetShape(), 0,
+                         body()->body()->GetTransform(),
+                         f->body()->body()->GetTransform());
+}
+
 bool QFixture::read(const QJsonObject& obj) {
     setPosition(QPointF(obj["x"].toDouble(), obj["y"].toDouble()));
     setDensity(obj["density"].toDouble());

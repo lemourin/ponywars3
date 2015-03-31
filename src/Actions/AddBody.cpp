@@ -5,6 +5,7 @@
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/QFixture.hpp"
 #include "Entities/World.hpp"
+#include "MapEditor.hpp"
 
 AddBody::AddBody(MapEditor* p):
     SubAction(p),

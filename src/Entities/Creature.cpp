@@ -87,18 +87,29 @@ void Creature::updateOnGround() {
     QRectF box = boundingRect();
 
     const qreal offset = 1;
-    box.setSize(box.size()+QSizeF(2*offset, 2*offset));
-    box.translate(0, 2*offset);
+    box.translate(0, offset);
+
+    box = box.intersected(boundingRect());
+    box.setWidth(box.width()-2*offset);
+    box.translate(offset, 0);
 
     bool success = false;
-    for (QBody* b: world()->bodies(box))
-        if (this != b) {
-            int16 g1 = body()->GetFixtureList()->GetFilterData().groupIndex;
-            int16 g2 = b->body()->GetFixtureList()->GetFilterData().groupIndex;
-            if (!(g1 & g2) && b->testOverlap(box)) {
-                success = true;
-                break;
+    for (QFixture* f: world()->fixtures(box))
+        if (this != f->body() && !f->isSensor()) {
+            for (QFixture* tf = firstFixture(); tf; tf = tf->next()) {
+                int16 g1 = tf->fixture()->GetFilterData().groupIndex;
+                int16 g2 = f->fixture()->GetFilterData().groupIndex;
+
+                if (!(g1 & g2) && !tf->fixture()->IsSensor()) {
+                    if (f->testOverlap(tf)) {
+                        success = true;
+                        break;
+                    }
+                }
             }
+
+            if (success)
+                break;
         }
 
     if (success)

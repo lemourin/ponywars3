@@ -51,7 +51,7 @@ class Action: public SceneGraph::Item {
         virtual void subActionEnabledChanged(SubAction*);
 
     public:
-        Action(SceneGraph::Item* = nullptr);
+        Action(SceneGraph::Item* = nullptr, World* = nullptr);
 
         virtual void reset();
 

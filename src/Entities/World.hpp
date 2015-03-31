@@ -7,7 +7,7 @@
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
 
-#include "Actions/MapEditor.hpp"
+#include "Actions/MainAction.hpp"
 
 #include "Graphics/ParticleSystem.hpp"
 
@@ -76,7 +76,7 @@ class World: public QWorld {
         Player* m_player;
 
         ItemSet m_itemSet;
-        MapEditor m_mapEditor;
+        MainAction m_mainAction;
 
         WorldObject m_worldObject;
 
@@ -102,8 +102,8 @@ class World: public QWorld {
         inline bool paused() const { return !isRunning(); }
         void setPaused(bool);
 
-        inline MapEditor* mapEditor() { return &m_mapEditor; }
-        inline const MapEditor* mapEditor() const { return &m_mapEditor; }
+        inline MainAction* mainAction() { return &m_mainAction; }
+        inline const MainAction* mainAction() const { return &m_mainAction; }
 
         inline WorldObject* object() { return &m_worldObject; }
         inline const WorldObject* object() const { return &m_worldObject; }

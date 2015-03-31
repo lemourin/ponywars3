@@ -1,8 +1,11 @@
 #include "DeleteItem.hpp"
 #include "Entities/World.hpp"
 #include "QBox2D/QBody.hpp"
+#include "MapEditor.hpp"
 
-DeleteItem::DeleteItem(MapEditor* p): SubAction(p), m_object(this) {
+DeleteItem::DeleteItem(MapEditor* p):
+    SubAction(p),
+    m_object(this) {
 }
 
 void DeleteItem::mouseReleaseEvent(QMouseEvent *event) {

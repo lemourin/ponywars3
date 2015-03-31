@@ -6,18 +6,11 @@
 #include "DeleteItem.hpp"
 #include "BodyEdit.hpp"
 #include "Utility/BaseItem.hpp"
-#include <QPointer>
 
-class SubAction;
-class MapEditor;
-class AddBodyObject;
+class MainAction;
 
-class MapEditor: public Action {
+class MapEditor: public SubAction {
     private:
-        friend class SubAction;
-        friend class MapEditorObject;
-        friend class World;
-
         AddChain m_addChain;
         AddBody m_addBody;
         GrabItem m_grabItem;
@@ -25,24 +18,18 @@ class MapEditor: public Action {
         BodyEdit m_bodyEdit;
 
         std::vector<Action*> m_action;
-        BaseItem* m_focusedObject;
-
         ActionObject m_object;
 
-    protected:
-        void onInit();
-        void reset();
-
-        void focusedObjectDestroyed();
-
     public:
-        MapEditor(World*);
+        MapEditor(MainAction*);
 
         inline AddChain* addChain() { return &m_addChain; }
         inline AddBody* addBody() { return &m_addBody; }
         inline GrabItem* grabItem() { return &m_grabItem; }
         inline DeleteItem* deleteItem() { return &m_deleteItem; }
         inline BodyEdit* bodyEdit() { return &m_bodyEdit; }
+
+        inline QString name() const { return "MapEditor"; }
 };
 
 #endif // MAPEDITOR_HPP

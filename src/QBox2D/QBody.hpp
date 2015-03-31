@@ -25,6 +25,7 @@ class QBody: public BaseItem {
 
         SceneGraph::Item m_content;
         std::queue< std::function<void()> > m_work;
+        uint m_id;
         bool m_pendingDestroy;
 
         void removeFixture(QFixture*);
@@ -123,6 +124,8 @@ class QBody: public BaseItem {
         virtual bool write(QJsonObject&) const;
 
         virtual Type* type() const { return nullptr; }
+
+        inline uint id() const { return m_id; }
 
         static QBody* toQBody(b2Body *body);
         static const QBody* toQBody(const b2Body *body);

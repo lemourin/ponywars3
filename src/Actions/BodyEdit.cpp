@@ -1,6 +1,7 @@
 #include "BodyEdit.hpp"
 #include "Entities/World.hpp"
 #include "QBox2D/QBody.hpp"
+#include "MapEditor.hpp"
 #include "Utility/Utility.hpp"
 
 BodyEdit::BodyEdit(MapEditor* p):
