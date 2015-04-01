@@ -21,9 +21,6 @@ class ItemSet: public SceneGraph::Item {
         void addBody(QBody*);
         void removeBody(QBody*);
 
-        void dump(QString fileName);
-        void load(QString fileName);
-
         void write(QJsonObject&) const;
         void read(const QJsonObject&);
 };

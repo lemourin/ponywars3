@@ -1,8 +1,8 @@
 #include "SubAction.hpp"
 #include "MapEditor.hpp"
 
-SubAction::SubAction(Action *parent):
-    Action(parent),
+SubAction::SubAction(Action *parent, World *w):
+    Action(parent, w),
     m_parentAction(parent) {
 }
 

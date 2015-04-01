@@ -39,29 +39,6 @@ void ItemSet::removeBody(QBody* body) {
     delete body;
 }
 
-void ItemSet::dump(QString /*fileName*/) {
-    //std::fstream file(fileName.toStdString(), std::fstream::out);
-    //std::ostream& file = std::cout;
-
-    QJsonObject object;
-    write(object);
-
-    QJsonDocument document(object);
-    qDebug() << document.toJson();
-
-}
-
-void ItemSet::load(QString fileName) {
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly))
-        qDebug() << "failed to open map file";
-
-    QByteArray data = file.readAll();
-
-    QJsonDocument document(QJsonDocument::fromJson(data));
-    read(document.object());
-}
-
 void ItemSet::write(QJsonObject& obj) const {
     QJsonArray array;
     for (QBody* body: m_body) {

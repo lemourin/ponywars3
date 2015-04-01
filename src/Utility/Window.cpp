@@ -64,11 +64,17 @@ Window::Window(QWindow* parent):
     MainAction* mainAction = world->mainAction();
     MapEditor* mapEditor = mainAction->mapEditor();
     FileAction* fileAction = mainAction->fileAction();
+    SaveMapAction* saveMapAction = fileAction->saveMapAction();
+    LoadMapAction* loadMapAction = fileAction->loadMapAction();
+
     AddBody* addBody = mapEditor->addBody();
     rootContext()->setContextProperty("world", world->object());
 
     rootContext()->setContextProperty("mapEditor", mapEditor->object());
     rootContext()->setContextProperty("fileAction", fileAction->object());
+
+    rootContext()->setContextProperty("saveMap", saveMapAction->object());
+    rootContext()->setContextProperty("loadMap", loadMapAction->object());
 
     rootContext()->setContextProperty("addBody", addBody->object());
     rootContext()->setContextProperty("addPolygon", addBody->addPolygon()->object());

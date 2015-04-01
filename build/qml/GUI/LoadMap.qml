@@ -2,30 +2,29 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 
 FocusScope {
-    id: loadMap
     width: childrenRect.width
     height: childrenRect.height
 
     Row {
         Button {
             text: "LoadMap"
-            onClicked: loadMap.focus ^= 1
+            onClicked: loadMap.toggleEnabled()
         }
 
         Row {
-            id: options
-            visible: loadMap.focus
+            enabled: visible
+            visible: loadMap.enabled
 
             Column {
                 Row {
                     Button {
                         text: "Load from file:"
-                        onClicked: world.loadMap("qml/Maps/"+fileName.text);
+                        onClicked: loadMap.load(":/json/"+fileName.text);
                     }
 
                     TextField {
                         id: fileName
-                        text: "ItemSet.qml"
+                        text: "map00.json"
                     }
                 }
             }

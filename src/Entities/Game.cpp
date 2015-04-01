@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <fstream>
 #include <QJsonObject>
 #include <QJsonDocument>
 
@@ -66,11 +67,12 @@ void Game::load(QString path) {
 
 }
 
-void Game::dump(QString /*path*/) const {
+void Game::dump(QString path) const {
     QJsonObject obj;
     write(obj);
 
     QJsonDocument document(obj);
-
-    qDebug() << document.toJson();
+    std::fstream file(path.toStdString(), std::ios::out);
+    assert(file.is_open());
+    file << document.toJson().toStdString();
 }
