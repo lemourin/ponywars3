@@ -22,7 +22,7 @@ void ParticleSystem::addParticle(Particle p) {
 void ParticleSystem::step() {
     std::vector<Particle> particle;
     for (Particle& p: m_particle) {
-        p.x += Utility::Random::real(p.dx-p.xvariantion, p.dx+p.xvariantion);
+        p.x += Utility::Random::real(p.dx-p.xvariation, p.dx+p.xvariation);
         p.y += Utility::Random::real(p.dy-p.yvariation, p.dy+p.yvariation);
 
         if (m_time-p.time < p.lifespan)

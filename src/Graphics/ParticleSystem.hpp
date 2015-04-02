@@ -10,7 +10,7 @@ class LightSystem;
 
 struct Particle {
     qreal x, y, r;
-    qreal dx, dy, xvariantion, yvariation;
+    qreal dx, dy, xvariation, yvariation;
     uint lifespan, time;
 };
 

@@ -90,7 +90,7 @@ void Player::synchronize() {
     particle.dx = 0.0;
     particle.dy = 0.0;
     particle.r = 2.0;
-    particle.xvariantion = 0.1;
+    particle.xvariation = 0.1;
     particle.yvariation = 0.1;
     particle.lifespan = 50;
     particle.time = world()->particleSystem()->time();

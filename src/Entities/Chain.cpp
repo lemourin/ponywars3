@@ -50,15 +50,10 @@ void Chain::cutCircle(Circle circle) {
 
     for (const QPolygonF& poly: chain.toSubpathPolygons()) {
         std::vector<Vector2d> pts(poly.begin(), poly.end()-1);
-        pts = Geometry::simplifyPolygon(pts, 0.2);
 
         if (std::fabs(Geometry::area(pts.begin(), pts.end())) > 5.f) {
-            std::vector<QPointF> list;
-            for (Vector2d p: pts)
-                list.push_back(QPointF(p.x, p.y));
-
             Chain* chain = new Chain(world());
-            chain->setVertices(list);
+            chain->setVertices(std::vector<QPointF>(pts.begin(), pts.end()));
             chain->initializeLater(world());
 
             static_cast<World*>(world())->itemSet()->addBody(chain);
@@ -71,16 +66,18 @@ void Chain::cutCircle(Circle circle) {
 
 bool Chain::testPoint(const QPointF &point) const {
     std::vector<Vector2d> pts;
-    for (QVariant v: m_vertices)
-        pts.push_back((Vector2d)v.toPointF());
+    for (QPointF v: m_vertices)
+        pts.push_back((Vector2d)v);
 
     return Geometry::pointInPolygon(pts.begin(), pts.end(), Vector2d(point));
 }
 
 void Chain::createChain() {
-    std::vector<QPointF> pts;
-    for (const QVariant& p: vertices())
-        pts.push_back(p.toPointF());
+    std::vector<Vector2d> tmp(m_vertices.begin(), m_vertices.end());
+    tmp = Geometry::simplifyPolygon(tmp, 0.2);
+
+    m_vertices = std::vector<QPointF>(tmp.begin(), tmp.end());
+    std::vector<QPointF> pts = vertices();
 
     size_t it = pts.size()-1, prev = it-1, next = 1;
     for (size_t i=0; i<pts.size(); i++) {
