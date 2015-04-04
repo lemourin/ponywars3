@@ -19,8 +19,10 @@ void Hand::setGrabbedWeapon(Weapon* weapon) {
         return;
     m_grabbedWeapon = weapon;
 
-    emit owner()->world()->object()->equippedWeaponChanged();
-    emit owner()->world()->object()->bulletCountChanged();
+    if (owner() == owner()->world()->player()) {
+        emit owner()->world()->object()->equippedWeaponChanged();
+        emit owner()->world()->object()->bulletCountChanged();
+    }
 }
 
 void Hand::setHandPosition(QPointF pos) {

@@ -1,10 +1,10 @@
 #include "MainAction.hpp"
 #include "Entities/World.hpp"
 #include "Entities/ViewWorld.hpp"
+#include "Entities/Player.hpp"
 
 MainAction::MainAction(World* w):
     Action(w, w),
-    m_focusedObject(),
     m_mapEditor(this),
     m_fileAction(this) {
 }
@@ -17,23 +17,16 @@ void MainAction::subActionEnabledChanged(SubAction *action) {
     ViewWorld* view = world()->view();
 
     if (action->enabled()) {
-        m_focusedObject = view->focusedObject();
         view->setFocusedObject(nullptr);
         view->setFlickable(true);
     }
     else {
-        if (m_focusedObject)
-            m_focusedObject->setFocus(true);
+        if (world()->player())
+            world()->player()->setFocus(true);
         else
             world()->setFocus(true);
 
-        view->setFocusedObject(m_focusedObject);
+        view->setFocusedObject(world()->player());
         view->setFlickable(false);
     }
 }
-
-void MainAction::focusedObjectDestroyed() {
-    m_focusedObject = nullptr;
-}
-
-

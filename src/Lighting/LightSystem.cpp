@@ -17,17 +17,16 @@ LightSystem::LightSystem(Game* game):
 
 LightSystem::~LightSystem() {
     for (StaticLight* light: m_light) {
-        if (light->dynamicLight())
-            light->dynamicLight()->setLightSystem(nullptr);
-
+        light->setVisible(false);
         light->setLightSystem(nullptr);
     }
 
-    for (StaticLight* light: m_loadedLights)
-        delete light;
-
-    for (DynamicLight* light: m_unusedLight)
+    for (DynamicLight* light: m_unusedLight) {
+        light->setVisible(false);
         light->setLightSystem(nullptr);
+    }
+
+    clear();
 }
 
 void LightSystem::read(const QJsonObject& obj) {
@@ -69,6 +68,14 @@ void LightSystem::initialize() {
     m_normalMap.setBackground(color);
 
     visibleAreaChanged(world()->visibleRect());
+}
+
+void LightSystem::clear() {
+    for (StaticLight* light: m_loadedLights)
+        delete light;
+    m_loadedLights.clear();
+
+    m_enlightedItems.clear();
 }
 
 void LightSystem::setSize(QSizeF s) {
@@ -166,6 +173,10 @@ SceneGraph::Node *LightSystem::synchronize(SceneGraph::Node *old) {
     }
 
     return node;
+}
+
+void LightSystem::onFixtureDestroyed(QFixture* f) {
+    m_enlightedItems.onFixtureDestroyed(f);
 }
 
 void LightSystem::initializeDynamicLights() {

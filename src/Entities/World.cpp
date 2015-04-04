@@ -24,10 +24,12 @@ World::World(ViewWorld* viewWorld):
 }
 
 World::~World() {
-    m_itemSet.destroy();
+    m_itemSet.clear();
 
-    delete m_player;
-    m_player = nullptr;
+    Player* item = player();
+    setPlayer(nullptr);
+
+    delete item;
 }
 
 void World::step() {
@@ -36,11 +38,18 @@ void World::step() {
     particleSystem()->step();
 }
 
+void World::clear() {
+    Player* item = player();
+    setPlayer(nullptr);
+
+    delete item;
+
+    m_itemSet.clear();
+}
+
 void World::onBodyDestroyed(QBody* body) {
     if (player() == body)
         setPlayer(nullptr);
-    if (mainAction()->m_focusedObject == body)
-        mainAction()->focusedObjectDestroyed();
     if (mainAction()->mapEditor()->grabItem()->m_grabbedBody == body)
         mainAction()->mapEditor()->grabItem()->releaseItem();
 
@@ -52,6 +61,10 @@ void World::onBodyAdded(QBody* body) {
 
     assert(lightSystem());
     lightSystem()->addBody(body);
+}
+
+void World::onFixtureDestroyed(QFixture* f) {
+    lightSystem()->onFixtureDestroyed(f);
 }
 
 void World::releaseResource(QBody* body) {
@@ -71,6 +84,7 @@ void World::setPlayer(Player* player) {
     view()->setFocusedObject(player);
 
     emit object()->playerChanged();
+    emit object()->equippedWeaponChanged();
 }
 
 LightSystem* World::lightSystem() const {
@@ -137,10 +151,16 @@ void WorldObject::setFps(qreal f) {
 }
 
 uint WorldObject::playerHealth() const {
+    if (m_world->player() == nullptr)
+        return 0;
+
     return m_world->player()->health();
 }
 
 bool WorldObject::equippedWeapon() const {
+    if (m_world->player() == nullptr)
+        return false;
+
     return m_world->player()->hand()->grabbedWeapon() != nullptr;
 }
 
@@ -166,7 +186,8 @@ void WorldObject::playerDisableGoRight() {
 }
 
 void WorldObject::playerJumpRequested() {
-    m_world->player()->jumpRequested();
+    if (m_world->player()->currentState() & Player::OnGround)
+        m_world->player()->jumpRequested();
 }
 
 void WorldObject::playerPunchRequested() {

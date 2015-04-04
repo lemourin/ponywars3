@@ -20,6 +20,7 @@ class StaticLight: public Light {
 
     public:
         StaticLight(SceneGraph::Item* = nullptr);
+        ~StaticLight();
 
         void initialize(QWorld*);
         void destroyBody();

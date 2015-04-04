@@ -83,6 +83,7 @@ class World: public QWorld {
     protected:
         void onBodyDestroyed(QBody*);
         void onBodyAdded(QBody*);
+        void onFixtureDestroyed(QFixture*);
         void releaseResource(QBody*);
 
     public:
@@ -90,6 +91,7 @@ class World: public QWorld {
         ~World();
 
         void step();
+        void clear();
 
         inline Player* player() const { return m_player; }
         void setPlayer(Player* p);

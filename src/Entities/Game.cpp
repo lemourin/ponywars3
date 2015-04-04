@@ -55,7 +55,14 @@ bool Game::write(QJsonObject& obj) const {
     return true;
 }
 
+void Game::clear() {
+    lightSystem()->clear();
+    view()->world()->clear();
+}
+
 void Game::load(QString path) {
+    clear();
+
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
         qDebug() << "failed to open map file";
@@ -64,7 +71,6 @@ void Game::load(QString path) {
 
     QJsonDocument document(QJsonDocument::fromJson(data));
     read(document.object());
-
 }
 
 void Game::dump(QString path) const {

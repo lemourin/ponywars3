@@ -15,7 +15,7 @@ class ItemSet: public SceneGraph::Item {
         ItemSet(World* world);
         ~ItemSet();
 
-        void destroy();
+        void clear();
         bool contains(QBody*);
 
         void addBody(QBody*);

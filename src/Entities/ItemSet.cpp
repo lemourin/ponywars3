@@ -13,10 +13,10 @@ ItemSet::ItemSet(World* world):
 }
 
 ItemSet::~ItemSet() {
-    destroy();
+    clear();
 }
 
-void ItemSet::destroy() {
+void ItemSet::clear() {
     while (!m_body.empty()) {
         QBody* body = *m_body.begin();
         body->world()->destroyBody(body);

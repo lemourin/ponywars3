@@ -8,17 +8,11 @@ class World;
 
 class MainAction: public Action {
     private:
-        friend class World;
-
-        BaseItem* m_focusedObject;
-
         MapEditor m_mapEditor;
         FileAction m_fileAction;
 
     protected:
         void subActionEnabledChanged(SubAction *);
-
-        void focusedObjectDestroyed();
 
     public:
         MainAction(World*);

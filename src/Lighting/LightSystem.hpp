@@ -32,7 +32,8 @@ class LightSystem: public SceneGraph::Item {
 
         std::vector<DynamicLight*> m_unusedLight;
         std::vector<StaticLight*> m_light;
-        std::unordered_set<StaticLight*> m_visibleLights, m_loadedLights;
+        std::unordered_set<StaticLight*> m_visibleLights;
+        std::unordered_set<StaticLight*> m_loadedLights;
 
         void addLight(StaticLight*);
         void removeLight(StaticLight*);
@@ -46,12 +47,14 @@ class LightSystem: public SceneGraph::Item {
 
     protected:
         SceneGraph::Node* synchronize(SceneGraph::Node *old);
+        void onFixtureDestroyed(QFixture*);
 
     public:
         explicit LightSystem(Game* game);
         ~LightSystem();
 
         void initialize();
+        void clear();
 
         inline QSizeF size() const { return m_size; }
         void setSize(QSizeF);
