@@ -7,6 +7,7 @@
 #include "Entities/Gun.hpp"
 #include "Entities/Deagle.hpp"
 #include "Entities/Enemy.hpp"
+#include "Entities/Chain.hpp"
 
 #include "QBox2D/QBody.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
@@ -118,5 +119,6 @@ void Window::registerTypes() {
     Utility::registerType<Gun>("Gun");
     Utility::registerType<Deagle>("Deagle");
     Utility::registerType<Enemy>("Enemy");
+    Utility::registerType<Chain>("Chain");
     Utility::registerType<Player>("Player");
 }

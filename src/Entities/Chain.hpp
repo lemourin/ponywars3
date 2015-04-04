@@ -2,7 +2,6 @@
 #define CHAIN_HPP
 #include "QBox2D/QBody.hpp"
 #include "Geometry/Circle.hpp"
-#include <QSGGeometryNode>
 
 class Chain: public QBody {
     private:
@@ -21,6 +20,9 @@ class Chain: public QBody {
         void cutCircle(Circle);
 
         bool testPoint(const QPointF& point) const;
+
+        bool read(const QJsonObject &);
+        bool write(QJsonObject &) const;
 
 
 };

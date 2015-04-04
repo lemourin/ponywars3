@@ -10,8 +10,11 @@
 #include "Geometry/Functions.hpp"
 #include "Entities/Gun.hpp"
 #include "Entities/World.hpp"
+#include "Utility/Utility.hpp"
 #include <QPainterPath>
 #include <QPolygonF>
+#include <QJsonObject>
+#include <QJsonArray>
 
 static b2Vec2 tob2Vec2(QPointF p) {
     return b2Vec2(p.x(), p.y());
@@ -65,11 +68,31 @@ void Chain::cutCircle(Circle circle) {
 }
 
 bool Chain::testPoint(const QPointF &point) const {
-    std::vector<Vector2d> pts;
-    for (QPointF v: m_vertices)
-        pts.push_back((Vector2d)v);
+    std::vector<Vector2d> vert(m_vertices.begin(),
+                               m_vertices.end()-1);
+    return Geometry::pointInPolygon(vert.begin(), vert.end(), Vector2d(point));
+}
 
-    return Geometry::pointInPolygon(pts.begin(), pts.end(), Vector2d(point));
+bool Chain::read(const QJsonObject& obj) {
+    std::vector<QPointF> pts;
+    QJsonArray array = obj["vertices"].toArray();
+    for (int i=0; i<array.size(); i++)
+        pts.push_back(Utility::Json::toPoint(array[i].toObject()));
+    setVertices(pts);
+
+    return true;
+}
+
+bool Chain::write(QJsonObject& obj) const {
+    obj["class"] = "Chain";
+
+    QJsonArray array;
+    std::vector<QPointF> pts = vertices();
+    for (uint i=0; i<pts.size(); i++)
+        array.append(Utility::Json::toObject(pts[i]));
+    obj["vertices"] = array;
+
+    return true;
 }
 
 void Chain::createChain() {
