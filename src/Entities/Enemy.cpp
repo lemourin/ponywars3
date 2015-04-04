@@ -9,6 +9,13 @@ Enemy::Enemy(SceneGraph::Item* parent):
     m_target() {
 }
 
+bool Enemy::write(QJsonObject& obj) const {
+    Pony::write(obj);
+    obj["class"] = "Enemy";
+
+    return true;
+}
+
 void Enemy::healthChanged() {
     //if (health() <= 0)
     //    deleteLater();

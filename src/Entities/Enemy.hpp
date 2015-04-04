@@ -16,6 +16,8 @@ class Enemy: public Pony {
     public:
         explicit Enemy(SceneGraph::Item * = nullptr);
 
+        bool write(QJsonObject &) const;
+
         inline QBody* target() const { return m_target; }
         inline void setTarget(QBody* body) { m_target = body; }
 

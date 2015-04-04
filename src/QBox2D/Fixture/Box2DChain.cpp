@@ -1,7 +1,14 @@
 #include "Box2DChain.hpp"
 #include "Graphics/Primitives.hpp"
+#include <QJsonObject>
 
 Box2DChain::Box2DChain(SceneGraph::Item* parent): Box2DPolygon(parent) {
+}
+
+bool Box2DChain::write(QJsonObject& obj) const {
+    Box2DPolygon::write(obj);
+    obj["class"] = "Box2DChain";
+    return true;
 }
 
 b2Shape* Box2DChain::createShape() const {

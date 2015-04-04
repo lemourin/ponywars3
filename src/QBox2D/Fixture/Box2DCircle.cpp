@@ -1,6 +1,7 @@
 #include "Box2DCircle.hpp"
 #include "Geometry/Circle.hpp"
 #include "Graphics/Primitives.hpp"
+#include <QJsonObject>
 
 Box2DCircle::Box2DCircle(Item* parent):
     QFixture(parent),
@@ -19,6 +20,12 @@ std::vector<QPointF> Box2DCircle::vertices() const {
     v.push_back(v.front());
 
     return v;
+}
+
+bool Box2DCircle::write(QJsonObject& obj) const {
+    QFixture::write(obj);
+    obj["class"] = "Box2DCircle";
+    return true;
 }
 
 b2Shape* Box2DCircle::createShape() const {

@@ -46,9 +46,9 @@ void LightSystem::read(const QJsonObject& obj) {
 
 void LightSystem::write(QJsonObject& obj) const {
     QJsonArray array;
-    for (StaticLight* light: m_light) {
+    for (StaticLight* light: m_loadedLights) {
         QJsonObject object;
-        if (light->parent() == this && light->write(object)) {
+        if (light->write(object)) {
             array.append(object);
         }
     }

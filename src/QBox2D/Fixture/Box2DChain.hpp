@@ -12,6 +12,8 @@ class Box2DChain: public Box2DPolygon {
     public:
         explicit Box2DChain(Item* = nullptr);
 
+        bool write(QJsonObject &) const;
+
 };
 
 #endif // BOX2DCHAIN_HPP

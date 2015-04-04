@@ -19,7 +19,7 @@ StaticLight::StaticLight(Item* parent):
 }
 
 StaticLight::~StaticLight() {
-    setVisible(false);
+    destroyBody();
 }
 
 void StaticLight::initialize(QWorld* w) {

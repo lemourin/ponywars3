@@ -11,6 +11,8 @@ class Gun: public Weapon {
     public:
         Gun(Item* = nullptr);
 
+        bool write(QJsonObject &) const;
+
         void shoot();
 
 };

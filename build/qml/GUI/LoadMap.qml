@@ -19,7 +19,7 @@ FocusScope {
                 Row {
                     Button {
                         text: "Load from file:"
-                        onClicked: loadMap.load(":/json/"+fileName.text);
+                        onClicked: loadMap.load(fileName.text);
                     }
 
                     TextField {

@@ -44,6 +44,7 @@ bool Box2DBox::read(const QJsonObject& obj) {
 bool Box2DBox::write(QJsonObject& obj) const {
     Fixture::write(obj);
 
+    obj["class"] = "Box2DBox";
     obj["width"] = size().width();
     obj["height"] = size().height();
     obj["textureRect"] = Utility::Json::toObject(textureRect());

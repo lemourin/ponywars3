@@ -7,6 +7,12 @@ Deagle::Deagle(Item* p):
     Weapon(p) {
 }
 
+bool Deagle::write(QJsonObject& obj) const {
+    Weapon::write(obj);
+    obj["class"] = "Deagle";
+    return true;
+}
+
 void Deagle::shoot() {
     float angle = body()->GetAngle();
 

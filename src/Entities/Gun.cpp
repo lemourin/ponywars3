@@ -6,6 +6,13 @@ Gun::Gun(SceneGraph::Item* parent):
     Weapon(parent) {
 }
 
+bool Gun::write(QJsonObject& obj) const {
+    Weapon::write(obj);
+    obj["class"] = "Gun";
+
+    return true;
+}
+
 void Gun::shoot() {
     if (bulletCount() <= 0)
         return;

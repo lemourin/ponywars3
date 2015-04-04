@@ -9,6 +9,8 @@ class Deagle: public Weapon {
     public:
         Deagle(SceneGraph::Item* = nullptr);
 
+        bool write(QJsonObject &) const;
+
         void shoot();
 };
 

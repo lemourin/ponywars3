@@ -42,6 +42,7 @@ bool Box2DPolygon::read(const QJsonObject& obj) {
 
 bool Box2DPolygon::write(QJsonObject& obj) const {
     Fixture::write(obj);
+    obj["class"] = "Box2DPolygon";
     obj["textureScale"] = Utility::Json::toObject(textureScale().toPointF());
 
     QJsonArray array;
