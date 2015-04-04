@@ -24,12 +24,7 @@ World::World(ViewWorld* viewWorld):
 }
 
 World::~World() {
-    m_itemSet.clear();
-
-    Player* item = player();
-    setPlayer(nullptr);
-
-    delete item;
+    clear();
 }
 
 void World::step() {
@@ -42,7 +37,10 @@ void World::clear() {
     Player* item = player();
     setPlayer(nullptr);
 
-    delete item;
+    if (item) {
+        item->destroyBody();
+        delete item;
+    }
 
     m_itemSet.clear();
 }

@@ -35,9 +35,6 @@ void StaticLight::initialize(QWorld* w) {
 void StaticLight::destroyBody() {
     m_fixture.destroyFixture();
 
-    if (dynamicLight())
-        dynamicLight()->bindLight(nullptr);
-
     if (lightSystem())
         lightSystem()->removeLight(this);
 

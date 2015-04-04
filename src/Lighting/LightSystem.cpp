@@ -74,7 +74,6 @@ void LightSystem::clear() {
     for (StaticLight* light: m_loadedLights)
         delete light;
     m_loadedLights.clear();
-
     m_enlightedItems.clear();
 }
 
@@ -106,6 +105,7 @@ void LightSystem::addLight(StaticLight* light) {
 
 void LightSystem::removeLight(StaticLight* light) {
     light->setVisible(false);
+    light->setLightSystem(nullptr);
 
     auto it1 = std::find(m_light.begin(), m_light.end(), light);
     assert(it1 != m_light.end());
