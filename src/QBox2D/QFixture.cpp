@@ -18,10 +18,9 @@ QFixture::~QFixture() {
 
 void QFixture::destroyFixture() {
     if (body()) {
-        if (body()->world())
-            body()->world()->onFixtureDestroyed(this);
-
+        body()->fixtureDestroyed(this);
         body()->removeFixture(this);
+
         m_body = nullptr;
     }
 
@@ -137,7 +136,7 @@ void QFixture::initialize(QBody* item) {
 
     m_content.setParent(item->content());
 
-    item->world()->onFixtureAdded(this);
+    item->fixtureAdded(this);
 }
 
 void QFixture::matrixChanged() {

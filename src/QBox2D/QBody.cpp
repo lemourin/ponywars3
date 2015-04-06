@@ -258,6 +258,14 @@ void QBody::synchronize() {
     m_content.rotate(rotation(), 0, 0, 1);
 }
 
+void QBody::fixtureAdded(QFixture* f) {
+    world()->onFixtureAdded(f);
+}
+
+void QBody::fixtureDestroyed(QFixture* f) {
+    world()->onFixtureDestroyed(f);
+}
+
 void QBody::releaseResource(QFixture* f) {
     delete f;
 }

@@ -314,6 +314,5 @@ void Window::RootItem::touchEvent(QTouchEvent *e) {
     e->accept();
 }
 
-
 }
 

@@ -101,7 +101,7 @@ EnlightedItems::Node::~Node() {
 }
 
 void EnlightedItems::Node::clear() {
-    for (const auto& pair: m_data)
+    for (std::pair<QFixture*, SceneGraph::Geometry*> pair: m_data)
         delete pair.second;
     m_data.clear();
 
@@ -111,7 +111,7 @@ void EnlightedItems::Node::clear() {
     m_node.resize(1);
 }
 
-SceneGraph::Geometry*EnlightedItems::Node::geometry(QFixture* fixture) {
+SceneGraph::Geometry* EnlightedItems::Node::geometry(QFixture* fixture) {
     if (m_data.find(fixture) != m_data.end())
         return m_data[fixture];
 
@@ -145,6 +145,7 @@ EnlightedNode* EnlightedItems::Node::getNode(QFixture* f, Light* light, uint it)
 
 void EnlightedItems::Node::destroyedFixture(QFixture* f) {
     auto it = m_data.find(f);
+
     if (it != m_data.end()) {
         delete it->second;
         m_data.erase(it);

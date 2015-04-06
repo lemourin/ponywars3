@@ -32,6 +32,8 @@ class QBody: public BaseItem {
 
     protected:
         virtual void synchronize();
+        virtual void fixtureAdded(QFixture*);
+        virtual void fixtureDestroyed(QFixture*);
         virtual void releaseResource(QFixture*);
 
         virtual void beginContact(QFixture* other, b2Contact*);
