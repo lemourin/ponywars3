@@ -155,7 +155,7 @@ bool Player::read(const QJsonObject& obj) {
 bool Player::write(QJsonObject& obj) const {
     Pony::write(obj);
 
-    obj["class"] = "Player";
+    obj["class"] = QString("Player");
 
     QJsonObject light;
     m_light.write(light);

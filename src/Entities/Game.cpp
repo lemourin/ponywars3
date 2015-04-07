@@ -18,6 +18,7 @@ Game::Game(Item* parent):
 }
 
 Game::~Game() {
+    clear();
 }
 
 void Game::sizeChanged() {
@@ -80,5 +81,5 @@ void Game::dump(QString path) const {
     QJsonDocument document(obj);
     std::fstream file(path.toStdString(), std::ios::out);
     assert(file.is_open());
-    file << document.toJson().toStdString();
+    file << document.toJson().constData();
 }

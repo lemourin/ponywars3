@@ -33,7 +33,7 @@ class EnlightedItems: public SceneGraph::Item {
 
         LightSystem* m_lightSystem;
         uint m_state;
-        std::vector<QFixture*> m_destroyedFixture;
+        std::vector<void*> m_destroyedFixture;
 
         enum State {
             Reset = 1 << 0,
@@ -44,7 +44,7 @@ class EnlightedItems: public SceneGraph::Item {
             private:
                 struct Vertex { float x, y; };
 
-                std::unordered_map<QFixture*, SceneGraph::Geometry*> m_data;
+                std::unordered_map<void*, SceneGraph::Geometry*> m_data;
                 std::vector<EnlightedNode*> m_node;
 
             public:
@@ -55,7 +55,7 @@ class EnlightedItems: public SceneGraph::Item {
                 SceneGraph::Geometry* geometry(QFixture*);
 
                 EnlightedNode* getNode(QFixture* f, Light* light, uint it);
-                void destroyedFixture(QFixture* f);
+                void destroyedFixture(void* f);
         };
 
         SceneGraph::Node* synchronize(SceneGraph::Node* old);

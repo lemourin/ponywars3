@@ -7,7 +7,7 @@ Box2DChain::Box2DChain(SceneGraph::Item* parent): Box2DPolygon(parent) {
 
 bool Box2DChain::write(QJsonObject& obj) const {
     Box2DPolygon::write(obj);
-    obj["class"] = "Box2DChain";
+    obj["class"] = QString("Box2DChain");
     return true;
 }
 

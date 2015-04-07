@@ -26,7 +26,6 @@ QBody::~QBody() {
 void QBody::destroyBody() {
     if (!body())
         return;
-
     world()->onBodyDestroyed(this);
 
     while (QFixture* f = firstFixture()) {
@@ -221,7 +220,7 @@ bool QBody::read(const QJsonObject& obj) {
 }
 
 bool QBody::write(QJsonObject& obj) const {
-    obj["class"] = "QBody";
+    obj["class"] = QString("QBody");
     obj["x"] = position().x();
     obj["y"] = position().y();
     obj["rotation"] = rotation();

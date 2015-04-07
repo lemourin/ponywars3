@@ -8,7 +8,7 @@ Gun::Gun(SceneGraph::Item* parent):
 
 bool Gun::write(QJsonObject& obj) const {
     Weapon::write(obj);
-    obj["class"] = "Gun";
+    obj["class"] = QString("Gun");
 
     return true;
 }

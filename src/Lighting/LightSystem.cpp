@@ -1,6 +1,7 @@
 #include "LightSystem.hpp"
 #include "StaticLight.hpp"
 #include "Entities/Game.hpp"
+#include "Entities/World.hpp"
 #include "Utility/Utility.hpp"
 #include <QJsonArray>
 #include <QJsonObject>
@@ -16,6 +17,8 @@ LightSystem::LightSystem(Game* game):
 }
 
 LightSystem::~LightSystem() {
+    clear();
+
     for (StaticLight* light: m_light) {
         light->setVisible(false);
         light->setLightSystem(nullptr);
@@ -25,8 +28,6 @@ LightSystem::~LightSystem() {
         light->setVisible(false);
         light->setLightSystem(nullptr);
     }
-
-    clear();
 }
 
 void LightSystem::read(const QJsonObject& obj) {
@@ -71,9 +72,9 @@ void LightSystem::initialize() {
 }
 
 void LightSystem::clear() {
-    for (StaticLight* light: m_loadedLights)
-        delete light;
-    m_loadedLights.clear();
+    while (!m_loadedLights.empty())
+        delete *m_loadedLights.begin();
+
     m_enlightedItems.clear();
 }
 

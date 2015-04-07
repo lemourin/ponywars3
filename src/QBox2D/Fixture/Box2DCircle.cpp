@@ -24,7 +24,7 @@ std::vector<QPointF> Box2DCircle::vertices() const {
 
 bool Box2DCircle::write(QJsonObject& obj) const {
     QFixture::write(obj);
-    obj["class"] = "Box2DCircle";
+    obj["class"] = QString("Box2DCircle");
     return true;
 }
 

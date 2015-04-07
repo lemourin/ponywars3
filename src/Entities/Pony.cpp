@@ -49,7 +49,7 @@ bool Pony::read(const QJsonObject& obj) {
 bool Pony::write(QJsonObject& obj) const {
     Creature::write(obj);
 
-    obj["class"] = "Pony";
+    obj["class"] = QString("Pony");
     obj["bodySource"] = QString(m_bodySource.c_str());
     obj["wingsSource"] = QString(m_wingsSource.c_str());
     obj["width"] = m_size.width();

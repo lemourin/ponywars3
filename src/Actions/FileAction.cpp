@@ -41,6 +41,7 @@ LoadMapAction *LoadMapActionObject::action() const {
 
 void LoadMapActionObject::load(QString path) {
     action()->world()->view()->game()->load(path);
+    action()->setFocus(true);
 }
 
 LoadMapAction::LoadMapAction(FileAction* action):

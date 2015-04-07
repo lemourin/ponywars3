@@ -9,7 +9,7 @@ Deagle::Deagle(Item* p):
 
 bool Deagle::write(QJsonObject& obj) const {
     Weapon::write(obj);
-    obj["class"] = "Deagle";
+    obj["class"] = QString("Deagle");
     return true;
 }
 

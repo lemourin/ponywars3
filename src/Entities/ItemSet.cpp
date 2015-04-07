@@ -32,7 +32,7 @@ void ItemSet::addBody(QBody* body) {
 }
 
 void ItemSet::removeBody(QBody* body) {
-    auto it = std::find(m_body.begin(), m_body.end(), body);
+    auto it = m_body.find(body);
     assert(it != m_body.end());
     m_body.erase(it);
 

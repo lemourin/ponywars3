@@ -11,7 +11,7 @@ Enemy::Enemy(SceneGraph::Item* parent):
 
 bool Enemy::write(QJsonObject& obj) const {
     Pony::write(obj);
-    obj["class"] = "Enemy";
+    obj["class"] = QString("Enemy");
 
     return true;
 }

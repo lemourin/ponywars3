@@ -101,7 +101,7 @@ EnlightedItems::Node::~Node() {
 }
 
 void EnlightedItems::Node::clear() {
-    for (std::pair<QFixture*, SceneGraph::Geometry*> pair: m_data)
+    for (std::pair<void*, SceneGraph::Geometry*> pair: m_data)
         delete pair.second;
     m_data.clear();
 
@@ -119,7 +119,6 @@ SceneGraph::Geometry* EnlightedItems::Node::geometry(QFixture* fixture) {
     SceneGraph::Geometry* g = new SceneGraph::Geometry({ { 2, GL_FLOAT } },
                                                        vert.size()-1,
                                                        sizeof(Vertex));
-
     Vertex* array = g->vertexData<Vertex>();
     g->setDrawingMode(GL_TRIANGLE_FAN);
     for (uint i=0; i+1<vert.size(); i++)
@@ -143,7 +142,7 @@ EnlightedNode* EnlightedItems::Node::getNode(QFixture* f, Light* light, uint it)
     return node;
 }
 
-void EnlightedItems::Node::destroyedFixture(QFixture* f) {
+void EnlightedItems::Node::destroyedFixture(void* f) {
     auto it = m_data.find(f);
 
     if (it != m_data.end()) {
