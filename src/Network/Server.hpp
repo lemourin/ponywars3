@@ -3,18 +3,17 @@
 #include <QQuickItem>
 #include <QUdpSocket>
 
-class Server: public QQuickItem {
-    private:
-        Q_OBJECT
+class Server : public QQuickItem {
+ private:
+  Q_OBJECT
 
-        QUdpSocket m_socket;
+  QUdpSocket m_socket;
 
-        void readData();
+  void readData();
 
-    protected:
-
-    public:
-        Server(QQuickItem* = nullptr);
+ protected:
+ public:
+  Server(QQuickItem* = nullptr);
 };
 
-#endif // SERVER_HPP
+#endif  // SERVER_HPP

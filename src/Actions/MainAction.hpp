@@ -6,20 +6,20 @@
 
 class World;
 
-class MainAction: public Action {
-    private:
-        MapEditor m_mapEditor;
-        FileAction m_fileAction;
+class MainAction : public Action {
+ private:
+  MapEditor m_mapEditor;
+  FileAction m_fileAction;
 
-    protected:
-        void subActionEnabledChanged(SubAction *);
+ protected:
+  void subActionEnabledChanged(SubAction*);
 
-    public:
-        MainAction(World*);
-        ~MainAction();
+ public:
+  MainAction(World*);
+  ~MainAction();
 
-        inline MapEditor* mapEditor() { return &m_mapEditor; }
-        inline FileAction* fileAction() { return &m_fileAction; }
+  inline MapEditor* mapEditor() { return &m_mapEditor; }
+  inline FileAction* fileAction() { return &m_fileAction; }
 };
 
-#endif // MAINACTION_HPP
+#endif  // MAINACTION_HPP

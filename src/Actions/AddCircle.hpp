@@ -6,40 +6,40 @@
 
 class AddBody;
 
-class AddCircle: public AddFixture {
-    private:
-        enum StateChange {
-            PositionSet = 1 << 0,
-            RadiusSet = 1 << 1,
-            RadiusChanged = 1 << 2,
-            ResetAction = 1 << 3
-        };
+class AddCircle : public AddFixture {
+ private:
+  enum StateChange {
+    PositionSet = 1 << 0,
+    RadiusSet = 1 << 1,
+    RadiusChanged = 1 << 2,
+    ResetAction = 1 << 3
+  };
 
-        class Circle: public SceneGraph::TransformNode {
-            public:
-                CircleNode m_circleNode;
+  class Circle : public SceneGraph::TransformNode {
+   public:
+    CircleNode m_circleNode;
 
-                Circle();
-        };
+    Circle();
+  };
 
-        unsigned m_stateChange, m_state;
-        QPointF m_position;
-        float m_radius;
-        ActionObject m_object;
+  unsigned m_stateChange, m_state;
+  QPointF m_position;
+  float m_radius;
+  ActionObject m_object;
 
-    protected:
-        void mousePressEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent*);
-        SceneGraph::Node* synchronize(SceneGraph::Node *old);
+ protected:
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *);
+  SceneGraph::Node *synchronize(SceneGraph::Node *old);
 
-    public:
-        AddCircle(AddBody*);
+ public:
+  AddCircle(AddBody *);
 
-        QFixture* fixture() const;
-        void reset();
+  QFixture *fixture() const;
+  void reset();
 
-        inline QString name() const { return "AddCircle"; }
+  inline QString name() const { return "AddCircle"; }
 };
 
-#endif // ADDCIRCLE_HPP
+#endif  // ADDCIRCLE_HPP

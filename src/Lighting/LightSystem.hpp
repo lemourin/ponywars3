@@ -12,66 +12,65 @@ class DisplayItem;
 class World;
 class Game;
 
-class LightSystem: public SceneGraph::Item {
-    private:
-        friend class StaticLight;
-        friend class DynamicLight;
-        friend class World;
-        friend class ViewWorld;
+class LightSystem : public SceneGraph::Item {
+ private:
+  friend class StaticLight;
+  friend class DynamicLight;
+  friend class World;
+  friend class ViewWorld;
 
-        Game* m_game;
-        QSizeF m_size;
-        QSize m_resolution;
+  Game* m_game;
+  QSizeF m_size;
+  QSize m_resolution;
 
-        SceneGraph::ShaderSource m_normalMap;
-        SceneGraph::ShaderSource m_lightTexture;
-        SceneGraph::ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
-        DynamicLight m_dynamicLight[DYNAMIC_LIGHTS_COUNT];
+  SceneGraph::ShaderSource m_normalMap;
+  SceneGraph::ShaderSource m_lightTexture;
+  SceneGraph::ShaderSource m_framebuffer[DYNAMIC_LIGHTS_COUNT];
+  DynamicLight m_dynamicLight[DYNAMIC_LIGHTS_COUNT];
 
-        EnlightedItems m_enlightedItems;
+  EnlightedItems m_enlightedItems;
 
-        std::vector<DynamicLight*> m_unusedLight;
-        std::vector<StaticLight*> m_light;
-        std::unordered_set<StaticLight*> m_visibleLights;
-        std::unordered_set<StaticLight*> m_loadedLights;
+  std::vector<DynamicLight*> m_unusedLight;
+  std::vector<StaticLight*> m_light;
+  std::unordered_set<StaticLight*> m_visibleLights;
+  std::unordered_set<StaticLight*> m_loadedLights;
 
-        void addLight(StaticLight*);
-        void removeLight(StaticLight*);
+  void addLight(StaticLight*);
+  void removeLight(StaticLight*);
 
-        void initializeDynamicLights();
+  void initializeDynamicLights();
 
-        void lightVisibilityChanged(StaticLight*);
-        void visibleAreaChanged(QRectF);
+  void lightVisibilityChanged(StaticLight*);
+  void visibleAreaChanged(QRectF);
 
-        void addBody(QBody*);
+  void addBody(QBody*);
 
-    protected:
-        SceneGraph::Node* synchronize(SceneGraph::Node *old);
-        void onFixtureDestroyed(QFixture*);
+ protected:
+  SceneGraph::Node* synchronize(SceneGraph::Node* old);
+  void onFixtureDestroyed(QFixture*);
 
-    public:
-        explicit LightSystem(Game* game);
-        ~LightSystem();
+ public:
+  explicit LightSystem(Game* game);
+  ~LightSystem();
 
-        void initialize();
-        void clear();
+  void initialize();
+  void clear();
 
-        inline QSizeF size() const { return m_size; }
-        void setSize(QSizeF);
+  inline QSizeF size() const { return m_size; }
+  void setSize(QSizeF);
 
-        inline QSize resolution() const { return m_resolution; }
-        void setResolution(QSize s);
+  inline QSize resolution() const { return m_resolution; }
+  void setResolution(QSize s);
 
-        inline SceneGraph::ShaderSource* normalMap() { return &m_normalMap; }
-        inline SceneGraph::ShaderSource* lightTexture() { return &m_lightTexture; }
+  inline SceneGraph::ShaderSource* normalMap() { return &m_normalMap; }
+  inline SceneGraph::ShaderSource* lightTexture() { return &m_lightTexture; }
 
-        World* world() const;
+  World* world() const;
 
-        const std::unordered_set<StaticLight*>& visibleLights() const;
+  const std::unordered_set<StaticLight*>& visibleLights() const;
 
-        void read(const QJsonObject&);
-        void write(QJsonObject&) const;
+  void read(const QJsonObject&);
+  void write(QJsonObject&) const;
 };
 
-
-#endif // LIGHTSYSTEM_HPP
+#endif  // LIGHTSYSTEM_HPP

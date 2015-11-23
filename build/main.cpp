@@ -2,15 +2,15 @@
 #include "Utility/Window.hpp"
 
 int main(int argc, char** argv) {
-    QGuiApplication app(argc, argv);
-    //app.setOverrideCursor(Qt::BlankCursor);
+  QGuiApplication app(argc, argv);
+  // app.setOverrideCursor(Qt::BlankCursor);
 
-    qputenv("QML_FORCE_THREADED_RENDERER", "1");
+  qputenv("QML_FORCE_THREADED_RENDERER", "1");
 
-    Window::registerTypes();
+  Window::registerTypes();
 
-    Window window;
-    window.show();
+  Window window;
+  window.show();
 
-    return app.exec();
+  return app.exec();
 }

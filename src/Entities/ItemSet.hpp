@@ -6,23 +6,23 @@
 class World;
 class QBody;
 
-class ItemSet: public SceneGraph::Item {
-    private:
-        World* m_world;
-        std::unordered_set<QBody*> m_body;
+class ItemSet : public SceneGraph::Item {
+ private:
+  World* m_world;
+  std::unordered_set<QBody*> m_body;
 
-    public:
-        ItemSet(World* world);
-        ~ItemSet();
+ public:
+  ItemSet(World* world);
+  ~ItemSet();
 
-        void clear();
-        bool contains(QBody*);
+  void clear();
+  bool contains(QBody*);
 
-        void addBody(QBody*);
-        void removeBody(QBody*);
+  void addBody(QBody*);
+  void removeBody(QBody*);
 
-        void write(QJsonObject&) const;
-        void read(const QJsonObject&);
+  void write(QJsonObject&) const;
+  void read(const QJsonObject&);
 };
 
-#endif // ITEMSET_HPP
+#endif  // ITEMSET_HPP

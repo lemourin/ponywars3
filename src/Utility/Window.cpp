@@ -21,104 +21,102 @@
 
 #include "Utility/Factory.hpp"
 
-Environment::Environment(QQuickView* view):
-    QObject(view),
-    m_view(view) {
-}
+Environment::Environment(QQuickView* view) : QObject(view), m_view(view) {}
 
 Environment::System Environment::system() const {
 #if defined Q_OS_ANDROID
-    return System::Android;
+  return System::Android;
 #elif defined Q_OS_UNIX
-    return System::Unix;
+  return System::Unix;
 #elif defined Q_OS_WIN32
-    return System::Win32;
+  return System::Win32;
 #else
-    return System::Unknown;
+  return System::Unknown;
 #endif
 }
 
 bool Environment::fullscreen() const {
-    return view()->visibility() == QWindow::FullScreen;
+  return view()->visibility() == QWindow::FullScreen;
 }
 
 void Environment::setFullscreen(bool enable) {
-    if (fullscreen() == enable)
-        return;
+  if (fullscreen() == enable) return;
 
-    if (enable)
-        view()->showFullScreen();
-    else
-        view()->show();
+  if (enable)
+    view()->showFullScreen();
+  else
+    view()->show();
 
-    emit fullscreenChanged();
+  emit fullscreenChanged();
 }
 
-Window::Window(QWindow* parent):
-    SceneGraph::Window(parent),
-    m_game(rootItem()),
-    m_environment(this) {
+Window::Window(QWindow* parent)
+    : SceneGraph::Window(parent), m_game(rootItem()), m_environment(this) {
+  rootContext()->setContextProperty("app", &m_environment);
 
-    rootContext()->setContextProperty("app", &m_environment);
+  World* world = m_game.view()->world();
+  MainAction* mainAction = world->mainAction();
+  MapEditor* mapEditor = mainAction->mapEditor();
+  FileAction* fileAction = mainAction->fileAction();
+  SaveMapAction* saveMapAction = fileAction->saveMapAction();
+  LoadMapAction* loadMapAction = fileAction->loadMapAction();
 
-    World* world = m_game.view()->world();
-    MainAction* mainAction = world->mainAction();
-    MapEditor* mapEditor = mainAction->mapEditor();
-    FileAction* fileAction = mainAction->fileAction();
-    SaveMapAction* saveMapAction = fileAction->saveMapAction();
-    LoadMapAction* loadMapAction = fileAction->loadMapAction();
+  AddBody* addBody = mapEditor->addBody();
+  rootContext()->setContextProperty("world", world->object());
 
-    AddBody* addBody = mapEditor->addBody();
-    rootContext()->setContextProperty("world", world->object());
+  rootContext()->setContextProperty("mapEditor", mapEditor->object());
+  rootContext()->setContextProperty("fileAction", fileAction->object());
 
-    rootContext()->setContextProperty("mapEditor", mapEditor->object());
-    rootContext()->setContextProperty("fileAction", fileAction->object());
+  rootContext()->setContextProperty("saveMap", saveMapAction->object());
+  rootContext()->setContextProperty("loadMap", loadMapAction->object());
 
-    rootContext()->setContextProperty("saveMap", saveMapAction->object());
-    rootContext()->setContextProperty("loadMap", loadMapAction->object());
+  rootContext()->setContextProperty("addBody", addBody->object());
+  rootContext()->setContextProperty("addPolygon",
+                                    addBody->addPolygon()->object());
+  rootContext()->setContextProperty("addRectangle",
+                                    addBody->addRectangle()->object());
+  rootContext()->setContextProperty("addCircle",
+                                    addBody->addCircle()->object());
 
-    rootContext()->setContextProperty("addBody", addBody->object());
-    rootContext()->setContextProperty("addPolygon", addBody->addPolygon()->object());
-    rootContext()->setContextProperty("addRectangle", addBody->addRectangle()->object());
-    rootContext()->setContextProperty("addCircle", addBody->addCircle()->object());
+  rootContext()->setContextProperty("grabItem",
+                                    mapEditor->grabItem()->object());
+  rootContext()->setContextProperty("deleteItem",
+                                    mapEditor->deleteItem()->object());
+  rootContext()->setContextProperty("bodyEdit",
+                                    mapEditor->bodyEdit()->object());
+  rootContext()->setContextProperty("addChain",
+                                    mapEditor->addChain()->object());
 
-    rootContext()->setContextProperty("grabItem", mapEditor->grabItem()->object());
-    rootContext()->setContextProperty("deleteItem", mapEditor->deleteItem()->object());
-    rootContext()->setContextProperty("bodyEdit", mapEditor->bodyEdit()->object());
-    rootContext()->setContextProperty("addChain", mapEditor->addChain()->object());
+  setSource(QUrl("qrc:/qml/main.qml"));
+  setResizeMode(SizeRootObjectToView);
 
-    setSource(QUrl("qrc:/qml/main.qml"));
-    setResizeMode(SizeRootObjectToView);
-
-    connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
+  connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
 }
 
 void Window::resizeEvent(QResizeEvent* event) {
-    SceneGraph::Window::resizeEvent(event);
+  SceneGraph::Window::resizeEvent(event);
 
-    QMatrix4x4 matrix;
-    matrix.ortho(0, width(), height(), 0, -1, 1);
+  QMatrix4x4 matrix;
+  matrix.ortho(0, width(), height(), 0, -1, 1);
 
-    setProjection(matrix);
+  setProjection(matrix);
 
-    m_game.setSize(size());
+  m_game.setSize(size());
 }
 
 void Window::registerTypes() {
-    qmlRegisterUncreatableType<Environment>("Environment",
-                                            1, 0,
-                                            "Environment",
-                                            "Uncreatable type!");
-    Utility::registerType<Box2DBox>("Box2DBox");
-    Utility::registerType<Box2DChain>("Box2DChain");
-    Utility::registerType<Box2DCircle>("Box2DCircle");
-    Utility::registerType<Box2DEdge>("Box2DEdge");
-    Utility::registerType<Box2DPolygon>("Box2DPolygon");
+  qmlRegisterUncreatableType<Environment>("Environment", 1, 0, "Environment",
+                                          "Uncreatable type!");
+  Utility::registerType<Box2DBox>("Box2DBox");
+  Utility::registerType<Box2DChain>("Box2DChain");
+  Utility::registerType<Box2DCircle>("Box2DCircle");
+  Utility::registerType<Box2DEdge>("Box2DEdge");
+  Utility::registerType<Box2DPolygon>("Box2DPolygon");
 
-    Utility::registerType<QBody>("QBody");
-    Utility::registerType<Gun>("Gun");
-    Utility::registerType<Deagle>("Deagle");
-    Utility::registerType<Enemy>("Enemy");
-    Utility::registerType<Chain>("Chain");
-    Utility::registerType<Player>("Player");
+  Utility::registerType<QBody>("QBody");
+  Utility::registerType<Gun>("Gun");
+  Utility::registerType<Deagle>("Deagle");
+  Utility::registerType<Enemy>("Enemy");
+  Utility::registerType<Chain>("Chain");
+  Utility::registerType<Player>("Player");
 }

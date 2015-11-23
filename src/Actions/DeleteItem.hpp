@@ -2,16 +2,16 @@
 #define DELETEITEM_HPP
 #include "SubAction.hpp"
 
-class DeleteItem: public SubAction {
-    protected:
-        void mouseReleaseEvent(QMouseEvent *event);
+class DeleteItem : public SubAction {
+ protected:
+  void mouseReleaseEvent(QMouseEvent *event);
 
-        ActionObject m_object;
+  ActionObject m_object;
 
-    public:
-        DeleteItem(MapEditor*);
+ public:
+  DeleteItem(MapEditor *);
 
-        inline QString name() const { return "DeleteItem"; }
+  inline QString name() const { return "DeleteItem"; }
 };
 
-#endif // DELETEITEM_HPP
+#endif  // DELETEITEM_HPP

@@ -5,26 +5,26 @@
 class Creature;
 class Pony;
 
-class PonyAnimation: public SpriteSequence {
-    private:
-        friend class Pony;
+class PonyAnimation : public SpriteSequence {
+ private:
+  friend class Pony;
 
-        Pony* m_owner;
-        std::string m_source;
+  Pony* m_owner;
+  std::string m_source;
 
-        bool m_flip;
+  bool m_flip;
 
-        void updateState(unsigned added, unsigned removed);
+  void updateState(unsigned added, unsigned removed);
 
-    protected:
-        void currentSpriteChanged();
+ protected:
+  void currentSpriteChanged();
 
-    public:
-        explicit PonyAnimation(Pony* = nullptr);
+ public:
+  explicit PonyAnimation(Pony* = nullptr);
 
-        void initialize(const char* source);
+  void initialize(const char* source);
 
-        inline Pony* owner() const { return m_owner; }
+  inline Pony* owner() const { return m_owner; }
 };
 
-#endif // PONYANIMATION_HPP
+#endif  // PONYANIMATION_HPP

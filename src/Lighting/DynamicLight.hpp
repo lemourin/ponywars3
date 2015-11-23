@@ -8,53 +8,50 @@ class World;
 class ViewWorld;
 class StaticLight;
 
-class ShadowNode: public SceneGraph::GeometryNode {
-    private:
-        struct Vertex {
-            float x, y, z, w;
-            Vertex(float, float, float, float);
-        };
+class ShadowNode : public SceneGraph::GeometryNode {
+ private:
+  struct Vertex {
+    float x, y, z, w;
+    Vertex(float, float, float, float);
+  };
 
-        SceneGraph::Geometry m_geometry;
-        SceneGraph::ColorMaterial m_material;
+  SceneGraph::Geometry m_geometry;
+  SceneGraph::ColorMaterial m_material;
 
-    public:
-        ShadowNode(QPointF p1, QPointF p2);
+ public:
+  ShadowNode(QPointF p1, QPointF p2);
 
-        void setVertices(QPointF p1, QPointF p2);
-        void setColor(QColor);
+  void setVertices(QPointF p1, QPointF p2);
+  void setColor(QColor);
 };
 
-class DynamicLight: public Light {
-    private:
-        StaticLight* m_boundLight;
+class DynamicLight : public Light {
+ private:
+  StaticLight* m_boundLight;
 
-        class DynamicNode: public Light::LightNode {
-            private:
-                SceneGraph::Node m_shadows;
-                std::vector<ShadowNode*> m_unused;
+  class DynamicNode : public Light::LightNode {
+   private:
+    SceneGraph::Node m_shadows;
+    std::vector<ShadowNode*> m_unused;
 
-            public:
-                DynamicNode();
-                ~DynamicNode();
+   public:
+    DynamicNode();
+    ~DynamicNode();
 
-                void synchronize(DynamicLight*, ViewWorld* display);
-                void makeShadowNode(DynamicLight* light,
-                                    QPointF p1,
-                                    QPointF p2);
-        };
+    void synchronize(DynamicLight*, ViewWorld* display);
+    void makeShadowNode(DynamicLight* light, QPointF p1, QPointF p2);
+  };
 
-        bool castingShadow(QPointF p1, QPointF p2) const;
+  bool castingShadow(QPointF p1, QPointF p2) const;
 
-    protected:
-        SceneGraph::Node* synchronize(SceneGraph::Node *);
+ protected:
+  SceneGraph::Node* synchronize(SceneGraph::Node*);
 
-    public:
-        explicit DynamicLight(SceneGraph::Item* = nullptr);
-        ~DynamicLight();
+ public:
+  explicit DynamicLight(SceneGraph::Item* = nullptr);
+  ~DynamicLight();
 
-        void bindLight(StaticLight* light);
-
+  void bindLight(StaticLight* light);
 };
 
-#endif // DYNAMICLIGHT_HPP
+#endif  // DYNAMICLIGHT_HPP

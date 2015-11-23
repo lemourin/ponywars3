@@ -4,19 +4,19 @@
 
 class MapEditor;
 
-class SubAction: public Action {
-    private:
-        Action* m_parentAction;
+class SubAction : public Action {
+ private:
+  Action* m_parentAction;
 
-    protected:
-        void enabledChanged();
+ protected:
+  void enabledChanged();
 
-    public:
-        SubAction(Action* parent, World* w = nullptr);
+ public:
+  SubAction(Action* parent, World* w = nullptr);
 
-        void finished();
+  void finished();
 
-        virtual QString name() const = 0;
+  virtual QString name() const = 0;
 };
 
-#endif // SUBACTION_HPP
+#endif  // SUBACTION_HPP

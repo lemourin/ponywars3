@@ -7,42 +7,39 @@
 #include "Entities/World.hpp"
 #include "MapEditor.hpp"
 
-AddBody::AddBody(MapEditor* p):
-    SubAction(p),
-    m_addPolygon(this),
-    m_addCircle(this),
-    m_addRectangle(this),
-    m_currentAction(),
-    m_action({ addPolygon(), addCircle(), addRectangle() }),
-    m_object(this) {
-}
+AddBody::AddBody(MapEditor* p)
+    : SubAction(p),
+      m_addPolygon(this),
+      m_addCircle(this),
+      m_addRectangle(this),
+      m_currentAction(),
+      m_action({addPolygon(), addCircle(), addRectangle()}),
+      m_object(this) {}
 
 void AddBody::finished() {
-    QBody* body = new QBody(world());
+  QBody* body = new QBody(world());
 
-    for (QFixture* f: m_fixtures)
-        body->addFixture(f);
-    body->initialize(world());
+  for (QFixture* f : m_fixtures) body->addFixture(f);
+  body->initialize(world());
 
-    world()->itemSet()->addBody(body);
+  world()->itemSet()->addBody(body);
 
-    m_fixtures.clear();
+  m_fixtures.clear();
 }
 
-void AddBody::subActionFinished(SubAction *action) {
-    QFixture* fixture = static_cast<AddFixture*>(action)->fixture();
-    if (fixture) {
-        fixture->setParent(this);
-        m_fixtures.push_back(fixture);
-    }
+void AddBody::subActionFinished(SubAction* action) {
+  QFixture* fixture = static_cast<AddFixture*>(action)->fixture();
+  if (fixture) {
+    fixture->setParent(this);
+    m_fixtures.push_back(fixture);
+  }
 
-    action->reset();
+  action->reset();
 }
 
 void AddBody::reset() {
-    Action::reset();
+  Action::reset();
 
-    for (QFixture* f: m_fixtures)
-        delete f;
-    m_fixtures.clear();
+  for (QFixture* f : m_fixtures) delete f;
+  m_fixtures.clear();
 }

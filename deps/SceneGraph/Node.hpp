@@ -9,74 +9,66 @@ class Renderer;
 class Material;
 class Geometry;
 
-class Node: protected BaseObject {
-    public:
-        enum class Type {
-            Node,
-            GeometryNode,
-            TransformNode
-        };
+class Node : protected BaseObject {
+ public:
+  enum class Type { Node, GeometryNode, TransformNode };
 
-        enum Flag {
-            UsePreprocess = 1 << 0
-        };
+  enum Flag { UsePreprocess = 1 << 0 };
 
-    private:
-        friend class Renderer;
+ private:
+  friend class Renderer;
 
-        Renderer* m_renderer;
-        Type m_type;
-        Flag m_flag;
+  Renderer* m_renderer;
+  Type m_type;
+  Flag m_flag;
 
-        void setRenderer(Renderer*);
+  void setRenderer(Renderer*);
 
-    protected:
-        virtual void preprocess();
+ protected:
+  virtual void preprocess();
 
-    public:
-        Node(Node* parent = nullptr, Type type = Type::Node);
-        ~Node();
+ public:
+  Node(Node* parent = nullptr, Type type = Type::Node);
+  ~Node();
 
-        Node* firstChild() const;
-        Node* next() const;
-        Node* parent() const;
-        void appendChild(Node*);
-        void removeChild(Node*);
+  Node* firstChild() const;
+  Node* next() const;
+  Node* parent() const;
+  void appendChild(Node*);
+  void removeChild(Node*);
 
-        inline Type type() const { return m_type; }
-        inline Renderer* renderer() const { return m_renderer; }
+  inline Type type() const { return m_type; }
+  inline Renderer* renderer() const { return m_renderer; }
 
-        inline Flag flag() const { return m_flag; }
-        void setFlag(Flag f);
+  inline Flag flag() const { return m_flag; }
+  void setFlag(Flag f);
 };
 
-class GeometryNode: public Node {
-    private:
-        Material* m_material;
-        Geometry* m_geometry;
+class GeometryNode : public Node {
+ private:
+  Material* m_material;
+  Geometry* m_geometry;
 
-    public:
-        GeometryNode(Node* parent = nullptr);
+ public:
+  GeometryNode(Node* parent = nullptr);
 
-        inline void setMaterial(Material* m) { m_material = m; }
-        inline Material* material() const { return m_material; }
+  inline void setMaterial(Material* m) { m_material = m; }
+  inline Material* material() const { return m_material; }
 
-        inline void setGeometry(Geometry* g) { m_geometry = g; }
-        inline Geometry* geometry() const { return m_geometry; }
+  inline void setGeometry(Geometry* g) { m_geometry = g; }
+  inline Geometry* geometry() const { return m_geometry; }
 };
 
-class TransformNode: public Node {
-    private:
-        QMatrix4x4 m_matrix;
+class TransformNode : public Node {
+ private:
+  QMatrix4x4 m_matrix;
 
-    public:
-        TransformNode(Node* parent = nullptr);
+ public:
+  TransformNode(Node* parent = nullptr);
 
-        inline const QMatrix4x4& matrix() const { return m_matrix; }
-        inline void setMatrix(const QMatrix4x4& m) { m_matrix = m; }
+  inline const QMatrix4x4& matrix() const { return m_matrix; }
+  inline void setMatrix(const QMatrix4x4& m) { m_matrix = m; }
 };
-
 }
 
-
-#endif // NODE_HPP
+#endif  // NODE_HPP

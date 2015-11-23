@@ -4,34 +4,33 @@
 #include "PonyAnimation.hpp"
 #include "Lighting/StaticLight.hpp"
 
-class Pony: public Creature {
-    private:
-        PonyAnimation m_body;
-        PonyAnimation m_wings;
+class Pony : public Creature {
+ private:
+  PonyAnimation m_body;
+  PonyAnimation m_wings;
 
-        std::string m_bodySource;
-        std::string m_wingsSource;
+  std::string m_bodySource;
+  std::string m_wingsSource;
 
-        QSizeF m_size;
+  QSizeF m_size;
 
-    protected:
-        void currentStateChanged(unsigned added, unsigned removed);
+ protected:
+  void currentStateChanged(unsigned added, unsigned removed);
 
-    public:
-        Pony(Item* = nullptr);
-        void initialize(QWorld*);
+ public:
+  Pony(Item * = nullptr);
+  void initialize(QWorld *);
 
-        inline QSizeF size() const { return m_size; }
-        inline void setSize(QSizeF s) { m_size = s; }
+  inline QSizeF size() const { return m_size; }
+  inline void setSize(QSizeF s) { m_size = s; }
 
-        void setCurrentSprite(const char*);
+  void setCurrentSprite(const char *);
 
-        void jumpRequested();
-        void punchRequested();
+  void jumpRequested();
+  void punchRequested();
 
-        bool read(const QJsonObject &);
-        bool write(QJsonObject &) const;
-
+  bool read(const QJsonObject &);
+  bool write(QJsonObject &) const;
 };
 
-#endif // PONY_HPP
+#endif  // PONY_HPP

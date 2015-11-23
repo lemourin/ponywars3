@@ -7,65 +7,64 @@ class FileAction;
 class SaveMapAction;
 class LoadMapAction;
 
-class SaveMapActionObject: public ActionObject {
-    private:
-        Q_OBJECT
+class SaveMapActionObject : public ActionObject {
+ private:
+  Q_OBJECT
 
-    public:
-        SaveMapActionObject(SaveMapAction*);
+ public:
+  SaveMapActionObject(SaveMapAction*);
 
-        SaveMapAction* action() const;
+  SaveMapAction* action() const;
 
-        Q_INVOKABLE void dump(QString path);
+  Q_INVOKABLE void dump(QString path);
 };
 
-class SaveMapAction: public SubAction {
-    private:
-        SaveMapActionObject m_object;
+class SaveMapAction : public SubAction {
+ private:
+  SaveMapActionObject m_object;
 
-    public:
-        SaveMapAction(FileAction*);
+ public:
+  SaveMapAction(FileAction*);
 
-        inline QString name() const { return "SaveMap"; }
+  inline QString name() const { return "SaveMap"; }
 };
 
-class LoadMapActionObject: public ActionObject {
-    private:
-        Q_OBJECT
+class LoadMapActionObject : public ActionObject {
+ private:
+  Q_OBJECT
 
-    public:
-        LoadMapActionObject(LoadMapAction*);
+ public:
+  LoadMapActionObject(LoadMapAction*);
 
-        LoadMapAction* action() const;
+  LoadMapAction* action() const;
 
-        Q_INVOKABLE void load(QString);
+  Q_INVOKABLE void load(QString);
 };
 
-class LoadMapAction: public SubAction {
-    private:
-        LoadMapActionObject m_object;
+class LoadMapAction : public SubAction {
+ private:
+  LoadMapActionObject m_object;
 
-    public:
-        LoadMapAction(FileAction*);
+ public:
+  LoadMapAction(FileAction*);
 
-        inline QString name() const { return "LoadMap"; }
+  inline QString name() const { return "LoadMap"; }
 };
 
-class FileAction: public SubAction {
-    private:
-        ActionObject m_object;
-        SaveMapAction m_saveMap;
-        LoadMapAction m_loadMap;
+class FileAction : public SubAction {
+ private:
+  ActionObject m_object;
+  SaveMapAction m_saveMap;
+  LoadMapAction m_loadMap;
 
-    public:
-        FileAction(MainAction*);
-        ~FileAction();
+ public:
+  FileAction(MainAction*);
+  ~FileAction();
 
-        inline SaveMapAction* saveMapAction() { return &m_saveMap; }
-        inline LoadMapAction* loadMapAction() { return &m_loadMap; }
+  inline SaveMapAction* saveMapAction() { return &m_saveMap; }
+  inline LoadMapAction* loadMapAction() { return &m_loadMap; }
 
-        inline QString name() const { return "FileAction"; }
+  inline QString name() const { return "FileAction"; }
 };
 
-
-#endif // FILEACTION_HPP
+#endif  // FILEACTION_HPP

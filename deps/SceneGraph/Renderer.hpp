@@ -15,61 +15,60 @@ class Item;
 class Window;
 
 class RenderState {
-    private:
-        friend class Renderer;
+ private:
+  friend class Renderer;
 
-        QMatrix4x4 m_matrix;
+  QMatrix4x4 m_matrix;
 
-        inline void setMatrix(QMatrix4x4 m) { m_matrix = m; }
+  inline void setMatrix(QMatrix4x4 m) { m_matrix = m; }
 
-    public:
-        RenderState(QMatrix4x4 = QMatrix4x4());
+ public:
+  RenderState(QMatrix4x4 = QMatrix4x4());
 
-        inline const QMatrix4x4& matrix() const { return m_matrix; }
+  inline const QMatrix4x4& matrix() const { return m_matrix; }
 };
 
 class Renderer {
-    private:
-        friend class Node;
+ private:
+  friend class Node;
 
-        Node* m_root;
-        RenderState m_state;
-        QSize m_size;
-        uint m_frame;
-        std::unordered_map< std::string, QOpenGLTexture* > m_texture;
-        std::unordered_set< Node* > m_preprocess;
+  Node* m_root;
+  RenderState m_state;
+  QSize m_size;
+  uint m_frame;
+  std::unordered_map<std::string, QOpenGLTexture*> m_texture;
+  std::unordered_set<Node*> m_preprocess;
 
-        void updateItem(Item*);
-        void updateNodes(Window*);
-        void destroyNodes(Window*);
+  void updateItem(Item*);
+  void updateNodes(Window*);
+  void destroyNodes(Window*);
 
-        void nodeAdded(Node*);
-        void nodeDestroyed(Node*);
+  void nodeAdded(Node*);
+  void nodeDestroyed(Node*);
 
-    protected:
-        virtual void renderGeometryNode(GeometryNode* node, const RenderState&) = 0;
+ protected:
+  virtual void renderGeometryNode(GeometryNode* node, const RenderState&) = 0;
 
-    public:
-        Renderer();
-        virtual ~Renderer();
+ public:
+  Renderer();
+  virtual ~Renderer();
 
-        virtual void render();
-        void render(Node*, RenderState);
+  virtual void render();
+  void render(Node*, RenderState);
 
-        void synchronize(Window* window);
+  void synchronize(Window* window);
 
-        void setSize(QSize);
-        inline QSize size() const { return m_size; }
+  void setSize(QSize);
+  inline QSize size() const { return m_size; }
 
-        void setRoot(Item*);
+  void setRoot(Item*);
 
-        inline Node* root() const { return m_root; }
+  inline Node* root() const { return m_root; }
 
-        QOpenGLTexture* texture(const char* path);
+  QOpenGLTexture* texture(const char* path);
 
-        inline uint frame() const { return m_frame; }
+  inline uint frame() const { return m_frame; }
 };
-
 }
 
-#endif // RENDERER_HPP
+#endif  // RENDERER_HPP

@@ -3,19 +3,19 @@
 
 #include "QBox2D/QFixture.hpp"
 
-class Box2DEdge: public QFixture {
-    private:
-        b2EdgeShape m_edgeShape;
+class Box2DEdge : public QFixture {
+ private:
+  b2EdgeShape m_edgeShape;
 
-    protected:
-        b2Shape* createShape() const;
-        SceneGraph::Node* synchronize(SceneGraph::Node*);
+ protected:
+  b2Shape* createShape() const;
+  SceneGraph::Node* synchronize(SceneGraph::Node*);
 
-    public:
-        explicit Box2DEdge(SceneGraph::Item *parent = nullptr);
+ public:
+  explicit Box2DEdge(SceneGraph::Item* parent = nullptr);
 
-        inline b2EdgeShape& edgeShape() { return m_edgeShape; }
-        std::vector<QPointF> vertices() const;
+  inline b2EdgeShape& edgeShape() { return m_edgeShape; }
+  std::vector<QPointF> vertices() const;
 };
 
-#endif // BOX2DEDGE_HPP
+#endif  // BOX2DEDGE_HPP

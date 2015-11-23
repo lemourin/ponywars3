@@ -12,63 +12,64 @@ class QFixture;
 class Light;
 class World;
 
-class EnlightedNode: public SceneGraph::TransformNode {
-    private:
-        SceneGraph::GeometryNode m_geometryNode;
-        LightMaterial m_material;
+class EnlightedNode : public SceneGraph::TransformNode {
+ private:
+  SceneGraph::GeometryNode m_geometryNode;
+  LightMaterial m_material;
 
-        void updateMaterial(Light*);
-        void updateMatrix(QFixture*);
+  void updateMaterial(Light*);
+  void updateMatrix(QFixture*);
 
-    public:
-        EnlightedNode();
+ public:
+  EnlightedNode();
 
-        void update(QFixture*, Light*);
-        void setGeometry(SceneGraph::Geometry*);
+  void update(QFixture*, Light*);
+  void setGeometry(SceneGraph::Geometry*);
 };
 
-class EnlightedItems: public SceneGraph::Item {
-    private:
-        friend class LightSystem;
+class EnlightedItems : public SceneGraph::Item {
+ private:
+  friend class LightSystem;
 
-        LightSystem* m_lightSystem;
-        uint m_state;
-        std::vector<void*> m_destroyedFixture;
+  LightSystem* m_lightSystem;
+  uint m_state;
+  std::vector<void*> m_destroyedFixture;
 
-        enum State {
-            Reset = 1 << 0,
-        };
+  enum State {
+    Reset = 1 << 0,
+  };
 
-    protected:
-        class Node: public SceneGraph::Node {
-            private:
-                struct Vertex { float x, y; };
+ protected:
+  class Node : public SceneGraph::Node {
+   private:
+    struct Vertex {
+      float x, y;
+    };
 
-                std::unordered_map<void*, SceneGraph::Geometry*> m_data;
-                std::vector<EnlightedNode*> m_node;
+    std::unordered_map<void*, SceneGraph::Geometry*> m_data;
+    std::vector<EnlightedNode*> m_node;
 
-            public:
-                Node();
-                ~Node();
+   public:
+    Node();
+    ~Node();
 
-                void clear();
-                SceneGraph::Geometry* geometry(QFixture*);
+    void clear();
+    SceneGraph::Geometry* geometry(QFixture*);
 
-                EnlightedNode* getNode(QFixture* f, Light* light, uint it);
-                void destroyedFixture(void* f);
-        };
+    EnlightedNode* getNode(QFixture* f, Light* light, uint it);
+    void destroyedFixture(void* f);
+  };
 
-        SceneGraph::Node* synchronize(SceneGraph::Node* old);
-        void onFixtureDestroyed(QFixture*);
+  SceneGraph::Node* synchronize(SceneGraph::Node* old);
+  void onFixtureDestroyed(QFixture*);
 
-    public:
-        explicit EnlightedItems(LightSystem*, SceneGraph::Item*);
+ public:
+  explicit EnlightedItems(LightSystem*, SceneGraph::Item*);
 
-        void clear();
+  void clear();
 
-        inline LightSystem* lightSystem() const { return m_lightSystem; }
-        World* world() const;
-
+  inline LightSystem* lightSystem() const { return m_lightSystem; }
+  World* world() const;
 };
 
-#endif // ENLIGHTEDITEMS_HPP
+#endif  // ENLIGHTEDITEMS_HPP

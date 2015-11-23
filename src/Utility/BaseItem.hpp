@@ -4,20 +4,20 @@
 
 class DisplayItem;
 
-class BaseItem: public SceneGraph::Item {
-    private:
-        friend class DisplayItem;
+class BaseItem : public SceneGraph::Item {
+ private:
+  friend class DisplayItem;
 
-        DisplayItem* m_displayItem;
+  DisplayItem* m_displayItem;
 
-    protected:
-        void matrixChanged();
+ protected:
+  void matrixChanged();
 
-    public:
-        explicit BaseItem(SceneGraph::Item* parent = nullptr);
-        ~BaseItem();
+ public:
+  explicit BaseItem(SceneGraph::Item* parent = nullptr);
+  ~BaseItem();
 
-        inline DisplayItem* displayItem() const { return m_displayItem; }
+  inline DisplayItem* displayItem() const { return m_displayItem; }
 };
 
-#endif // BASEITEM_HPP
+#endif  // BASEITEM_HPP

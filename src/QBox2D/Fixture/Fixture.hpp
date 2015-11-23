@@ -5,32 +5,31 @@
 
 class TexturedItem;
 
-class Fixture: public QFixture {
-    private:
-        TexturedItem* m_texture;
-        TexturedItem* m_normalMap;
+class Fixture : public QFixture {
+ private:
+  TexturedItem* m_texture;
+  TexturedItem* m_normalMap;
 
-    protected:
-        void initialize(QBody*);
+ protected:
+  void initialize(QBody*);
 
-    public:
-        explicit Fixture(Item* = nullptr);
+ public:
+  explicit Fixture(Item* = nullptr);
 
-        QString textureSource() const;
-        void setTextureSource(QString);
+  QString textureSource() const;
+  void setTextureSource(QString);
 
-        QString normalMapSource() const;
-        void setNormalMapSource(QString);
+  QString normalMapSource() const;
+  void setNormalMapSource(QString);
 
-        inline TexturedItem* texture() const { return m_texture; }
-        inline void setTexture(TexturedItem* i) { m_texture = i; }
+  inline TexturedItem* texture() const { return m_texture; }
+  inline void setTexture(TexturedItem* i) { m_texture = i; }
 
-        inline TexturedItem* normalMap() const { return m_normalMap; }
-        inline void setNormalMap(TexturedItem* i) { m_normalMap = i; }
+  inline TexturedItem* normalMap() const { return m_normalMap; }
+  inline void setNormalMap(TexturedItem* i) { m_normalMap = i; }
 
-        bool read(const QJsonObject &);
-        bool write(QJsonObject &) const;
-
+  bool read(const QJsonObject&);
+  bool write(QJsonObject&) const;
 };
 
-#endif // FIXTURE_HPP
+#endif  // FIXTURE_HPP

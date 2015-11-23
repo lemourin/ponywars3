@@ -6,36 +6,35 @@
 
 class World;
 
-class Player: public Pony {
-    private:
-        friend class ViewWorld;
+class Player : public Pony {
+ private:
+  friend class ViewWorld;
 
-        Hand m_hand;
-        StaticLight m_light;
+  Hand m_hand;
+  StaticLight m_light;
 
-    protected:
-        void healthChanged();
-        void focusChanged();
-        void keyPressEvent(QKeyEvent*);
-        void keyReleaseEvent(QKeyEvent*);
-        void mousePressEvent(QMouseEvent*);
-        void mouseMoveEvent(QMouseEvent*);
-        void beginContact(QFixture* other, b2Contact *);
+ protected:
+  void healthChanged();
+  void focusChanged();
+  void keyPressEvent(QKeyEvent*);
+  void keyReleaseEvent(QKeyEvent*);
+  void mousePressEvent(QMouseEvent*);
+  void mouseMoveEvent(QMouseEvent*);
+  void beginContact(QFixture* other, b2Contact*);
 
-        void synchronize();
+  void synchronize();
 
-    public:
-        Player(SceneGraph::Item* parent = nullptr);
+ public:
+  Player(SceneGraph::Item* parent = nullptr);
 
-        void initialize(QWorld*);
-        void destroyBody();
+  void initialize(QWorld*);
+  void destroyBody();
 
-        inline Hand* hand() { return &m_hand; }
-        World* world() const;
+  inline Hand* hand() { return &m_hand; }
+  World* world() const;
 
-        bool read(const QJsonObject &);
-        bool write(QJsonObject &) const;
-
+  bool read(const QJsonObject&);
+  bool write(QJsonObject&) const;
 };
 
-#endif // PLAYER_HPP
+#endif  // PLAYER_HPP
