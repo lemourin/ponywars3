@@ -55,7 +55,7 @@ const char* LightBlender::Material::Shader::vertexShader() const {
 
 const char* LightBlender::Material::Shader::fragmentShader() const {
   QString shader =
-      GLSL(const int lightCount = % 1; uniform sampler2D light[lightCount];
+      GLSL(const int lightCount = %1; uniform sampler2D light[lightCount];
            uniform sampler2D lightTexture; uniform vec4 ambient;
            uniform float opacity; varying vec2 coord;
 
