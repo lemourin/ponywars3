@@ -6,65 +6,58 @@
 #include "LightSystem.hpp"
 #include <QJsonObject>
 
-StaticLight::StaticLight(Item* parent):
-    Light(parent),
-    m_dynamicShadows(),
-    m_dynamicLight() {
+StaticLight::StaticLight(Item* parent)
+    : Light(parent), m_dynamicShadows(), m_dynamicLight() {
+  addFixture(&m_fixture);
 
-    addFixture(&m_fixture);
-
-    m_fixture.setSensor(true);
-    m_fixture.setVisible(false);
-    m_fixture.setShadowCaster(false);
+  m_fixture.setSensor(true);
+  m_fixture.setVisible(false);
+  m_fixture.setShadowCaster(false);
 }
 
-StaticLight::~StaticLight() {
-    destroyBody();
-}
+StaticLight::~StaticLight() { destroyBody(); }
 
 void StaticLight::initialize(QWorld* w) {
-    m_fixture.setPosition(QPointF(-radius(), -radius()));
-    m_fixture.setSize(QSizeF(2*radius(), 2*radius()));
+  m_fixture.setPosition(QPointF(-radius(), -radius()));
+  m_fixture.setSize(QSizeF(2 * radius(), 2 * radius()));
 
-    assert(lightSystem());
-    lightSystem()->addLight(this);
+  assert(lightSystem());
+  lightSystem()->addLight(this);
 
-    QBody::initialize(w);
+  QBody::initialize(w);
 }
 
 void StaticLight::destroyBody() {
-    m_fixture.destroyFixture();
+  m_fixture.destroyFixture();
 
-    if (lightSystem())
-        lightSystem()->removeLight(this);
+  if (lightSystem()) lightSystem()->removeLight(this);
 
-    Light::destroyBody();
+  Light::destroyBody();
 }
 
 bool StaticLight::read(const QJsonObject& obj) {
-    Light::read(obj);
-    setDynamicShadows(obj["dynamicShadows"].toBool());
+  Light::read(obj);
+  setDynamicShadows(obj["dynamicShadows"].toBool());
 
-    return true;
+  return true;
 }
 
 bool StaticLight::write(QJsonObject& obj) const {
-    Light::write(obj);
-    obj["dynamicShadows"] = dynamicShadows();
+  Light::write(obj);
+  obj["dynamicShadows"] = dynamicShadows();
 
-    return true;
+  return true;
 }
 
 void StaticLight::synchronize() {
-    setTransform(position(), rotation());
-    if (dynamicLight()) {
-        dynamicLight()->setPosition(position());
-    }
+  setTransform(position(), rotation());
+  if (dynamicLight()) {
+    dynamicLight()->setPosition(position());
+  }
 }
 
 void StaticLight::visibleChanged() {
-    if (lightSystem()) {
-        lightSystem()->lightVisibilityChanged(this);
-    }
+  if (lightSystem()) {
+    lightSystem()->lightVisibilityChanged(this);
+  }
 }
-
