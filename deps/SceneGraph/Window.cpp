@@ -21,8 +21,8 @@ Window::Window(QWindow* parent)
           &Window::onSceneGraphInvalidated, Qt::DirectConnection);
   connect(this, &QQuickWindow::beforeRendering, this,
           &Window::onBeforeRendering, Qt::DirectConnection);
-  connect(this, &QQuickWindow::beforeSynchronizing, this,
-          &Window::onBeforeSynchronizing, Qt::DirectConnection);
+  connect(this, &QQuickWindow::afterSynchronizing, this,
+          &Window::onAfterSynchronizing, Qt::DirectConnection);
 
   setResizeMode(SizeRootObjectToView);
   setClearBeforeRendering(false);
@@ -59,7 +59,7 @@ void Window::onBeforeRendering() {
   m_renderer->render();
 }
 
-void Window::onBeforeSynchronizing() { m_renderer->synchronize(this); }
+void Window::onAfterSynchronizing() { m_renderer->synchronize(this); }
 
 void Window::onItemDestroyed(Item* item) {
   cancelUpdate(item);
