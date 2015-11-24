@@ -44,7 +44,7 @@ class Window : public QQuickView {
   void onSceneGraphInitialized();
   void onSceneGraphInvalidated();
   void onBeforeRendering();
-  void onAfterSynchronizing();
+  void onBeforeSynchronizing();
   void onItemDestroyed(Item*);
   void destroyNode(Item*);
   void invalidateNode(Item*);
