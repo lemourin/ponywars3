@@ -215,7 +215,6 @@ void Window::mousePressEvent(QMouseEvent* event) {
 
 void Window::mouseReleaseEvent(QMouseEvent* event) {
   QQuickView::mouseReleaseEvent(event);
-
   if (event->isAccepted()) return;
 
   Item* item = focusItem();
@@ -246,6 +245,7 @@ void Window::mouseMoveEvent(QMouseEvent* event) {
 
 void Window::wheelEvent(QWheelEvent* event) {
   QQuickView::wheelEvent(event);
+  if (event->isAccepted()) return;
 
   Item* item = focusItem();
   while (item) {
@@ -259,11 +259,10 @@ void Window::wheelEvent(QWheelEvent* event) {
 }
 
 void Window::timerEvent(QTimerEvent* event) {
-  if (m_timerItem.find(event->timerId()) != m_timerItem.end()) {
-    m_timerItem[event->timerId()]->timerEvent(event);
-  }
-
   QQuickView::timerEvent(event);
+
+  auto it = m_timerItem.find(event->timerId());
+  if (it != m_timerItem.end()) it->second->timerEvent(event);
 }
 
 void Window::resizeEvent(QResizeEvent* event) {

@@ -4,6 +4,7 @@
 #include "Node.hpp"
 #include "Geometry.hpp"
 #include <cassert>
+#include <QPainter>
 
 namespace SceneGraph {
 
