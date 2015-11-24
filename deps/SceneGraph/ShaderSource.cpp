@@ -60,6 +60,7 @@ void ShaderSource::ShaderNode::updateTexture() {
   if (m_lastUpdate == renderer()->frame()) return;
   m_lastUpdate = renderer()->frame();
 
+  assert(m_size.isValid());
   if (!m_fbo || m_fbo->size() != m_size) {
     delete m_fbo;
     m_fbo = new QOpenGLFramebufferObject(m_size);

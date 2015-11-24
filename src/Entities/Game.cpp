@@ -2,6 +2,7 @@
 #include <fstream>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QDebug>
 
 Game::Game(Item* parent)
     : DisplayItemFrame(parent),

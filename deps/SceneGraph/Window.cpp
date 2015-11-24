@@ -3,6 +3,7 @@
 #include "Node.hpp"
 #include <functional>
 #include <QQuickItem>
+#include <QOpenGLFramebufferObject>
 #include <cassert>
 
 namespace SceneGraph {

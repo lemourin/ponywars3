@@ -1,6 +1,8 @@
 #include "Window.hpp"
+
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QDebug>
 
 #include "Entities/Player.hpp"
 #include "Entities/Pony.hpp"
@@ -51,7 +53,9 @@ void Environment::setFullscreen(bool enable) {
 }
 
 Window::Window(QWindow* parent)
-    : SceneGraph::Window(parent), m_game(rootItem()), m_environment(this) {
+    : SceneGraph::Window(parent),
+      m_game(rootItem()),
+      m_environment(this) {
   rootContext()->setContextProperty("app", &m_environment);
 
   World* world = m_game.view()->world();
