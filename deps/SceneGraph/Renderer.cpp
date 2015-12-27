@@ -92,6 +92,7 @@ void Renderer::updateNodes(Window* window) {
 void Renderer::destroyNodes(Window* window) {
   while (!window->m_destroyedItemNode.empty()) {
     Node* itemNode = window->m_destroyedItemNode.back();
+    //qDebug() << itemNode;
     assert(itemNode);
     window->m_destroyedItemNode.pop_back();
     while (itemNode->firstChild())
@@ -123,7 +124,10 @@ void Renderer::nodeAdded(Node* node) {
 }
 
 void Renderer::nodeDestroyed(Node* node) {
-  if (node->flag() & Node::UsePreprocess) m_preprocess.erase(node);
+  if (node->flag() & Node::UsePreprocess) {
+    assert(m_preprocess.find(node) != m_preprocess.end());
+    m_preprocess.erase(node);
+  }
   if (node == m_root) m_root = nullptr;
 }
 

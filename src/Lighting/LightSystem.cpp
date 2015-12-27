@@ -145,6 +145,7 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
 void LightSystem::visibleAreaChanged(QRectF rect) {
   for (SceneGraph::ShaderSource& i : m_framebuffer) i.setSourceRect(rect);
 
+  normalMap()->rotate(45, 0, 0, 1);
   normalMap()->setSourceRect(rect);
   lightTexture()->setSourceRect(rect);
 }

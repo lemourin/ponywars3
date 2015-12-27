@@ -106,6 +106,9 @@ void Window::resizeEvent(QResizeEvent* event) {
   setProjection(matrix);
 
   m_game.setSize(size());
+  //m_game.resetTransform();
+  //m_game.rotate(45, 0, 0, 1);
+  //m_game.translate(-300, -300);
 }
 
 void Window::registerTypes() {

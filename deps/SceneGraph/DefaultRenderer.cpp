@@ -4,8 +4,7 @@
 #include "Node.hpp"
 #include "Geometry.hpp"
 #include <cassert>
-#include <QPainter>
-
+#include <QElapsedTimer>
 namespace SceneGraph {
 
 DefaultRenderer::DefaultRenderer() : Renderer() { initializeOpenGLFunctions(); }
@@ -39,6 +38,8 @@ void DefaultRenderer::renderGeometryNode(GeometryNode* node,
 }
 
 void DefaultRenderer::render() {
+  //QElapsedTimer timer;
+  //timer.start();
   glClearColor(1, 1, 1, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -50,5 +51,7 @@ void DefaultRenderer::render() {
 
   glActiveTexture(GL_TEXTURE0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+  //qDebug() << timer.elapsed();
+
 }
 }

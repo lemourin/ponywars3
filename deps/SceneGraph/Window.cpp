@@ -2,6 +2,7 @@
 #include "DefaultRenderer.hpp"
 #include "Node.hpp"
 #include <functional>
+#include <QThread>
 #include <QQuickItem>
 #include <QOpenGLFramebufferObject>
 #include <cassert>

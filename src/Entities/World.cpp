@@ -116,7 +116,7 @@ void World::write(QJsonObject& obj) const {
   }
 }
 
-WorldObject::WorldObject(World* world) : m_world(world) {
+WorldObject::WorldObject(World* world) : m_world(world), m_fps() {
   m_fpscounter.restart();
   connect(world->window(), &SceneGraph::Window::beforeRendering, this,
           &WorldObject::updateFps);

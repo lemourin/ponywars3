@@ -33,6 +33,7 @@ class WorldObject : public QObject {
 
   qreal m_fps;
   QElapsedTimer m_fpscounter;
+  int var;
 
   void updateFps();
   void setFps(qreal);

@@ -7,7 +7,7 @@ Item {
         id: fpsText
         anchors.right: parent.right
         color: "#AABBBB"
-        text: "FPS: "+Math.round(world.fps)
+        text: "FPS: " + Math.round(world.fps)
     }
 
     Column {

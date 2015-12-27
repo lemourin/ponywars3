@@ -35,6 +35,12 @@ class Player : public Pony {
 
   bool read(const QJsonObject&);
   bool write(QJsonObject&) const;
+
+  inline static Type* key() {
+    static Type t;
+    return &t;
+  }
+  inline Type* type() const { return key(); }
 };
 
 #endif  // PLAYER_HPP
