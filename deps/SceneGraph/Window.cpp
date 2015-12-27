@@ -30,7 +30,18 @@ Window::Window(QWindow* parent)
   setPersistentSceneGraph(false);
 }
 
-Window::~Window() { m_root.setWindow(nullptr); }
+Window::~Window() {
+  onSceneGraphInvalidated();
+  m_root.setWindow(nullptr);
+  disconnect(this, &QQuickWindow::sceneGraphInitialized, this,
+          &Window::onSceneGraphInitialized);
+  disconnect(this, &QQuickWindow::sceneGraphInvalidated, this,
+          &Window::onSceneGraphInvalidated);
+  disconnect(this, &QQuickWindow::beforeRendering, this,
+          &Window::onBeforeRendering);
+  disconnect(this, &QQuickWindow::beforeSynchronizing, this,
+          &Window::onBeforeSynchronizing);
+}
 
 void Window::setProjection(const QMatrix4x4& m) {
   m_projection = m;
@@ -49,10 +60,13 @@ void Window::onSceneGraphInitialized() {
 }
 
 void Window::onSceneGraphInvalidated() {
+  if (!m_renderer)
+    return;
   invalidateNode(rootItem());
   m_renderer->synchronize(this);
 
   delete m_renderer;
+  m_renderer = nullptr;
 }
 
 void Window::onBeforeRendering() {
