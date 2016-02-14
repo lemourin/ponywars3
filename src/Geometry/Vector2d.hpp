@@ -2,7 +2,7 @@
 #define VECTOR2D_HPP
 #include <algorithm>
 
-class b2Vec2;
+struct b2Vec2;
 class QPointF;
 class QPoint;
 class QSize;
@@ -19,8 +19,8 @@ class Vector2d {
         Vector2d(float a, float b);
         Vector2d(const std::pair<float, float>&);
 
-        Vector2d(const b2Vec2&);
-        operator b2Vec2() const;
+        explicit Vector2d(const b2Vec2&);
+        explicit operator b2Vec2() const;
 
         explicit Vector2d(const QPointF&);
         explicit operator QPointF() const;

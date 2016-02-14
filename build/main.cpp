@@ -1,6 +1,5 @@
 #include <QGuiApplication>
 #include "Utility/Window.hpp"
-#include <unistd.h>
 
 int main(int argc, char** argv) {
   QGuiApplication app(argc, argv);
