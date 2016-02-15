@@ -47,8 +47,8 @@ bool Circle::colidPoints(const Circle& circle,
 
 b2AABB Circle::AABB() const {
   b2AABB box;
-  box.lowerBound = pos() - Vector2d(r, r);
-  box.upperBound = pos() + Vector2d(r, r);
+  box.lowerBound = b2Vec2(pos() - Vector2d(r, r));
+  box.upperBound = b2Vec2(pos() + Vector2d(r, r));
   return box;
 }
 

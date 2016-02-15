@@ -4,6 +4,7 @@
 #include <QQuickItem>
 #include <Box2D/Box2D.h>
 #include <queue>
+#include <functional>
 #include "Utility/List.hpp"
 #include "Utility/BaseItem.hpp"
 #include "Geometry/Circle.hpp"

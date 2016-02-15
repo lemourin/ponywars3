@@ -21,7 +21,7 @@ Cube::CubeNode::CubeNode(Node* parent) : GeometryNode(parent) {
 
 CubeGeometry::CubeGeometry()
     : Geometry({{3, GL_FLOAT}, {4, GL_FLOAT}}, 24, sizeof(ColorVertex), 34) {
-  std::vector<ColorVertex> vertex = {
+	std::vector<ColorVertex> vertex = {};/*{
       {-1, -1, 1, 0.3, 0.3, 0, 1}, {1, -1, 1, 0.3, 0.3, 0, 1},
       {-1, 1, 1, 0.3, 0.3, 0, 1},  {1, 1, 1, 0.3, 0.3, 0, 1},
 
@@ -38,7 +38,7 @@ CubeGeometry::CubeGeometry()
       {-1, -1, 1, 0, 0, 1, 1},     {1, -1, 1, 0, 0, 1, 1},
 
       {-1, 1, 1, 0, 1, 1, 1},      {1, 1, 1, 0, 1, 1, 1},
-      {-1, 1, -1, 0, 1, 1, 1},     {1, 1, -1, 0, 1, 1, 1}};
+      {-1, 1, -1, 0, 1, 1, 1},     {1, 1, -1, 0, 1, 1, 1}};*/
   memcpy(vertexData(), vertex.data(), vertex.size() * sizeof(ColorVertex));
   updateVertexData();
 
