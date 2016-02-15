@@ -74,13 +74,13 @@ void Renderer::updateNodes(Window* window) {
   std::vector<Item*> nextFrame;
   for (size_t i = 0; i < window->m_updateItem.size(); i++) {
     Item* item = window->m_updateItem[i];
-    item->m_state &= ~Item::ScheduledUpdate;
-    updateItem(item);
-
-    if (item->m_state & Item::ScheduledUpdate) {
+    if (item->m_lastUpdate == frame()) {
       nextFrame.push_back(item);
-      window->m_updateItem.pop_back();
+      continue;
     }
+    item->m_state &= ~Item::ScheduledUpdate;
+    item->m_lastUpdate = frame();
+    updateItem(item);
   }
 
   window->m_updateItem = nextFrame;
@@ -92,7 +92,6 @@ void Renderer::updateNodes(Window* window) {
 void Renderer::destroyNodes(Window* window) {
   while (!window->m_destroyedItemNode.empty()) {
     Node* itemNode = window->m_destroyedItemNode.back();
-    //qDebug() << itemNode;
     assert(itemNode);
     window->m_destroyedItemNode.pop_back();
     while (itemNode->firstChild())

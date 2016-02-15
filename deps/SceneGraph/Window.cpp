@@ -34,13 +34,13 @@ Window::~Window() {
   onSceneGraphInvalidated();
   m_root.setWindow(nullptr);
   disconnect(this, &QQuickWindow::sceneGraphInitialized, this,
-          &Window::onSceneGraphInitialized);
+             &Window::onSceneGraphInitialized);
   disconnect(this, &QQuickWindow::sceneGraphInvalidated, this,
-          &Window::onSceneGraphInvalidated);
+             &Window::onSceneGraphInvalidated);
   disconnect(this, &QQuickWindow::beforeRendering, this,
-          &Window::onBeforeRendering);
+             &Window::onBeforeRendering);
   disconnect(this, &QQuickWindow::beforeSynchronizing, this,
-          &Window::onBeforeSynchronizing);
+             &Window::onBeforeSynchronizing);
 }
 
 void Window::setProjection(const QMatrix4x4& m) {
@@ -60,8 +60,7 @@ void Window::onSceneGraphInitialized() {
 }
 
 void Window::onSceneGraphInvalidated() {
-  if (!m_renderer)
-    return;
+  if (!m_renderer) return;
   invalidateNode(rootItem());
   m_renderer->synchronize(this);
 
@@ -109,6 +108,9 @@ void Window::scheduleUpdate(Item* item) {
   if (!(item->m_state & Item::ScheduledUpdate)) {
     m_updateItem.push_back(item);
     item->m_state |= Item::ScheduledUpdate;
+  } else {
+    assert(std::find(m_updateItem.begin(), m_updateItem.end(), item) !=
+           m_updateItem.end());
   }
 }
 

@@ -25,14 +25,15 @@ class Item : protected BaseObject {
   Node* m_node;
   unsigned m_state;
   QMatrix4x4 m_matrix;
+  unsigned m_lastUpdate;
 
   enum State {
-    ScheduledUpdate = 1 << 0,
-    ParentChanged = 1 << 1,
-    ModelMatrixChanged = 1 << 2,
-    HasFocus = 1 << 3,
-    Visible = 1 << 4,
-    VisibleChanged = 1 << 5
+    ScheduledUpdate = 1u << 0,
+    ParentChanged = 1u << 1,
+    ModelMatrixChanged = 1u << 2,
+    HasFocus = 1u << 3,
+    Visible = 1u << 4,
+    VisibleChanged = 1u << 5,
   };
 
  protected:

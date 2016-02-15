@@ -12,7 +12,8 @@ Item::Item(Item* parent)
       m_window(),
       m_itemNode(),
       m_node(),
-      m_state(ParentChanged) {
+      m_state(ParentChanged),
+      m_lastUpdate(0) {
   if (parent && parent->window()) {
     setWindow(parent->window());
   }
@@ -122,7 +123,6 @@ void Item::setFocus(bool enabled) {
 
     if (enabled) {
       if (window()->m_focusItem) window()->m_focusItem->setFocus(false);
-
       window()->m_focusItem = this;
     } else {
       if (window()->m_focusItem == this) window()->m_focusItem = nullptr;

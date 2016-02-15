@@ -15,6 +15,7 @@ class QBody : public BaseItem {
  private:
   friend class QWorld;
   friend class QFixture;
+  friend class ViewWorld;
   friend class QContactListener;
 
   b2Body* m_body;
