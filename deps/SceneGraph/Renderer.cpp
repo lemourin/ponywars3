@@ -7,10 +7,11 @@
 #include <cassert>
 #include <QColor>
 #include <QOpenGLTexture>
+#include <QThread>
 
 namespace SceneGraph {
 
-Renderer::Renderer() : m_root(), m_frame() {}
+Renderer::Renderer() : m_root(), m_frame(1) {}
 
 Renderer::~Renderer() {
   for (const auto& p : m_texture) delete p.second;
@@ -59,6 +60,7 @@ void Renderer::updateItem(Item* item) {
 }
 
 void Renderer::updateNodes(Window* window) {
+  //qDebug() << "update start: " << QThread::currentThread();
   if (!window->m_updateItem.empty()) window->update();
 
   for (Item* item : window->m_updateItem) {
@@ -73,14 +75,17 @@ void Renderer::updateNodes(Window* window) {
 
   std::vector<Item*> nextFrame;
   for (size_t i = 0; i < window->m_updateItem.size(); i++) {
-    Item* item = window->m_updateItem[i];
-    if (item->m_lastUpdate == frame()) {
-      nextFrame.push_back(item);
-      continue;
-    }
-    item->m_state &= ~Item::ScheduledUpdate;
-    item->m_lastUpdate = frame();
-    updateItem(item);
+      Item* item = window->m_updateItem[i];
+      item->m_state &= ~Item::ScheduledUpdate;
+      updateItem(item);
+
+      if (item->m_state & Item::ScheduledUpdate) {
+          nextFrame.push_back(item);
+          assert(item == window->m_updateItem.back());
+          auto it = std::find(window->m_updateItem.rbegin(),
+                              window->m_updateItem.rend(), item);
+          window->m_updateItem.erase(it.base() - 1);
+      }
   }
 
   window->m_updateItem = nextFrame;

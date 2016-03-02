@@ -81,6 +81,8 @@ void LightMaterial::Shader::updateState(const SceneGraph::Material* mat,
   const LightMaterial* material = static_cast<const LightMaterial*>(mat);
 
   assert(material->normalMap());
+  if (!material->normalMap()->texture())
+    return;
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, material->normalMap()->texture()->texture());

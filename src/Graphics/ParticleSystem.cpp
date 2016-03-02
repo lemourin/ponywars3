@@ -178,6 +178,10 @@ void ParticleMaterial::ParticleShader::updateState(
   const ParticleMaterial* m = static_cast<const ParticleMaterial*>(t);
   program()->setUniformValue(m_matrix, state.matrix());
 
+  assert(m->normalMap());
+  if (!m->normalMap()->texture())
+    return;
+
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, m->normalMap()->texture()->texture());
   program()->setUniformValue(m_normalmap, 0);

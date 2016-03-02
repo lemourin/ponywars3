@@ -4,6 +4,8 @@
 #include "QFixture.hpp"
 #include "QJoint.hpp"
 
+#include <QThread>
+
 void QContactListener::BeginContact(b2Contact* contact) {
   QFixture* fixtureA = QFixture::toQFixture(contact->GetFixtureA());
   QFixture* fixtureB = QFixture::toQFixture(contact->GetFixtureB());
