@@ -9,7 +9,10 @@ void Shader::initialize() {
   program()->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShader());
   program()->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShader());
 
-  assert(program()->link());
+  if (!program()->link()) {
+    qDebug() << "[FAIL] Failed to link shader.";
+    exit(1);
+  }
 
   int id = 0;
   for (const std::string& name : attribute()) {
