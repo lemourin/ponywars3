@@ -50,6 +50,7 @@ Node* ShaderSource::synchronize(Node* old) {
 ShaderSource::ShaderNode::ShaderNode(QSize size, Node* parent)
     : Node(parent), m_fbo(), m_capturedNode(), m_size(size), m_lastUpdate(-1) {
   initializeOpenGLFunctions();
+  setFlag(UsePreprocess);
 }
 
 ShaderSource::ShaderNode::~ShaderNode() { delete m_fbo; }
@@ -73,7 +74,6 @@ void ShaderSource::ShaderNode::updateTexture() {
     glGetIntegerv(GL_VIEWPORT, view);
 
     glViewport(0, 0, m_fbo->width(), m_fbo->height());
-
     glClearColor(m_background.redF(), m_background.greenF(),
                  m_background.blueF(), m_background.alphaF());
     glClear(GL_COLOR_BUFFER_BIT);
@@ -94,5 +94,9 @@ void ShaderSource::ShaderNode::update(ShaderSource* i) {
   m_background = i->m_background;
   m_viewport = i->m_sourceRect;
   m_size = i->m_textureSize;
+}
+
+void ShaderSource::ShaderNode::preprocess() {
+  updateTexture();
 }
 }

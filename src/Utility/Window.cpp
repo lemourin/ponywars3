@@ -65,8 +65,6 @@ Window::Window(QWindow* parent)
   SaveMapAction* saveMapAction = fileAction->saveMapAction();
   LoadMapAction* loadMapAction = fileAction->loadMapAction();
 
-  //world->lightSystem()->setVisible(false);
-
   AddBody* addBody = mapEditor->addBody();
   rootContext()->setContextProperty("world", world->object());
 

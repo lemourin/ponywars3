@@ -119,7 +119,6 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
     m_visibleLights.insert(light);
   else
     m_visibleLights.erase(m_visibleLights.find(light));
-
   if (light->dynamicLight()) {
     if (!light->visible()) {
       DynamicLight* p = light->dynamicLight();
@@ -137,15 +136,15 @@ void LightSystem::lightVisibilityChanged(StaticLight* light) {
       p->bindLight(light);
 
       light->setParent(nullptr);
-    } else if (light->visible())
+    } else if (light->visible()) {
       light->setParent(lightTexture()->sourceItem());
+    }
   }
 }
 
 void LightSystem::visibleAreaChanged(QRectF rect) {
   for (SceneGraph::ShaderSource& i : m_framebuffer) i.setSourceRect(rect);
 
-  normalMap()->rotate(45, 0, 0, 1);
   normalMap()->setSourceRect(rect);
   lightTexture()->setSourceRect(rect);
 }

@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include "Graphics/TexturedPolygon.hpp"
 #include "Utility/Window.hpp"
 
 int main(int argc, char** argv) {

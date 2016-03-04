@@ -39,7 +39,7 @@ bool Pony::read(const QJsonObject& obj) {
   for (QFixture* f = firstFixture(); f != nullptr; f = f->next()) {
     Box2DBox* box = static_cast<Box2DBox*>(f);
     //box->setTextureSource(":/resources/crate.jpg");
-    box->setDensity(0.025);
+    //box->setDensity(0.025);
   }
 
   return true;
