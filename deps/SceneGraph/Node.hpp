@@ -11,7 +11,7 @@ class Geometry;
 
 class Node : protected BaseObject {
  public:
-  enum class Type { Node, GeometryNode, TransformNode };
+  enum class Type { None, GeometryNode, TransformNode };
 
   enum Flag { UsePreprocess = 1 << 0 };
 
@@ -28,7 +28,7 @@ class Node : protected BaseObject {
   virtual void preprocess();
 
  public:
-  Node(Node* parent = nullptr, Type type = Type::Node);
+  Node(Node* parent = nullptr, Type type = Type::None);
   ~Node();
 
   Node* firstChild() const;

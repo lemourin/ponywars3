@@ -163,6 +163,7 @@ SceneGraph::Node* LightSystem::synchronize(SceneGraph::Node* old) {
       array[i] = &m_framebuffer[i];
 
     node->material()->setLights(array);
+    node->material()->setNormalMap(&m_normalMap);
     node->material()->setAmbient(QColor(20, 20, 20, 0));
     node->material()->setLightTexture(lightTexture());
   }

@@ -50,7 +50,6 @@ Node* ShaderSource::synchronize(Node* old) {
 ShaderSource::ShaderNode::ShaderNode(QSize size, Node* parent)
     : Node(parent), m_fbo(), m_capturedNode(), m_size(size), m_lastUpdate(-1) {
   initializeOpenGLFunctions();
-  setFlag(UsePreprocess);
 }
 
 ShaderSource::ShaderNode::~ShaderNode() { delete m_fbo; }
@@ -96,7 +95,4 @@ void ShaderSource::ShaderNode::update(ShaderSource* i) {
   m_size = i->m_textureSize;
 }
 
-void ShaderSource::ShaderNode::preprocess() {
-  updateTexture();
-}
 }

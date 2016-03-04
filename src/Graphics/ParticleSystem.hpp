@@ -93,9 +93,6 @@ class ParticleSystem : public SceneGraph::Item {
     static std::vector<SceneGraph::Attribute> attribute();
     void generateTriangleStrip(GLuint* index, uint size);
 
-   protected:
-    void preprocess();
-
    public:
     Node();
 

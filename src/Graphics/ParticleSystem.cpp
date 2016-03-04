@@ -66,7 +66,6 @@ ParticleSystem::Node::Node() : m_geometry(attribute(), 0, sizeof(Vertex)) {
   setGeometry(&m_geometry);
 
   m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
-  setFlag(UsePreprocess);
 }
 
 std::vector<SceneGraph::Attribute> ParticleSystem::Node::attribute() {
@@ -85,8 +84,6 @@ void ParticleSystem::Node::generateTriangleStrip(GLuint* index, uint size) {
     if (i % 6 != 5 && i % 6 != 3) it++;
   }
 }
-
-void ParticleSystem::Node::preprocess() { m_material.update(); }
 
 void ParticleSystem::Node::update(const std::vector<Particle>& set) {
   if (m_geometry.vertexDataSize() < 4 * set.size()) {
@@ -205,8 +202,3 @@ ParticleSystem::Node::Vertex::Vertex(QPointF pos, QPointF tcoord,
       time(p.time) {}
 
 ParticleMaterial::ParticleMaterial() : m_normalMap(), m_time() {}
-
-void ParticleMaterial::update() {
-  assert(m_normalMap);
-  m_normalMap->updateTexture();
-}

@@ -24,9 +24,6 @@ class ShaderSource : public SceneGraph::Item {
 
     void update(ShaderSource* i);
 
-  protected:
-    void preprocess();
-
    public:
     ShaderNode(QSize size, Node* = nullptr);
     ~ShaderNode();

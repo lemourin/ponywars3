@@ -98,14 +98,20 @@ std::vector<std::string> LightBlender::Material::Shader::attribute() const {
   return {"vertex", "texcoord"};
 }
 
-LightBlender::Material::Material() : m_lightTexture() {}
+LightBlender::Material::Material()
+    : m_light(), m_lightTexture(), m_normalMap() {}
 
 void LightBlender::Material::setLights(SceneGraph::ShaderSource* array[]) {
   memcpy(m_light, array,
          sizeof(SceneGraph::ShaderSource*) * DYNAMIC_LIGHTS_COUNT);
 }
 
+void LightBlender::Material::setNormalMap(SceneGraph::ShaderSource* fbo) {
+  m_normalMap = fbo;
+}
+
 void LightBlender::Material::update() {
+  m_normalMap->shaderNode()->updateTexture();
   for (SceneGraph::ShaderSource* t : m_light) t->shaderNode()->updateTexture();
   m_lightTexture->shaderNode()->updateTexture();
 }

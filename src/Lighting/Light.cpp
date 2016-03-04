@@ -102,13 +102,6 @@ SceneGraph::Node* Light::synchronize(SceneGraph::Node* old) {
 Light::LightNode::LightNode() : m_geometry({{2, GL_FLOAT}}, 4, sizeof(Vertex)) {
   setGeometry(&m_geometry);
   setMaterial(&m_material);
-
-  setFlag(UsePreprocess);
-}
-
-void Light::LightNode::preprocess() {
-  assert(material()->normalMap());
-  material()->normalMap()->updateTexture();
 }
 
 void Light::LightNode::updateGeometry(float radius) {

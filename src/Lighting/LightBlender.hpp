@@ -46,6 +46,7 @@ class LightBlender : public SceneGraph::GeometryNode {
 
     SceneGraph::ShaderSource* m_light[DYNAMIC_LIGHTS_COUNT];
     SceneGraph::ShaderSource* m_lightTexture;
+    SceneGraph::ShaderSource* m_normalMap;
     QColor m_ambient;
 
    public:
@@ -58,6 +59,7 @@ class LightBlender : public SceneGraph::GeometryNode {
     }
     inline void setAmbient(QColor c) { m_ambient = c; }
     void setLights(SceneGraph::ShaderSource* array[DYNAMIC_LIGHTS_COUNT]);
+    void setNormalMap(SceneGraph::ShaderSource*);
 
     void update();
   } m_material;

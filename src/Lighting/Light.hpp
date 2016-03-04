@@ -29,7 +29,6 @@ class Light : public QBody {
 
    public:
     LightNode();
-    void preprocess();
 
     inline LightMaterial* material() { return &m_material; }
     inline SceneGraph::Geometry* geometry() { return &m_geometry; }
