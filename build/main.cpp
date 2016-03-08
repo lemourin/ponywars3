@@ -1,11 +1,11 @@
-#include <QGuiApplication>
 #include "Graphics/TexturedPolygon.hpp"
 #include "Utility/Window.hpp"
+#include <QGuiApplication>
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   QGuiApplication app(argc, argv);
-  //app.setOverrideCursor(Qt::BlankCursor);
-  //qputenv("QSG_RENDER_LOOP", "threaded");
+  // app.setOverrideCursor(Qt::BlankCursor);
+  // qputenv("QSG_RENDER_LOOP", "threaded");
 
   Window::registerTypes();
 
