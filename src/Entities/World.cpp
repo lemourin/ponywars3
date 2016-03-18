@@ -19,7 +19,8 @@ World::World(ViewWorld* viewWorld)
       m_viewWorld(viewWorld),
       m_player(),
       m_itemSet(this),
-      m_mainAction(this),
+      m_mainAction(this, std::unique_ptr<FileActionResolver>(
+                     new WorldFileActionResolver(this))),
       m_worldObject(this) {}
 
 World::~World() { clear(); }
@@ -175,4 +176,13 @@ void WorldObject::playerPunchRequested() {
 
 void WorldObject::playerDropWeapon() {
   m_world->player()->hand()->dropWeapon();
+}
+WorldFileActionResolver::WorldFileActionResolver(World *w) : m_world(w) {}
+
+void WorldFileActionResolver::load(QString path) const {
+  m_world->view()->game()->load(path);
+}
+
+void WorldFileActionResolver::dump(QString path) const {
+  m_world->view()->game()->dump(path);
 }

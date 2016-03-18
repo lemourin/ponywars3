@@ -40,6 +40,7 @@ void Renderer::updateItem(Item* item) {
     item->m_state &= ~Item::VisibleChanged;
 
     if (item->parent()) {
+      assert(item->parent()->m_itemNode);
       if (!item->visible())
         item->parent()->m_itemNode->removeChild(item->m_itemNode);
       else
@@ -60,7 +61,6 @@ void Renderer::updateItem(Item* item) {
 }
 
 void Renderer::updateNodes(Window* window) {
-  //qDebug() << "update start:" << frame();
   if (!window->m_updateItem.empty()) window->update();
 
   for (Item* item : window->m_updateItem) {
@@ -68,8 +68,7 @@ void Renderer::updateNodes(Window* window) {
       item->m_itemNode = new TransformNode;
       item->m_itemNode->setRenderer(this);
 
-      item->m_state |= Item::ModelMatrixChanged;
-      item->m_state |= Item::ParentChanged;
+      item->m_state |= Item::ModelMatrixChanged | Item::ParentChanged;
     }
   }
 
@@ -92,7 +91,6 @@ void Renderer::updateNodes(Window* window) {
   if (window->m_updateItem.size() > 0) {
     window->scheduleSynchronize();
   }
-  //qDebug() << "update end:" << frame();
 }
 
 void Renderer::destroyNodes(Window* window) {
@@ -139,7 +137,6 @@ void Renderer::nodeDestroyed(Node* node) {
 void Renderer::render() {
   for (Node* node : m_preprocess) node->preprocess();
 
-  //qDebug() << "rendering frame: " << m_frame;
   render(m_root, m_state);
   m_frame++;
 }

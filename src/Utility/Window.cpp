@@ -9,17 +9,14 @@
 #include "Entities/Gun.hpp"
 #include "Entities/Deagle.hpp"
 #include "Entities/Enemy.hpp"
-#include "Entities/Chain.hpp"
 
 #include "QBox2D/QBody.hpp"
+#include "QBox2D/QChain.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
 #include "QBox2D/Fixture/Box2DChain.hpp"
 #include "QBox2D/Fixture/Box2DCircle.hpp"
 #include "QBox2D/Fixture/Box2DEdge.hpp"
 #include "QBox2D/Fixture/Box2DPolygon.hpp"
-
-#include "Network/Server.hpp"
-#include "Network/Client.hpp"
 
 #include "Utility/Factory.hpp"
 
@@ -43,8 +40,6 @@ bool Environment::fullscreen() const {
 
 void Environment::setFullscreen(bool enable) {
   if (fullscreen() == enable) return;
-
-  view()->hide();
 
   if (enable)
     view()->showFullScreen();
@@ -97,6 +92,8 @@ Window::Window(QWindow* parent)
   setResizeMode(SizeRootObjectToView);
 
   connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
+
+  world->setGravity(QPointF(0, 10));
 }
 
 void Window::resizeEvent(QResizeEvent* event) {
@@ -108,9 +105,6 @@ void Window::resizeEvent(QResizeEvent* event) {
   setProjection(matrix);
 
   m_game.setSize(size());
-  //m_game.resetTransform();
-  //m_game.rotate(45, 0, 0, 1);
-  //m_game.translate(-300, -300);
 }
 
 void Window::registerTypes() {
@@ -126,6 +120,6 @@ void Window::registerTypes() {
   Utility::registerType<Gun>("Gun");
   Utility::registerType<Deagle>("Deagle");
   Utility::registerType<Enemy>("Enemy");
-  Utility::registerType<Chain>("Chain");
+  Utility::registerType<QChain>("QChain");
   Utility::registerType<Player>("Player");
 }

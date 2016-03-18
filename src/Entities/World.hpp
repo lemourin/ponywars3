@@ -68,6 +68,17 @@ class WorldObject : public QObject {
   void fpsChanged();
 };
 
+class WorldFileActionResolver : public FileActionResolver {
+ private:
+  World *m_world;
+
+ public:
+  WorldFileActionResolver(World *);
+
+  void load(QString) const;
+  void dump(QString) const;
+};
+
 class World : public QWorld {
  private:
   friend class ViewWorld;

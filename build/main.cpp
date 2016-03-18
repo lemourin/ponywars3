@@ -1,4 +1,3 @@
-#include "Graphics/TexturedPolygon.hpp"
 #include "Utility/Window.hpp"
 #include <QGuiApplication>
 
