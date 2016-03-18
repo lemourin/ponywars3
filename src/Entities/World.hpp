@@ -11,12 +11,11 @@
 
 #include "Graphics/ParticleSystem.hpp"
 
-#include "ItemSet.hpp"
-
 class Game;
 class Player;
 class LightSystem;
 class ViewWorld;
+class World;
 
 class WorldObject : public QObject {
  private:
@@ -84,19 +83,14 @@ class World : public QWorld {
   friend class ViewWorld;
 
   ViewWorld* m_viewWorld;
-
   Player* m_player;
-
-  ItemSet m_itemSet;
   MainAction m_mainAction;
-
   WorldObject m_worldObject;
 
  protected:
   void onBodyDestroyed(QBody*);
   void onBodyAdded(QBody*);
   void onFixtureDestroyed(QFixture*);
-  void releaseResource(QBody*);
 
  public:
   explicit World(ViewWorld*);
@@ -121,9 +115,6 @@ class World : public QWorld {
 
   inline WorldObject* object() { return &m_worldObject; }
   inline const WorldObject* object() const { return &m_worldObject; }
-
-  ItemSet* itemSet() { return &m_itemSet; }
-  const ItemSet* itemSet() const { return &m_itemSet; }
 
   void read(const QJsonObject&);
   void write(QJsonObject&) const;

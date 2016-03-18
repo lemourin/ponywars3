@@ -37,7 +37,4 @@ void ViewWorld::visibleAreaChanged() {
 
   game()->lightSystem()->visibleAreaChanged(visibleArea());
   world()->setVisibleRect(visibleArea());
-
-  //for (QBody* body : world()->visibleBodies())
-  //  body->synchronize();
 }

@@ -22,7 +22,6 @@ SOURCES += \
     Entities/Game.cpp \
     Entities/Gun.cpp \
     Entities/Hand.cpp \
-    Entities/ItemSet.cpp \
     Entities/Player.cpp \
     Entities/Pony.cpp \
     Entities/PonyAnimation.cpp \
@@ -38,7 +37,6 @@ HEADERS += \
     Entities/Game.hpp \
     Entities/Gun.hpp \
     Entities/Hand.hpp \
-    Entities/ItemSet.hpp \
     Entities/Player.hpp \
     Entities/Pony.hpp \
     Entities/PonyAnimation.hpp \

@@ -8,7 +8,6 @@
 #include "Lighting/LightSystem.hpp"
 #include "Entities/Player.hpp"
 #include "Entities/Gun.hpp"
-#include "Entities/ItemSet.hpp"
 #include "Entities/Game.hpp"
 #include "Utility/Utility.hpp"
 #include "Utility/Factory.hpp"
@@ -18,7 +17,6 @@ World::World(ViewWorld* viewWorld)
     : QWorld(viewWorld),
       m_viewWorld(viewWorld),
       m_player(),
-      m_itemSet(this),
       m_mainAction(this, std::unique_ptr<FileActionResolver>(
                      new WorldFileActionResolver(this))),
       m_worldObject(this) {}
@@ -40,7 +38,7 @@ void World::clear() {
     delete item;
   }
 
-  m_itemSet.clear();
+  itemSet()->clear();
 }
 
 void World::onBodyDestroyed(QBody* body) {
@@ -60,10 +58,6 @@ void World::onBodyAdded(QBody* body) {
 
 void World::onFixtureDestroyed(QFixture* f) {
   lightSystem()->onFixtureDestroyed(f);
-}
-
-void World::releaseResource(QBody* body) {
-  if (m_itemSet.contains(body)) m_itemSet.removeBody(body);
 }
 
 void World::setPlayer(Player* player) {
@@ -94,7 +88,7 @@ void World::setPaused(bool p) {
 }
 
 void World::read(const QJsonObject& obj) {
-  m_itemSet.read(obj);
+  QWorld::read(obj);
 
   QJsonObject p = obj["player"].toObject();
   Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());
@@ -108,7 +102,7 @@ void World::read(const QJsonObject& obj) {
 }
 
 void World::write(QJsonObject& obj) const {
-  m_itemSet.write(obj);
+  QWorld::write(obj);
 
   if (player()) {
     QJsonObject p;
