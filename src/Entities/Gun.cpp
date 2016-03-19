@@ -2,9 +2,9 @@
 #include "World.hpp"
 #include <QJsonObject>
 
-Gun::Gun(SceneGraph::Item* parent) : Weapon(parent) {}
+Gun::Gun(SceneGraph::Item *parent) : Weapon(parent) {}
 
-bool Gun::write(QJsonObject& obj) const {
+bool Gun::write(QJsonObject &obj) const {
   Weapon::write(obj);
   obj["class"] = QString("Gun");
 
@@ -12,21 +12,22 @@ bool Gun::write(QJsonObject& obj) const {
 }
 
 void Gun::shoot() {
-  if (bulletCount() <= 0) return;
+  if (bulletCount() <= 0)
+    return;
   setBulletCount(bulletCount() - 1);
 
   Circle circle((Vector2d)(matrix() * effectiveShootPoint()), 0.5);
 
-  Bullet* bullet = new Bullet(circle, world());
+  Bullet *bullet = new Bullet(circle, world());
   bullet->initialize(world());
 
-  static_cast<World*>(world())->itemSet()->addBody(bullet);
+  static_cast<World *>(world())->itemSet()->addBody(bullet);
 
   float angle = body()->GetAngle();
   bullet->applyForce(QPointF(cos(angle) * 5000, sin(angle) * 5000));
 }
 
-Bullet::Bullet(Circle circle, Item* p) : QBody(p), m_circle(this) {
+Bullet::Bullet(Circle circle, Item *p) : QBody(p), m_circle(this) {
   setPosition(QPointF(circle.pos()));
   setLinearDamping(0);
   setBullet(true);
@@ -44,11 +45,12 @@ void Bullet::destroyBody() {
   QBody::destroyBody();
 }
 
-void Bullet::beginContact(QFixture* other, b2Contact*) {
-  if (other->isSensor()) return;
+void Bullet::beginContact(QFixture *other, b2Contact *) {
+  if (other->isSensor())
+    return;
 
   destroyLater();
 
-  ParticleSystem* p = static_cast<World*>(world())->particleSystem();
+  ParticleSystem *p = static_cast<World *>(world())->particleSystem();
   p->addExplosion(worldCenter(), 5, 0.1, 20);
 }

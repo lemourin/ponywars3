@@ -1,25 +1,50 @@
 #include "World.hpp"
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDebug>
-#include <unordered_set>
-#include "QBox2D/QFixture.hpp"
-#include "QBox2D/QBody.hpp"
+
 #include "Lighting/LightSystem.hpp"
-#include "Entities/Player.hpp"
-#include "Entities/Gun.hpp"
-#include "Entities/Game.hpp"
-#include "Utility/Utility.hpp"
-#include "Utility/Factory.hpp"
+
 #include "SceneGraph/Window.hpp"
 
-World::World(ViewWorld* viewWorld)
-    : QWorld(viewWorld),
-      m_viewWorld(viewWorld),
-      m_player(),
+#include "Utility/Factory.hpp"
+#include "Utility/Utility.hpp"
+
+#include "Entities/Game.hpp"
+#include "Entities/Player.hpp"
+#include "Entities/Pony.hpp"
+#include "Entities/Gun.hpp"
+#include "Entities/Deagle.hpp"
+#include "Entities/Enemy.hpp"
+
+#include "QBox2D/QBody.hpp"
+#include "QBox2D/QChain.hpp"
+#include "QBox2D/Fixture/Box2DBox.hpp"
+#include "QBox2D/Fixture/Box2DChain.hpp"
+#include "QBox2D/Fixture/Box2DCircle.hpp"
+#include "QBox2D/Fixture/Box2DEdge.hpp"
+#include "QBox2D/Fixture/Box2DPolygon.hpp"
+
+#include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <unordered_set>
+
+World::World(ViewWorld *viewWorld)
+    : QWorld(viewWorld), m_viewWorld(viewWorld), m_player(),
       m_mainAction(this, std::unique_ptr<FileActionResolver>(
-                     new WorldFileActionResolver(this))),
-      m_worldObject(this) {}
+                             new WorldFileActionResolver(this))),
+      m_worldObject(this) {
+  factory()->registerType<Box2DBox>("Box2DBox");
+  factory()->registerType<Box2DChain>("Box2DChain");
+  factory()->registerType<Box2DCircle>("Box2DCircle");
+  factory()->registerType<Box2DEdge>("Box2DEdge");
+  factory()->registerType<Box2DPolygon>("Box2DPolygon");
+
+  factory()->registerType<QBody>("QBody");
+  factory()->registerType<Gun>("Gun");
+  factory()->registerType<Deagle>("Deagle");
+  factory()->registerType<Enemy>("Enemy");
+  factory()->registerType<QChain>("QChain");
+  factory()->registerType<Player>("Player");
+}
 
 World::~World() { clear(); }
 
@@ -30,7 +55,7 @@ void World::step() {
 }
 
 void World::clear() {
-  Player* item = player();
+  Player *item = player();
   setPlayer(nullptr);
 
   if (item) {
@@ -41,31 +66,34 @@ void World::clear() {
   itemSet()->clear();
 }
 
-void World::onBodyDestroyed(QBody* body) {
-  if (player() == body) setPlayer(nullptr);
+void World::onBodyDestroyed(QBody *body) {
+  if (player() == body)
+    setPlayer(nullptr);
   if (mainAction()->mapEditor()->grabItem()->m_grabbedBody == body)
     mainAction()->mapEditor()->grabItem()->releaseItem();
 
   QWorld::onBodyDestroyed(body);
 }
 
-void World::onBodyAdded(QBody* body) {
+void World::onBodyAdded(QBody *body) {
   QWorld::onBodyAdded(body);
 
   assert(lightSystem());
   lightSystem()->addBody(body);
 }
 
-void World::onFixtureDestroyed(QFixture* f) {
+void World::onFixtureDestroyed(QFixture *f) {
   lightSystem()->onFixtureDestroyed(f);
 }
 
-void World::setPlayer(Player* player) {
-  if (m_player == player) return;
+void World::setPlayer(Player *player) {
+  if (m_player == player)
+    return;
 
   m_player = player;
 
-  if (player) player->setFocus(true);
+  if (player)
+    player->setFocus(true);
 
   view()->setFocusedObject(player);
 
@@ -73,35 +101,36 @@ void World::setPlayer(Player* player) {
   emit object()->equippedWeaponChanged();
 }
 
-LightSystem* World::lightSystem() const {
+LightSystem *World::lightSystem() const {
   return view()->game()->lightSystem();
 }
 
-ParticleSystem* World::particleSystem() const {
+ParticleSystem *World::particleSystem() const {
   return view()->game()->particleSystem();
 }
 
 void World::setPaused(bool p) {
-  if (paused() == p) return;
+  if (paused() == p)
+    return;
   setRunning(!p);
   setFocus(!p);
 }
 
-void World::read(const QJsonObject& obj) {
+void World::read(const QJsonObject &obj) {
   QWorld::read(obj);
 
   QJsonObject p = obj["player"].toObject();
-  Player* player = Utility::create<Player>(p["class"].toString().toLocal8Bit());
+  Player *player =
+      factory()->create<Player>(p["class"].toString().toLocal8Bit());
   assert(player);
 
   player->setParent(this);
-  player->read(p);
-  player->initialize(this);
+  static_cast<QBody*>(player)->initialize(p, this);
 
   setPlayer(player);
 }
 
-void World::write(QJsonObject& obj) const {
+void World::write(QJsonObject &obj) const {
   QWorld::write(obj);
 
   if (player()) {
@@ -111,7 +140,7 @@ void World::write(QJsonObject& obj) const {
   }
 }
 
-WorldObject::WorldObject(World* world) : m_world(world), m_fps() {
+WorldObject::WorldObject(World *world) : m_world(world), m_fps() {
   m_fpscounter.restart();
   connect(world->window(), &SceneGraph::Window::beforeRendering, this,
           &WorldObject::updateFps);
@@ -124,7 +153,8 @@ bool WorldObject::player() {
 void WorldObject::updateFps() {
   qreal t = m_fpscounter.restart();
 
-  if (!qFuzzyIsNull(t)) setFps(1000.0 / t);
+  if (!qFuzzyIsNull(t))
+    setFps(1000.0 / t);
 }
 
 void WorldObject::setFps(qreal f) {
@@ -133,13 +163,15 @@ void WorldObject::setFps(qreal f) {
 }
 
 uint WorldObject::playerHealth() const {
-  if (m_world->player() == nullptr) return 0;
+  if (m_world->player() == nullptr)
+    return 0;
 
   return m_world->player()->health();
 }
 
 bool WorldObject::equippedWeapon() const {
-  if (m_world->player() == nullptr) return false;
+  if (m_world->player() == nullptr)
+    return false;
 
   return m_world->player()->hand()->grabbedWeapon() != nullptr;
 }

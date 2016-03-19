@@ -1,20 +1,22 @@
 #include "Weapon.hpp"
+#include "Entities/World.hpp"
+#include "Geometry/Circle.hpp"
+#include "Graphics/Primitives.hpp"
+#include "Graphics/TexturedItem.hpp"
 #include "Hand.hpp"
 #include "Player.hpp"
-#include "QBox2D/QWorld.hpp"
 #include "QBox2D/QFixture.hpp"
-#include "Entities/World.hpp"
+#include "QBox2D/QWorld.hpp"
 #include "Utility/Utility.hpp"
-#include "Graphics/Primitives.hpp"
-#include "Geometry/Circle.hpp"
-#include "Graphics/TexturedItem.hpp"
 #include <QJsonObject>
 
-Weapon::Weapon(Item* parent)
-    : QBody(parent), m_bulletCount(), m_flip(), m_grabber(), m_texture(this) {}
+Weapon::Weapon(Item *parent)
+    : QBody(parent), m_bulletCount(), m_flip(), m_grabber(),
+      m_texture(this) {}
 
 void Weapon::setBulletCount(int count) {
-  if (m_bulletCount == count) return;
+  if (m_bulletCount == count)
+    return;
   m_bulletCount = count;
 
   if (grabber() && grabber()->owner() && grabber()->owner()->world())
@@ -28,7 +30,7 @@ void Weapon::setFlip(int f) {
   }
 }
 
-bool Weapon::read(const QJsonObject& obj) {
+bool Weapon::read(const QJsonObject &obj) {
   QBody::read(obj);
   setBulletCount(obj["bulletCount"].toDouble());
   setShootPoint(Utility::Json::toPoint(obj["shootPoint"].toObject()));
@@ -41,7 +43,7 @@ bool Weapon::read(const QJsonObject& obj) {
   return true;
 }
 
-bool Weapon::write(QJsonObject& obj) const {
+bool Weapon::write(QJsonObject &obj) const {
   QBody::write(obj);
   obj["bulletCount"] = bulletCount();
   obj["shootPoint"] = Utility::Json::toObject(shootPoint());
@@ -53,14 +55,16 @@ bool Weapon::write(QJsonObject& obj) const {
   return true;
 }
 
-void Weapon::initialize(QWorld* w) {
+void Weapon::initialize(QWorld *w) {
   QBody::initialize(w);
 
-  for (QFixture* f = firstFixture(); f; f = f->next()) f->setGroupIndex(-1);
+  for (QFixture *f = firstFixture(); f; f = f->next())
+    f->setGroupIndex(-1);
 }
 
 void Weapon::destroyBody() {
-  if (grabber()) grabber()->dropWeapon();
+  if (grabber())
+    grabber()->dropWeapon();
 
   QBody::destroyBody();
 }
@@ -78,7 +82,8 @@ void Weapon::setShootPoint(QPointF p) {
 }
 
 void Weapon::update() {
-  if (!grabber()) return;
+  if (!grabber())
+    return;
 
   b2Vec2 dir =
       grabber()->owner()->body()->GetPosition() - body()->GetPosition();
@@ -103,6 +108,7 @@ void Weapon::updateEffectiveShootPoint() {
   setEffectiveShootPoint(m_texture.matrix() * shootPoint());
 }
 
-void Weapon::preSolve(QFixture*, b2Contact* contact, const b2Manifold*) {
-  if (grabber()) contact->SetEnabled(false);
+void Weapon::preSolve(QFixture *, b2Contact *contact, const b2Manifold *) {
+  if (grabber())
+    contact->SetEnabled(false);
 }

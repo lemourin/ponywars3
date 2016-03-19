@@ -1,17 +1,18 @@
 #include "Player.hpp"
-#include "World.hpp"
-#include "Weapon.hpp"
-#include "Gun.hpp"
 #include "Enemy.hpp"
-#include "Graphics/Primitives.hpp"
 #include "Geometry/Functions.hpp"
-#include "Utility/DisplayItem.hpp"
+#include "Graphics/Primitives.hpp"
+#include "Gun.hpp"
 #include "Lighting/LightSystem.hpp"
+#include "Utility/DisplayItem.hpp"
+#include "Weapon.hpp"
+#include "World.hpp"
 #include <QJsonObject>
 
-Player::Player(Item* parent) : Pony(parent), m_hand(this) {}
+Player::Player(Item *parent)
+    : Pony(parent), m_hand(this) {}
 
-void Player::keyPressEvent(QKeyEvent* event) {
+void Player::keyPressEvent(QKeyEvent *event) {
   if (event->isAutoRepeat()) {
     event->ignore();
     return;
@@ -22,14 +23,16 @@ void Player::keyPressEvent(QKeyEvent* event) {
   else if (event->key() == Qt::Key_D)
     enableGoRight();
   else if (event->key() == Qt::Key_Space) {
-    if (currentState() & OnGround) jumpRequested();
+    if (currentState() & OnGround)
+      jumpRequested();
   } else if (event->key() == Qt::Key_Shift) {
-    if (currentState() & OnGround) punchRequested();
+    if (currentState() & OnGround)
+      punchRequested();
   } else
     event->ignore();
 }
 
-void Player::keyReleaseEvent(QKeyEvent* event) {
+void Player::keyReleaseEvent(QKeyEvent *event) {
   if (event->isAutoRepeat()) {
     event->ignore();
     return;
@@ -45,23 +48,25 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
     event->ignore();
 }
 
-void Player::mousePressEvent(QMouseEvent* e) {
+void Player::mousePressEvent(QMouseEvent *e) {
   hand()->setHandPosition(mapFromScreen(e->pos()));
 
-  if (hand()->grabbedWeapon()) return hand()->grabbedWeapon()->shoot();
+  if (hand()->grabbedWeapon())
+    return hand()->grabbedWeapon()->shoot();
 
   QPointF pos = matrix() * hand()->position();
-  QBody* body = world()->bodyUnderPoint(
-      pos, [](QBody* body) { return body->type() == Weapon::key(); });
+  QBody *body = world()->bodyUnderPoint(
+      pos, [](QBody *body) { return body->type() == Weapon::key(); });
 
-  if (body) hand()->grabWeapon(static_cast<Weapon*>(body));
+  if (body)
+    hand()->grabWeapon(static_cast<Weapon *>(body));
 }
 
-void Player::mouseMoveEvent(QMouseEvent* e) {
+void Player::mouseMoveEvent(QMouseEvent *e) {
   hand()->setHandPosition(mapFromScreen(e->pos()));
 }
 
-void Player::beginContact(QFixture*, b2Contact*) {
+void Player::beginContact(QFixture *, b2Contact *) {
   // if (qobject_cast<Enemy*>(other->body())) {
   //    setHealth(health()-10);
   //}
@@ -88,10 +93,11 @@ void Player::synchronize() {
   world()->particleSystem()->addParticle(particle);
 }
 
-void Player::initialize(QWorld* w) {
+void Player::initialize(QWorld *w) {
   Pony::initialize(w);
 
-  for (QFixture* f = firstFixture(); f; f = f->next()) f->setGroupIndex(-1);
+  for (QFixture *f = firstFixture(); f; f = f->next())
+    f->setGroupIndex(-1);
   hand()->setRange(10);
 
   m_light.setLightSystem(world()->lightSystem());
@@ -105,7 +111,7 @@ void Player::destroyBody() {
   Pony::destroyBody();
 }
 
-World* Player::world() const { return static_cast<World*>(Creature::world()); }
+World *Player::world() const { return static_cast<World *>(Creature::world()); }
 
 void Player::healthChanged() {
   if (world() && world()->player() == this)
@@ -124,12 +130,14 @@ void Player::healthChanged() {
 }
 
 void Player::focusChanged() {
-  if (!focus()) disableState(GoingLeft | GoingRight);
+  if (!focus())
+    disableState(GoingLeft | GoingRight);
 
-  if (world()->player() == this) emit world()->object()->playerChanged();
+  if (world()->player() == this)
+    emit world()->object()->playerChanged();
 }
 
-bool Player::read(const QJsonObject& obj) {
+bool Player::read(const QJsonObject &obj) {
   Pony::read(obj);
 
   m_light.read(obj["light"].toObject());
@@ -137,7 +145,7 @@ bool Player::read(const QJsonObject& obj) {
   return true;
 }
 
-bool Player::write(QJsonObject& obj) const {
+bool Player::write(QJsonObject &obj) const {
   Pony::write(obj);
 
   obj["class"] = QString("Player");

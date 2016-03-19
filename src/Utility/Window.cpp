@@ -4,22 +4,6 @@
 #include <QQmlContext>
 #include <QDebug>
 
-#include "Entities/Player.hpp"
-#include "Entities/Pony.hpp"
-#include "Entities/Gun.hpp"
-#include "Entities/Deagle.hpp"
-#include "Entities/Enemy.hpp"
-
-#include "QBox2D/QBody.hpp"
-#include "QBox2D/QChain.hpp"
-#include "QBox2D/Fixture/Box2DBox.hpp"
-#include "QBox2D/Fixture/Box2DChain.hpp"
-#include "QBox2D/Fixture/Box2DCircle.hpp"
-#include "QBox2D/Fixture/Box2DEdge.hpp"
-#include "QBox2D/Fixture/Box2DPolygon.hpp"
-
-#include "Utility/Factory.hpp"
-
 Environment::Environment(QQuickView* view) : QObject(view), m_view(view) {}
 
 Environment::System Environment::system() const {
@@ -53,6 +37,9 @@ Window::Window(QWindow* parent)
     : SceneGraph::Window(parent),
       m_game(rootItem()),
       m_environment(this) {
+  qmlRegisterUncreatableType<Environment>("Environment", 1, 0, "Environment",
+                                          "Uncreatable type!");
+
   rootContext()->setContextProperty("app", &m_environment);
 
   World* world = m_game.view()->world();
@@ -94,6 +81,7 @@ Window::Window(QWindow* parent)
   connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
 
   world->setGravity(QPointF(0, 10));
+
 }
 
 void Window::resizeEvent(QResizeEvent* event) {
@@ -105,21 +93,4 @@ void Window::resizeEvent(QResizeEvent* event) {
   setProjection(matrix);
 
   m_game.setSize(size());
-}
-
-void Window::registerTypes() {
-  qmlRegisterUncreatableType<Environment>("Environment", 1, 0, "Environment",
-                                          "Uncreatable type!");
-  Utility::registerType<Box2DBox>("Box2DBox");
-  Utility::registerType<Box2DChain>("Box2DChain");
-  Utility::registerType<Box2DCircle>("Box2DCircle");
-  Utility::registerType<Box2DEdge>("Box2DEdge");
-  Utility::registerType<Box2DPolygon>("Box2DPolygon");
-
-  Utility::registerType<QBody>("QBody");
-  Utility::registerType<Gun>("Gun");
-  Utility::registerType<Deagle>("Deagle");
-  Utility::registerType<Enemy>("Enemy");
-  Utility::registerType<QChain>("QChain");
-  Utility::registerType<Player>("Player");
 }

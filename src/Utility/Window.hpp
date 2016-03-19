@@ -4,7 +4,7 @@
 #include "SceneGraph/Window.hpp"
 
 class Environment : public QObject {
- private:
+private:
   Q_OBJECT
 
   Q_PROPERTY(System system READ system CONSTANT)
@@ -12,36 +12,34 @@ class Environment : public QObject {
                  fullscreenChanged)
   Q_ENUMS(System)
 
-  QQuickView* m_view;
+  QQuickView *m_view;
 
- public:
+public:
   enum class System { Android, Unix, Win32, Unknown };
 
-  Environment(QQuickView* view);
+  Environment(QQuickView *view);
 
-  inline QQuickView* view() const { return m_view; }
+  inline QQuickView *view() const { return m_view; }
 
   System system() const;
 
   bool fullscreen() const;
   void setFullscreen(bool);
 
- signals:
+signals:
   void fullscreenChanged();
 };
 
 class Window : public SceneGraph::Window {
- private:
+private:
   Game m_game;
   Environment m_environment;
 
- protected:
-  void resizeEvent(QResizeEvent*);
+protected:
+  void resizeEvent(QResizeEvent *);
 
- public:
-  Window(QWindow* = nullptr);
-
-  static void registerTypes();
+public:
+  Window(QWindow * = nullptr);
 };
 
-#endif  // WINDOW_HPP
+#endif // WINDOW_HPP

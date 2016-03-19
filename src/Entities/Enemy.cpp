@@ -1,12 +1,13 @@
 #include "Enemy.hpp"
 #include "Gun.hpp"
-#include "World.hpp"
 #include "Player.hpp"
+#include "World.hpp"
 #include <QJsonObject>
 
-Enemy::Enemy(SceneGraph::Item* parent) : Pony(parent), m_target() {}
+Enemy::Enemy(SceneGraph::Item *parent)
+    : Pony(parent), m_target() {}
 
-bool Enemy::write(QJsonObject& obj) const {
+bool Enemy::write(QJsonObject &obj) const {
   Pony::write(obj);
   obj["class"] = QString("Enemy");
 
@@ -18,10 +19,11 @@ void Enemy::healthChanged() {
   //    deleteLater();
 }
 
-void Enemy::timerEvent(QTimerEvent*) {
-  setTarget(static_cast<World*>(world())->player());
+void Enemy::timerEvent(QTimerEvent *) {
+  setTarget(static_cast<World *>(world())->player());
 
-  if (!target()) return;
+  if (!target())
+    return;
   if (canSee(target())) {
     if (target()->position().x() < position().x()) {
       disableGoRight();
@@ -40,7 +42,7 @@ void Enemy::timerEvent(QTimerEvent*) {
   }
 }
 
-void Enemy::beginContact(QFixture*, b2Contact*) {
+void Enemy::beginContact(QFixture *, b2Contact *) {
   /*if (other->body()->type() == Bullet::type()) {
       setHealth(health()-5);
   }*/

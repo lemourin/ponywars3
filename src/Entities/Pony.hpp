@@ -1,11 +1,11 @@
 #ifndef PONY_HPP
 #define PONY_HPP
 #include "Creature.hpp"
-#include "PonyAnimation.hpp"
 #include "Lighting/StaticLight.hpp"
+#include "PonyAnimation.hpp"
 
 class Pony : public Creature {
- private:
+private:
   PonyAnimation m_body;
   PonyAnimation m_wings;
 
@@ -14,10 +14,10 @@ class Pony : public Creature {
 
   QSizeF m_size;
 
- protected:
+protected:
   void currentStateChanged(unsigned added, unsigned removed);
 
- public:
+public:
   Pony(Item * = nullptr);
   void initialize(QWorld *);
 
@@ -33,4 +33,4 @@ class Pony : public Creature {
   bool write(QJsonObject &) const;
 };
 
-#endif  // PONY_HPP
+#endif // PONY_HPP

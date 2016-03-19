@@ -1,11 +1,11 @@
 #include "Deagle.hpp"
-#include "QBox2D/QWorld.hpp"
 #include "Graphics/Primitives.hpp"
+#include "QBox2D/QWorld.hpp"
 #include <QJsonObject>
 
-Deagle::Deagle(Item* p) : Weapon(p) {}
+Deagle::Deagle(Item *p) : Weapon(p) {}
 
-bool Deagle::write(QJsonObject& obj) const {
+bool Deagle::write(QJsonObject &obj) const {
   Weapon::write(obj);
   obj["class"] = QString("Deagle");
   return true;
@@ -14,7 +14,7 @@ bool Deagle::write(QJsonObject& obj) const {
 void Deagle::shoot() {
   float angle = body()->GetAngle();
 
-  QPointF p1;  // = mapToItem(world(), effectiveShootPoint());
+  QPointF p1; // = mapToItem(world(), effectiveShootPoint());
   QPointF p2 = p1 + QPointF(cos(angle) * 5000, sin(angle) * 5000);
 
   Laser::RayCastCallback callback;
@@ -23,11 +23,8 @@ void Deagle::shoot() {
   new Laser(p1, QPointF(callback.m_point.x, callback.m_point.y), 10, world());
 }
 
-Laser::Laser(QPointF p1, QPointF p2, float speedFactor, Item* parent)
-    : SceneGraph::Item(parent),
-      m_start(p1),
-      m_end(p2),
-      m_currentStart(p1),
+Laser::Laser(QPointF p1, QPointF p2, float speedFactor, Item *parent)
+    : SceneGraph::Item(parent), m_start(p1), m_end(p2), m_currentStart(p1),
       m_currentEnd(p1) {
   // setFlag(ItemHasContents);
   // startTimer(20);
@@ -45,7 +42,8 @@ void Laser::advanceAnimation() {
   qreal l1 = QVector2D(m_currentEnd - m_start).lengthSquared();
   qreal l2 = QVector2D(m_end - m_start).lengthSquared();
 
-  if (l1 > l2) m_currentEnd = m_end;
+  if (l1 > l2)
+    m_currentEnd = m_end;
 
   if (l1 > maxlen * maxlen || m_currentEnd == m_end) {
     m_currentStart += m_unitVec;
@@ -74,11 +72,11 @@ void Laser::advanceAnimation() {
     return node;
 }*/
 
-void Laser::timerEvent(QTimerEvent*) { advanceAnimation(); }
+void Laser::timerEvent(QTimerEvent *) { advanceAnimation(); }
 
-float32 Laser::RayCastCallback::ReportFixture(b2Fixture* fixture,
-                                              const b2Vec2& point,
-                                              const b2Vec2& normal,
+float32 Laser::RayCastCallback::ReportFixture(b2Fixture *fixture,
+                                              const b2Vec2 &point,
+                                              const b2Vec2 &normal,
                                               float32 fraction) {
   m_fixture = fixture;
   m_point = point;

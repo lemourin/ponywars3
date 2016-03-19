@@ -1,20 +1,22 @@
 #include "Creature.hpp"
-#include "QBox2D/QWorld.hpp"
 #include "QBox2D/QFixture.hpp"
+#include "QBox2D/QWorld.hpp"
 #include <QJsonObject>
 const float FORCE = 150;
 
-Creature::Creature(SceneGraph::Item* parent)
-    : QBody(parent), m_state(), m_health(100) {
-  // setAcceptedMouseButtons(Qt::LeftButton);
-}
+Creature::Creature(SceneGraph::Item *parent)
+    : QBody(parent), m_state(), m_health(100) {}
 
 void Creature::currentStateChanged(unsigned added, unsigned removed) {
-  if (added & GoingLeft) addForce(QPointF(-FORCE, 0));
-  if (added & GoingRight) addForce(QPointF(FORCE, 0));
+  if (added & GoingLeft)
+    addForce(QPointF(-FORCE, 0));
+  if (added & GoingRight)
+    addForce(QPointF(FORCE, 0));
 
-  if (removed & GoingLeft) addForce(QPointF(FORCE, 0));
-  if (removed & GoingRight) addForce(QPointF(-FORCE, 0));
+  if (removed & GoingLeft)
+    addForce(QPointF(FORCE, 0));
+  if (removed & GoingRight)
+    addForce(QPointF(-FORCE, 0));
 }
 
 void Creature::onWorldStepped() {
@@ -24,7 +26,7 @@ void Creature::onWorldStepped() {
   enqueueFunction(std::bind(&Creature::onWorldStepped, this));
 }
 
-void Creature::addForce(const QPointF& force) { setForce(m_force + force); }
+void Creature::addForce(const QPointF &force) { setForce(m_force + force); }
 
 void Creature::modifyState(unsigned enable, unsigned disable) {
   enableState(enable);
@@ -48,25 +50,26 @@ void Creature::disableState(unsigned state) {
 }
 
 void Creature::setHealth(int hp) {
-  if (m_health == hp) return;
+  if (m_health == hp)
+    return;
   m_health = hp;
 
   healthChanged();
 }
 
-bool Creature::read(const QJsonObject& obj) {
+bool Creature::read(const QJsonObject &obj) {
   QBody::read(obj);
   setHealth(obj["health"].toDouble());
   return true;
 }
 
-bool Creature::write(QJsonObject& obj) const {
+bool Creature::write(QJsonObject &obj) const {
   QBody::write(obj);
   obj["health"] = health();
   return true;
 }
 
-bool Creature::canSee(QBody* body) {
+bool Creature::canSee(QBody *body) {
   RayCastCallback callback;
   callback.m_hit = nullptr;
 
@@ -85,9 +88,9 @@ void Creature::updateOnGround() {
   box.translate(offset, 0);
 
   bool success = false;
-  for (QFixture* f : world()->fixtures(box))
+  for (QFixture *f : world()->fixtures(box))
     if (this != f->body() && !f->isSensor()) {
-      for (QFixture* tf = firstFixture(); tf; tf = tf->next()) {
+      for (QFixture *tf = firstFixture(); tf; tf = tf->next()) {
         int16 g1 = tf->fixture()->GetFilterData().groupIndex;
         int16 g2 = f->fixture()->GetFilterData().groupIndex;
 
@@ -99,7 +102,8 @@ void Creature::updateOnGround() {
         }
       }
 
-      if (success) break;
+      if (success)
+        break;
     }
 
   if (success)
@@ -125,17 +129,20 @@ void Creature::jumpRequested() {}
 void Creature::punchRequested() {}
 
 void Creature::jump() {
-  if (currentState() & OnGround) applyForce(QPointF(0, -50 * FORCE));
+  if (currentState() & OnGround)
+    applyForce(QPointF(0, -50 * FORCE));
 }
 
 void Creature::punch() {
-  for (b2ContactEdge* c = body()->GetContactList(); c; c = c->next) {
-    if (c->contact->GetFixtureA()->IsSensor()) continue;
-    if (c->contact->GetFixtureB()->IsSensor()) continue;
+  for (b2ContactEdge *c = body()->GetContactList(); c; c = c->next) {
+    if (c->contact->GetFixtureA()->IsSensor())
+      continue;
+    if (c->contact->GetFixtureB()->IsSensor())
+      continue;
 
     b2WorldManifold manifold;
     c->contact->GetWorldManifold(&manifold);
-    QBody* body = QBody::toQBody(c->other);
+    QBody *body = QBody::toQBody(c->other);
 
     b2Vec2 normal = manifold.normal;
     QPointF v1((currentState() & TurnedLeft) ? QPointF(-1, 0) : QPointF(1, 0));
@@ -147,13 +154,13 @@ void Creature::punch() {
   }
 }
 
-void Creature::initialize(QWorld* w) {
+void Creature::initialize(QWorld *w) {
   QBody::initialize(w);
   onWorldStepped();
 }
 
-float32 Creature::RayCastCallback::ReportFixture(b2Fixture* fixture,
-                                                 const b2Vec2&, const b2Vec2&,
+float32 Creature::RayCastCallback::ReportFixture(b2Fixture *fixture,
+                                                 const b2Vec2 &, const b2Vec2 &,
                                                  float32 fraction) {
   m_hit = QFixture::toQFixture(fixture)->body();
   return fraction;

@@ -23,6 +23,7 @@ class Player : public Pony {
   void beginContact(QFixture* other, b2Contact*);
 
   void synchronize();
+  bool read(const QJsonObject&);
 
  public:
   Player(SceneGraph::Item* parent = nullptr);
@@ -33,13 +34,13 @@ class Player : public Pony {
   inline Hand* hand() { return &m_hand; }
   World* world() const;
 
-  bool read(const QJsonObject&);
   bool write(QJsonObject&) const;
 
   inline static Type* key() {
     static Type t;
     return &t;
   }
+
   inline Type* type() const { return key(); }
 };
 
