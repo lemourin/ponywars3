@@ -7,20 +7,20 @@
 #include "Utility/Factory.hpp"
 #include "Utility/Utility.hpp"
 
-#include "Entities/Game.hpp"
-#include "Entities/Player.hpp"
-#include "Entities/Pony.hpp"
-#include "Entities/Gun.hpp"
 #include "Entities/Deagle.hpp"
 #include "Entities/Enemy.hpp"
+#include "Entities/Game.hpp"
+#include "Entities/Gun.hpp"
+#include "Entities/Player.hpp"
+#include "Entities/Pony.hpp"
 
-#include "QBox2D/QBody.hpp"
-#include "QBox2D/QChain.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
 #include "QBox2D/Fixture/Box2DChain.hpp"
 #include "QBox2D/Fixture/Box2DCircle.hpp"
 #include "QBox2D/Fixture/Box2DEdge.hpp"
 #include "QBox2D/Fixture/Box2DPolygon.hpp"
+#include "QBox2D/QBody.hpp"
+#include "QBox2D/QChain.hpp"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -30,7 +30,9 @@
 World::World(ViewWorld *viewWorld)
     : QWorld(viewWorld), m_viewWorld(viewWorld), m_player(),
       m_mainAction(this, std::unique_ptr<FileActionResolver>(
-                             new WorldFileActionResolver(this))),
+                             new WorldFileActionResolver(this)),
+                   std::unique_ptr<WorldMapEditorCallback>(
+                       new WorldMapEditorCallback(this))),
       m_worldObject(this) {
   factory()->registerType<Box2DBox>("Box2DBox");
   factory()->registerType<Box2DChain>("Box2DChain");
@@ -86,6 +88,12 @@ void World::onFixtureDestroyed(QFixture *f) {
   lightSystem()->onFixtureDestroyed(f);
 }
 
+void World::focusChanged() {
+  QWorld::focusChanged();
+  if (player())
+    player()->setFocus(true);
+}
+
 void World::setPlayer(Player *player) {
   if (m_player == player)
     return;
@@ -125,7 +133,7 @@ void World::read(const QJsonObject &obj) {
   assert(player);
 
   player->setParent(this);
-  static_cast<QBody*>(player)->initialize(p, this);
+  static_cast<QBody *>(player)->initialize(p, this);
 
   setPlayer(player);
 }
@@ -211,4 +219,14 @@ void WorldFileActionResolver::load(QString path) const {
 
 void WorldFileActionResolver::dump(QString path) const {
   m_world->view()->game()->dump(path);
+}
+
+WorldMapEditorCallback::WorldMapEditorCallback(World *w) : m_world(w) {}
+
+void WorldMapEditorCallback::onTriggered() {
+  m_world->view()->setFlickable(m_enabled);
+  if (m_enabled)
+    m_world->view()->setFocusedObject(nullptr);
+  else
+    m_world->view()->setFocusedObject(m_world->player());
 }

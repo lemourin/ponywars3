@@ -3,9 +3,9 @@
 
 #include <QElapsedTimer>
 
-#include "QBox2D/QWorld.hpp"
-#include "QBox2D/QBody.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
+#include "QBox2D/QBody.hpp"
+#include "QBox2D/QWorld.hpp"
 
 #include "Actions/MainAction.hpp"
 
@@ -18,7 +18,7 @@ class ViewWorld;
 class World;
 
 class WorldObject : public QObject {
- private:
+private:
   Q_OBJECT
 
   Q_PROPERTY(bool player READ player NOTIFY playerChanged)
@@ -28,7 +28,7 @@ class WorldObject : public QObject {
   Q_PROPERTY(uint bulletCount READ bulletCount NOTIFY bulletCountChanged)
   Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
 
-  World* m_world;
+  World *m_world;
 
   qreal m_fps;
   QElapsedTimer m_fpscounter;
@@ -37,8 +37,8 @@ class WorldObject : public QObject {
   void updateFps();
   void setFps(qreal);
 
- public:
-  WorldObject(World*);
+public:
+  WorldObject(World *);
 
   bool player();
 
@@ -59,7 +59,7 @@ class WorldObject : public QObject {
 
   Q_INVOKABLE void playerDropWeapon();
 
- signals:
+signals:
   void playerChanged();
   void playerHealthChanged();
   void equippedWeaponChanged();
@@ -68,56 +68,66 @@ class WorldObject : public QObject {
 };
 
 class WorldFileActionResolver : public FileActionResolver {
- private:
+private:
   World *m_world;
 
- public:
+public:
   WorldFileActionResolver(World *);
 
   void load(QString) const;
   void dump(QString) const;
 };
 
+class WorldMapEditorCallback : public MapEditorCallback {
+private:
+  World *m_world;
+
+public:
+  WorldMapEditorCallback(World*);
+  void onTriggered();
+};
+
 class World : public QWorld {
- private:
+private:
   friend class ViewWorld;
 
-  ViewWorld* m_viewWorld;
-  Player* m_player;
+  ViewWorld *m_viewWorld;
+  Player *m_player;
   MainAction m_mainAction;
   WorldObject m_worldObject;
 
- protected:
-  void onBodyDestroyed(QBody*);
-  void onBodyAdded(QBody*);
-  void onFixtureDestroyed(QFixture*);
+protected:
+  void onBodyDestroyed(QBody *);
+  void onBodyAdded(QBody *);
+  void onFixtureDestroyed(QFixture *);
+  void focusChanged();
 
- public:
-  explicit World(ViewWorld*);
+public:
+  explicit World(ViewWorld *);
   ~World();
 
   void step();
   void clear();
 
-  inline Player* player() const { return m_player; }
-  void setPlayer(Player* p);
+  inline Player *player() const { return m_player; }
+  void setPlayer(Player *p);
 
-  inline ViewWorld* view() const { return m_viewWorld; }
+  inline ViewWorld *view() const { return m_viewWorld; }
 
-  LightSystem* lightSystem() const;
-  ParticleSystem* particleSystem() const;
+  LightSystem *lightSystem() const;
+  ParticleSystem *particleSystem() const;
 
   inline bool paused() const { return !isRunning(); }
   void setPaused(bool);
 
-  inline MainAction* mainAction() { return &m_mainAction; }
-  inline const MainAction* mainAction() const { return &m_mainAction; }
+  inline MainAction *mainAction() { return &m_mainAction; }
+  inline const MainAction *mainAction() const { return &m_mainAction; }
 
-  inline WorldObject* object() { return &m_worldObject; }
-  inline const WorldObject* object() const { return &m_worldObject; }
+  inline WorldObject *object() { return &m_worldObject; }
+  inline const WorldObject *object() const { return &m_worldObject; }
 
-  void read(const QJsonObject&);
-  void write(QJsonObject&) const;
+  void read(const QJsonObject &);
+  void write(QJsonObject &) const;
 };
 
-#endif  // WORLD_HPP
+#endif // WORLD_HPP
