@@ -5,15 +5,15 @@
 #include "Pony.hpp"
 
 class Enemy : public Pony {
-private:
+ private:
   QBody *m_target;
 
-protected:
+ protected:
   void timerEvent(QTimerEvent *);
   void beginContact(QFixture *other, b2Contact *);
   void healthChanged();
 
-public:
+ public:
   explicit Enemy(SceneGraph::Item * = nullptr);
 
   bool write(QJsonObject &) const;
@@ -22,4 +22,4 @@ public:
   inline void setTarget(QBody *body) { m_target = body; }
 };
 
-#endif // ENEMY_HPP
+#endif  // ENEMY_HPP

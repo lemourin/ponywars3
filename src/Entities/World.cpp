@@ -28,11 +28,11 @@
 #include <unordered_set>
 
 World::World(ViewWorld *viewWorld)
-    : QWorld(viewWorld), m_viewWorld(viewWorld), m_player(),
-      m_mainAction(this, std::unique_ptr<FileActionResolver>(
-                             new WorldFileActionResolver(this)),
-                   std::unique_ptr<WorldMapEditorCallback>(
-                       new WorldMapEditorCallback(this))),
+    : QWorld(viewWorld),
+      m_viewWorld(viewWorld),
+      m_player(),
+      m_mainAction(this, std::make_unique<WorldFileActionResolver>(this),
+                   std::make_unique<WorldMapEditorCallback>(this)),
       m_worldObject(this) {
   factory()->registerType<Box2DBox>("Box2DBox");
   factory()->registerType<Box2DChain>("Box2DChain");
@@ -57,24 +57,16 @@ void World::step() {
 }
 
 void World::clear() {
-  Player *item = player();
   setPlayer(nullptr);
-
-  if (item) {
-    item->destroyBody();
-    delete item;
-  }
-
   itemSet()->clear();
 }
 
 void World::onBodyDestroyed(QBody *body) {
-  if (player() == body)
-    setPlayer(nullptr);
+  QWorld::onBodyDestroyed(body);
+
+  if (player() == body) setPlayer(nullptr);
   if (mainAction()->mapEditor()->grabItem()->m_grabbedBody == body)
     mainAction()->mapEditor()->grabItem()->releaseItem();
-
-  QWorld::onBodyDestroyed(body);
 }
 
 void World::onBodyAdded(QBody *body) {
@@ -90,20 +82,17 @@ void World::onFixtureDestroyed(QFixture *f) {
 
 void World::focusChanged() {
   QWorld::focusChanged();
-  if (player())
-    player()->setFocus(true);
+  if (player()) player()->setFocus(true);
 }
 
-void World::setPlayer(Player *player) {
-  if (m_player == player)
-    return;
+void World::setPlayer(std::unique_ptr<Player> player) {
+  if (m_player == player) return;
 
-  m_player = player;
+  m_player = std::move(player);
 
-  if (player)
-    player->setFocus(true);
+  if (m_player) m_player->setFocus(true);
 
-  view()->setFocusedObject(player);
+  view()->setFocusedObject(m_player.get());
 
   emit object()->playerChanged();
   emit object()->equippedWeaponChanged();
@@ -118,8 +107,7 @@ ParticleSystem *World::particleSystem() const {
 }
 
 void World::setPaused(bool p) {
-  if (paused() == p)
-    return;
+  if (paused() == p) return;
   setRunning(!p);
   setFocus(!p);
 }
@@ -128,14 +116,14 @@ void World::read(const QJsonObject &obj) {
   QWorld::read(obj);
 
   QJsonObject p = obj["player"].toObject();
-  Player *player =
+  std::unique_ptr<Player> player =
       factory()->create<Player>(p["class"].toString().toLocal8Bit());
   assert(player);
 
   player->setParent(this);
-  static_cast<QBody *>(player)->initialize(p, this);
+  static_cast<QBody *>(player.get())->initialize(p, this);
 
-  setPlayer(player);
+  setPlayer(std::move(player));
 }
 
 void World::write(QJsonObject &obj) const {
@@ -161,8 +149,7 @@ bool WorldObject::player() {
 void WorldObject::updateFps() {
   qreal t = m_fpscounter.restart();
 
-  if (!qFuzzyIsNull(t))
-    setFps(1000.0 / t);
+  if (!qFuzzyIsNull(t)) setFps(1000.0 / t);
 }
 
 void WorldObject::setFps(qreal f) {
@@ -171,15 +158,13 @@ void WorldObject::setFps(qreal f) {
 }
 
 uint WorldObject::playerHealth() const {
-  if (m_world->player() == nullptr)
-    return 0;
+  if (m_world->player() == nullptr) return 0;
 
   return m_world->player()->health();
 }
 
 bool WorldObject::equippedWeapon() const {
-  if (m_world->player() == nullptr)
-    return false;
+  if (m_world->player() == nullptr) return false;
 
   return m_world->player()->hand()->grabbedWeapon() != nullptr;
 }

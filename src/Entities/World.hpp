@@ -18,7 +18,7 @@ class ViewWorld;
 class World;
 
 class WorldObject : public QObject {
-private:
+ private:
   Q_OBJECT
 
   Q_PROPERTY(bool player READ player NOTIFY playerChanged)
@@ -37,7 +37,7 @@ private:
   void updateFps();
   void setFps(qreal);
 
-public:
+ public:
   WorldObject(World *);
 
   bool player();
@@ -59,7 +59,7 @@ public:
 
   Q_INVOKABLE void playerDropWeapon();
 
-signals:
+ signals:
   void playerChanged();
   void playerHealthChanged();
   void equippedWeaponChanged();
@@ -68,10 +68,10 @@ signals:
 };
 
 class WorldFileActionResolver : public FileActionResolver {
-private:
+ private:
   World *m_world;
 
-public:
+ public:
   WorldFileActionResolver(World *);
 
   void load(QString) const;
@@ -79,38 +79,38 @@ public:
 };
 
 class WorldMapEditorCallback : public MapEditorCallback {
-private:
+ private:
   World *m_world;
 
-public:
-  WorldMapEditorCallback(World*);
+ public:
+  WorldMapEditorCallback(World *);
   void onTriggered();
 };
 
 class World : public QWorld {
-private:
+ private:
   friend class ViewWorld;
 
   ViewWorld *m_viewWorld;
-  Player *m_player;
+  std::unique_ptr<Player> m_player;
   MainAction m_mainAction;
   WorldObject m_worldObject;
 
-protected:
+ protected:
   void onBodyDestroyed(QBody *);
   void onBodyAdded(QBody *);
   void onFixtureDestroyed(QFixture *);
   void focusChanged();
 
-public:
+ public:
   explicit World(ViewWorld *);
   ~World();
 
   void step();
   void clear();
 
-  inline Player *player() const { return m_player; }
-  void setPlayer(Player *p);
+  inline Player *player() const { return m_player.get(); }
+  void setPlayer(std::unique_ptr<Player> p);
 
   inline ViewWorld *view() const { return m_viewWorld; }
 
@@ -130,4 +130,4 @@ public:
   void write(QJsonObject &) const;
 };
 
-#endif // WORLD_HPP
+#endif  // WORLD_HPP

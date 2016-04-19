@@ -1,8 +1,8 @@
 ﻿#ifndef PLAYER_HPP
 #define PLAYER_HPP
 #include "Hand.hpp"
-#include "Pony.hpp"
 #include "Lighting/StaticLight.hpp"
+#include "Pony.hpp"
 
 class World;
 

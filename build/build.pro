@@ -1,6 +1,6 @@
 TEMPLATE = app
 QT += quick widgets
-CONFIG += c++11
+CONFIG += c++14
 CONFIG -= debug_and_release
 QMAKE_CXXFLAGS += -fno-strict-aliasing
 OBJECTS_DIR = .obj

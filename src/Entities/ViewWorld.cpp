@@ -1,7 +1,7 @@
 #include "ViewWorld.hpp"
-#include "Player.hpp"
-#include "Game.hpp"
 #include <QJsonObject>
+#include "Game.hpp"
+#include "Player.hpp"
 
 ViewWorld::ViewWorld(Game* game)
     : DisplayItem(game), m_world(this), m_game(game) {}

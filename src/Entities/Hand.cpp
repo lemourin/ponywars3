@@ -41,7 +41,7 @@ void Hand::grabWeapon(Weapon* weapon) {
   weapon->setGrabber(this);
   setGrabbedWeapon(weapon);
 
-  m_mouseJoint = new QMouseJoint(grabbedWeapon());
+  m_mouseJoint = std::make_unique<QMouseJoint>(grabbedWeapon());
   m_mouseJoint->setTarget(grabbedWeapon()->position());
   m_mouseJoint->setMaxForce(1000 * grabbedWeapon()->body()->GetMass());
   m_mouseJoint->initialize();
@@ -52,7 +52,6 @@ void Hand::grabWeapon(Weapon* weapon) {
 
 void Hand::dropWeapon() {
   if (m_mouseJoint) {
-    delete m_mouseJoint;
     m_mouseJoint = nullptr;
 
     grabbedWeapon()->setFlip(1);

@@ -1,11 +1,10 @@
 #include "Enemy.hpp"
+#include <QJsonObject>
 #include "Gun.hpp"
 #include "Player.hpp"
 #include "World.hpp"
-#include <QJsonObject>
 
-Enemy::Enemy(SceneGraph::Item *parent)
-    : Pony(parent), m_target() {}
+Enemy::Enemy(SceneGraph::Item *parent) : Pony(parent), m_target() {}
 
 bool Enemy::write(QJsonObject &obj) const {
   Pony::write(obj);
@@ -22,8 +21,7 @@ void Enemy::healthChanged() {
 void Enemy::timerEvent(QTimerEvent *) {
   setTarget(static_cast<World *>(world())->player());
 
-  if (!target())
-    return;
+  if (!target()) return;
   if (canSee(target())) {
     if (target()->position().x() < position().x()) {
       disableGoRight();

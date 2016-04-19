@@ -1,7 +1,7 @@
 #ifndef HAND_HPP
 #define HAND_HPP
-#include "Weapon.hpp"
 #include "QBox2D/QJoint.hpp"
+#include "Weapon.hpp"
 
 class Player;
 
@@ -12,7 +12,7 @@ class Hand : public SceneGraph::Item {
 
   Player* m_owner;
   Weapon* m_grabbedWeapon;
-  QMouseJoint* m_mouseJoint;
+  std::unique_ptr<QMouseJoint> m_mouseJoint;
   QPointF m_position;
   float m_range;
 

@@ -1,7 +1,7 @@
 #include "Deagle.hpp"
+#include <QJsonObject>
 #include "Graphics/Primitives.hpp"
 #include "QBox2D/QWorld.hpp"
-#include <QJsonObject>
 
 Deagle::Deagle(Item *p) : Weapon(p) {}
 
@@ -14,7 +14,7 @@ bool Deagle::write(QJsonObject &obj) const {
 void Deagle::shoot() {
   float angle = body()->GetAngle();
 
-  QPointF p1; // = mapToItem(world(), effectiveShootPoint());
+  QPointF p1;  // = mapToItem(world(), effectiveShootPoint());
   QPointF p2 = p1 + QPointF(cos(angle) * 5000, sin(angle) * 5000);
 
   Laser::RayCastCallback callback;
@@ -24,7 +24,10 @@ void Deagle::shoot() {
 }
 
 Laser::Laser(QPointF p1, QPointF p2, float speedFactor, Item *parent)
-    : SceneGraph::Item(parent), m_start(p1), m_end(p2), m_currentStart(p1),
+    : SceneGraph::Item(parent),
+      m_start(p1),
+      m_end(p2),
+      m_currentStart(p1),
       m_currentEnd(p1) {
   // setFlag(ItemHasContents);
   // startTimer(20);
@@ -42,8 +45,7 @@ void Laser::advanceAnimation() {
   qreal l1 = QVector2D(m_currentEnd - m_start).lengthSquared();
   qreal l2 = QVector2D(m_end - m_start).lengthSquared();
 
-  if (l1 > l2)
-    m_currentEnd = m_end;
+  if (l1 > l2) m_currentEnd = m_end;
 
   if (l1 > maxlen * maxlen || m_currentEnd == m_end) {
     m_currentStart += m_unitVec;

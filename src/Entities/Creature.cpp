@@ -1,22 +1,18 @@
 #include "Creature.hpp"
+#include <QJsonObject>
 #include "QBox2D/QFixture.hpp"
 #include "QBox2D/QWorld.hpp"
-#include <QJsonObject>
 const float FORCE = 150;
 
 Creature::Creature(SceneGraph::Item *parent)
     : QBody(parent), m_state(), m_health(100) {}
 
 void Creature::currentStateChanged(unsigned added, unsigned removed) {
-  if (added & GoingLeft)
-    addForce(QPointF(-FORCE, 0));
-  if (added & GoingRight)
-    addForce(QPointF(FORCE, 0));
+  if (added & GoingLeft) addForce(QPointF(-FORCE, 0));
+  if (added & GoingRight) addForce(QPointF(FORCE, 0));
 
-  if (removed & GoingLeft)
-    addForce(QPointF(FORCE, 0));
-  if (removed & GoingRight)
-    addForce(QPointF(-FORCE, 0));
+  if (removed & GoingLeft) addForce(QPointF(FORCE, 0));
+  if (removed & GoingRight) addForce(QPointF(-FORCE, 0));
 }
 
 void Creature::onWorldStepped() {
@@ -50,8 +46,7 @@ void Creature::disableState(unsigned state) {
 }
 
 void Creature::setHealth(int hp) {
-  if (m_health == hp)
-    return;
+  if (m_health == hp) return;
   m_health = hp;
 
   healthChanged();
@@ -102,8 +97,7 @@ void Creature::updateOnGround() {
         }
       }
 
-      if (success)
-        break;
+      if (success) break;
     }
 
   if (success)
@@ -129,16 +123,13 @@ void Creature::jumpRequested() {}
 void Creature::punchRequested() {}
 
 void Creature::jump() {
-  if (currentState() & OnGround)
-    applyForce(QPointF(0, -50 * FORCE));
+  if (currentState() & OnGround) applyForce(QPointF(0, -50 * FORCE));
 }
 
 void Creature::punch() {
   for (b2ContactEdge *c = body()->GetContactList(); c; c = c->next) {
-    if (c->contact->GetFixtureA()->IsSensor())
-      continue;
-    if (c->contact->GetFixtureB()->IsSensor())
-      continue;
+    if (c->contact->GetFixtureA()->IsSensor()) continue;
+    if (c->contact->GetFixtureB()->IsSensor()) continue;
 
     b2WorldManifold manifold;
     c->contact->GetWorldManifold(&manifold);

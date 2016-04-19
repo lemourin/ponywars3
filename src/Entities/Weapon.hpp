@@ -1,8 +1,8 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 
-#include "QBox2D/QBody.hpp"
 #include "Graphics/TexturedRectangle.hpp"
+#include "QBox2D/QBody.hpp"
 
 class Hand;
 

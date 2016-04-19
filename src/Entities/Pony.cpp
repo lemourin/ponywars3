@@ -1,6 +1,6 @@
 #include "Pony.hpp"
-#include "World.hpp"
 #include <QJsonObject>
+#include "World.hpp"
 
 Pony::Pony(SceneGraph::Item* parent)
     : Creature(parent), m_body(this), m_wings(this) {}

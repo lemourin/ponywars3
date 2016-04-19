@@ -1,8 +1,8 @@
 #ifndef DEAGLE_HPP
 #define DEAGLE_HPP
 
-#include "Weapon.hpp"
 #include "QBox2D/Fixture/Box2DBox.hpp"
+#include "Weapon.hpp"
 
 class Deagle : public Weapon {
  private:

@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include <QJsonObject>
 #include "Enemy.hpp"
 #include "Geometry/Functions.hpp"
 #include "Graphics/Primitives.hpp"
@@ -7,10 +8,8 @@
 #include "Utility/DisplayItem.hpp"
 #include "Weapon.hpp"
 #include "World.hpp"
-#include <QJsonObject>
 
-Player::Player(Item *parent)
-    : Pony(parent), m_hand(this) {}
+Player::Player(Item *parent) : Pony(parent), m_hand(this) {}
 
 void Player::keyPressEvent(QKeyEvent *event) {
   if (event->isAutoRepeat()) {
@@ -23,11 +22,9 @@ void Player::keyPressEvent(QKeyEvent *event) {
   else if (event->key() == Qt::Key_D)
     enableGoRight();
   else if (event->key() == Qt::Key_Space) {
-    if (currentState() & OnGround)
-      jumpRequested();
+    if (currentState() & OnGround) jumpRequested();
   } else if (event->key() == Qt::Key_Shift) {
-    if (currentState() & OnGround)
-      punchRequested();
+    if (currentState() & OnGround) punchRequested();
   } else
     event->ignore();
 }
@@ -51,15 +48,13 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 void Player::mousePressEvent(QMouseEvent *e) {
   hand()->setHandPosition(mapFromScreen(e->pos()));
 
-  if (hand()->grabbedWeapon())
-    return hand()->grabbedWeapon()->shoot();
+  if (hand()->grabbedWeapon()) return hand()->grabbedWeapon()->shoot();
 
   QPointF pos = matrix() * hand()->position();
   QBody *body = world()->bodyUnderPoint(
       pos, [](QBody *body) { return body->type() == Weapon::key(); });
 
-  if (body)
-    hand()->grabWeapon(static_cast<Weapon *>(body));
+  if (body) hand()->grabWeapon(static_cast<Weapon *>(body));
 }
 
 void Player::mouseMoveEvent(QMouseEvent *e) {
@@ -96,8 +91,7 @@ void Player::synchronize() {
 void Player::initialize(QWorld *w) {
   Pony::initialize(w);
 
-  for (QFixture *f = firstFixture(); f; f = f->next())
-    f->setGroupIndex(-1);
+  for (QFixture *f = firstFixture(); f; f = f->next()) f->setGroupIndex(-1);
   hand()->setRange(10);
 
   m_light.setLightSystem(world()->lightSystem());
@@ -130,11 +124,9 @@ void Player::healthChanged() {
 }
 
 void Player::focusChanged() {
-  if (!focus())
-    disableState(GoingLeft | GoingRight);
+  if (!focus()) disableState(GoingLeft | GoingRight);
 
-  if (world()->player() == this)
-    emit world()->object()->playerChanged();
+  if (world()->player() == this) emit world()->object()->playerChanged();
 }
 
 bool Player::read(const QJsonObject &obj) {
