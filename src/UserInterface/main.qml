@@ -23,7 +23,7 @@ Item {
         if (event.key === Qt.Key_Escape)
             Qt.quit();
         else if (event.key === Qt.Key_F1)
-            gameEngineConsole.toggle()
+            gameEngineConsole.consoleEnabled ^= 1
         else if (event.key === Qt.Key_Comma)
             game.dump("")
     }
