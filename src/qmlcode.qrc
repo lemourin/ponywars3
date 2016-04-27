@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>UserInterface/AndroidUI.qml</file>
+        <file>UserInterface/GameOver.qml</file>
+        <file>UserInterface/HUD.qml</file>
+        <file>UserInterface/main.qml</file>
+        <file>GameEngine/UserInterface/BodyEdit/BodyEditControl.qml</file>
+        <file>GameEngine/UserInterface/BodyEdit/Option.qml</file>
+        <file>GameEngine/UserInterface/FixtureEdit/FixtureEditControl.qml</file>
+        <file>GameEngine/UserInterface/Console.qml</file>
+        <file>GameEngine/UserInterface/ConsoleView.qml</file>
+        <file>GameEngine/UserInterface/Data.qml</file>
+        <file>GameEngine/UserInterface/LoadMap.qml</file>
+        <file>GameEngine/UserInterface/PopUpControl.qml</file>
+        <file>GameEngine/UserInterface/SaveMap.qml</file>
+        <file>GameEngine/UserInterface/GameEngineConsole.qml</file>
+    </qresource>
+</RCC>

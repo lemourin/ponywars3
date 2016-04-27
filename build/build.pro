@@ -13,7 +13,6 @@ SOURCES += main.cpp
 
 RESOURCES += \
     resources.qrc \
-    qmlcode.qrc \
     json.qrc
 
 OTHER_FILES += \

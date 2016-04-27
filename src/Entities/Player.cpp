@@ -51,7 +51,7 @@ void Player::mousePressEvent(QMouseEvent *e) {
   if (hand()->grabbedWeapon()) return hand()->grabbedWeapon()->shoot();
 
   QPointF pos = matrix() * hand()->position();
-  QBody *body = world()->bodyUnderPoint(
+  QBody *body = world()->visibleBodyUnderPoint(
       pos, [](QBody *body) { return body->type() == Weapon::key(); });
 
   if (body) hand()->grabWeapon(static_cast<Weapon *>(body));

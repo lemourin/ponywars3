@@ -10,7 +10,7 @@ Item {
 
         MultiPointTouchArea {
             anchors.fill: parent
-            onPressed: mainMenu.toggle()
+            onPressed: gameEngineConsole.toggle()
         }
     }
 

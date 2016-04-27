@@ -1,8 +1,8 @@
 #include "Window.hpp"
 
-#include <QQmlEngine>
-#include <QQmlContext>
 #include <QDebug>
+#include <QQmlContext>
+#include <QQmlEngine>
 
 Environment::Environment(QQuickView* view) : QObject(view), m_view(view) {}
 
@@ -34,54 +34,23 @@ void Environment::setFullscreen(bool enable) {
 }
 
 Window::Window(QWindow* parent)
-    : SceneGraph::Window(parent),
-      m_game(rootItem()),
-      m_environment(this) {
+    : SceneGraph::Window(parent), m_game(rootItem()), m_environment(this) {
   qmlRegisterUncreatableType<Environment>("Environment", 1, 0, "Environment",
                                           "Uncreatable type!");
 
   rootContext()->setContextProperty("app", &m_environment);
 
   World* world = m_game.view()->world();
-  MainAction* mainAction = world->mainAction();
-  MapEditor* mapEditor = mainAction->mapEditor();
-  FileAction* fileAction = mainAction->fileAction();
-  SaveMapAction* saveMapAction = fileAction->saveMapAction();
-  LoadMapAction* loadMapAction = fileAction->loadMapAction();
-
-  AddBody* addBody = mapEditor->addBody();
   rootContext()->setContextProperty("world", world->object());
 
-  rootContext()->setContextProperty("mapEditor", mapEditor->object());
-  rootContext()->setContextProperty("fileAction", fileAction->object());
+  world->mainAction()->registerUserInterface(rootContext());
 
-  rootContext()->setContextProperty("saveMap", saveMapAction->object());
-  rootContext()->setContextProperty("loadMap", loadMapAction->object());
-
-  rootContext()->setContextProperty("addBody", addBody->object());
-  rootContext()->setContextProperty("addPolygon",
-                                    addBody->addPolygon()->object());
-  rootContext()->setContextProperty("addRectangle",
-                                    addBody->addRectangle()->object());
-  rootContext()->setContextProperty("addCircle",
-                                    addBody->addCircle()->object());
-
-  rootContext()->setContextProperty("grabItem",
-                                    mapEditor->grabItem()->object());
-  rootContext()->setContextProperty("deleteItem",
-                                    mapEditor->deleteItem()->object());
-  rootContext()->setContextProperty("bodyEdit",
-                                    mapEditor->bodyEdit()->object());
-  rootContext()->setContextProperty("addChain",
-                                    mapEditor->addChain()->object());
-
-  setSource(QUrl("qrc:/qml/main.qml"));
+  setSource(QUrl("qrc:/UserInterface/main.qml"));
   setResizeMode(SizeRootObjectToView);
 
   connect(engine(), &QQmlEngine::quit, this, &QQuickView::close);
 
   world->setGravity(QPointF(0, 10));
-
 }
 
 void Window::resizeEvent(QResizeEvent* event) {
