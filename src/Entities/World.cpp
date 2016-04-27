@@ -199,11 +199,11 @@ void WorldObject::playerDropWeapon() {
 WorldFileActionResolver::WorldFileActionResolver(World *w) : m_world(w) {}
 
 void WorldFileActionResolver::load(QString path) const {
-  m_world->view()->game()->load(QUrl(path).path());
+  m_world->view()->game()->load(QUrl(path).toLocalFile());
 }
 
 void WorldFileActionResolver::dump(QString path) const {
-  m_world->view()->game()->dump(QUrl(path).path());
+  m_world->view()->game()->dump(QUrl(path).toLocalFile());
 }
 
 WorldMapEditorCallback::WorldMapEditorCallback(World *w) : m_world(w) {}
