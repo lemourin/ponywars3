@@ -6,6 +6,7 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 INCLUDEPATH += GameEngine GameEngine/Box2D
 TARGET = src
+android: QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += \
     Entities/Creature.cpp \
@@ -51,3 +52,5 @@ DEPENDPATH += $$PWD/GameEngine/Box2D
 
 RESOURCES += \
     qmlcode.qrc
+
+DISTFILES +=

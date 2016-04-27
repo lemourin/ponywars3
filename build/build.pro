@@ -10,6 +10,7 @@ INCLUDEPATH += ../src/GameEngine ../src/GameEngine/Box2D
 LIBS += -L$$OUT_PWD/../../src/ -lsrc
 TARGET = PonyWars3
 SOURCES += main.cpp
+android: QMAKE_CXXFLAGS += -std=c++14
 
 RESOURCES += \
     resources.qrc \
@@ -35,3 +36,6 @@ DEPENDPATH += $$PWD/../src/GameEngine
 unix|win32: LIBS += -L$$OUT_PWD/../src/GameEngine/SceneGraph/ -lSceneGraph
 INCLUDEPATH += $$PWD/../src/GameEngine/SceneGraph
 DEPENDPATH += $$PWD/../src/GameEngine/SceneGraph
+
+DISTFILES += \
+    android/Workaround.qml
