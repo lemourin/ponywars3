@@ -1,5 +1,4 @@
 import QtQuick 2.2
-import Environment 1.0
 import "../GameEngine/UserInterface"
 
 Item {
@@ -11,7 +10,7 @@ Item {
     GameOver { }
     HUD { id: hud }
     AndroidUI {
-        visible: app.system === Environment.Android
+        visible: app.system === "android"
         opacity: 0.5
     }
 

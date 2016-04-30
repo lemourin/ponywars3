@@ -30,13 +30,6 @@ class WorldObject : public QObject {
 
   World *m_world;
 
-  qreal m_fps;
-  QElapsedTimer m_fpscounter;
-  int var;
-
-  void updateFps();
-  void setFps(qreal);
-
  public:
   WorldObject(World *);
 
@@ -46,7 +39,7 @@ class WorldObject : public QObject {
   bool equippedWeapon() const;
   uint bulletCount() const;
 
-  inline qreal fps() const { return m_fps; }
+  qreal fps() const;
 
   Q_INVOKABLE void playerEnableGoLeft();
   Q_INVOKABLE void playerDisableGoLeft();

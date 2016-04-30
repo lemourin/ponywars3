@@ -4,40 +4,20 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 
-Environment::Environment(QQuickView* view) : QObject(view), m_view(view) {}
+Environment::Environment(Window* view) : QObject(view), m_view(view) {}
 
-Environment::System Environment::system() const {
-#if defined Q_OS_ANDROID
-  return System::Android;
-#elif defined Q_OS_UNIX
-  return System::Unix;
-#elif defined Q_OS_WIN32
-  return System::Win32;
-#else
-  return System::Unknown;
-#endif
+QString Environment::system() const {
+  return SceneGraph::Window::systemToString(view()->system()).c_str();
 }
 
 bool Environment::fullscreen() const {
-  return view()->visibility() == QWindow::FullScreen;
+  return view()->fullscreen();
 }
 
-void Environment::setFullscreen(bool enable) {
-  if (fullscreen() == enable) return;
-
-  if (enable)
-    view()->showFullScreen();
-  else
-    view()->show();
-
-  emit fullscreenChanged();
-}
+void Environment::setFullscreen(bool enable) { view()->setFullScreen(enable); }
 
 Window::Window(QWindow* parent)
     : SceneGraph::Window(parent), m_game(rootItem()), m_environment(this) {
-  qmlRegisterUncreatableType<Environment>("Environment", 1, 0, "Environment",
-                                          "Uncreatable type!");
-
   rootContext()->setContextProperty("app", &m_environment);
 
   World* world = m_game.view()->world();
