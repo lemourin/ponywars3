@@ -54,6 +54,8 @@ void World::step() {
   QWorld::step();
 
   particleSystem()->step();
+  lightSystem()->step();
+  emit m_worldObject.fpsChanged();
 }
 
 void World::clear() {
@@ -136,25 +138,11 @@ void World::write(QJsonObject &obj) const {
   }
 }
 
-WorldObject::WorldObject(World *world) : m_world(world), m_fps() {
-  m_fpscounter.restart();
-  connect(world->window(), &SceneGraph::Window::beforeRendering, this,
-          &WorldObject::updateFps);
+WorldObject::WorldObject(World *world) : m_world(world) {
 }
 
 bool WorldObject::player() {
   return m_world->player() ? m_world->player()->focus() : false;
-}
-
-void WorldObject::updateFps() {
-  qreal t = m_fpscounter.restart();
-
-  if (!qFuzzyIsNull(t)) setFps(1000.0 / t);
-}
-
-void WorldObject::setFps(qreal f) {
-  m_fps = f;
-  emit fpsChanged();
 }
 
 uint WorldObject::playerHealth() const {
@@ -172,6 +160,10 @@ bool WorldObject::equippedWeapon() const {
 uint WorldObject::bulletCount() const {
   assert(equippedWeapon());
   return m_world->player()->hand()->grabbedWeapon()->bulletCount();
+}
+
+qreal WorldObject::fps() const {
+  return m_world->window()->fps();
 }
 
 void WorldObject::playerEnableGoLeft() { m_world->player()->enableGoLeft(); }

@@ -3,25 +3,24 @@
 #include "Entities/Game.hpp"
 #include "SceneGraph/Window.hpp"
 
+class Window;
+
 class Environment : public QObject {
  private:
   Q_OBJECT
 
-  Q_PROPERTY(System system READ system CONSTANT)
   Q_PROPERTY(bool fullscreen READ fullscreen WRITE setFullscreen NOTIFY
                  fullscreenChanged)
-  Q_ENUMS(System)
+  Q_PROPERTY(QString system READ system CONSTANT)
 
-  QQuickView *m_view;
+  Window *m_view;
 
  public:
-  enum class System { Android, Unix, Win32, Unknown };
+  Environment(Window *view);
 
-  Environment(QQuickView *view);
+  inline Window *view() const { return m_view; }
 
-  inline QQuickView *view() const { return m_view; }
-
-  System system() const;
+  QString system() const;
 
   bool fullscreen() const;
   void setFullscreen(bool);
