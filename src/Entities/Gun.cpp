@@ -1,5 +1,6 @@
 #include "Gun.hpp"
 #include <QJsonObject>
+#include "QBox2D/QChain.hpp"
 #include "World.hpp"
 
 Gun::Gun(SceneGraph::Item *parent) : Weapon(parent) {}
@@ -47,4 +48,8 @@ void Bullet::beginContact(QFixture *other, b2Contact *) {
 
   ParticleSystem *p = static_cast<World *>(world())->particleSystem();
   p->addExplosion(worldCenter(), 5, 0.1, 20);
+
+  if (QChain *chain = dynamic_cast<QChain *>(other->body())) {
+    chain->cutCircle(Circle(Vector2d(worldCenter()), 5));
+  }
 }
